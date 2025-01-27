@@ -66,4 +66,29 @@ You are now logged in a GPU node and have a clean GROMACS installation sourced. 
 
 First and foremost, the tutorial’s base command to run GROMACS is `gmx`, which will not work in our case. This is because the GROMACS version sourced has been compiled with OpenMPI, the suite for software parallelization, which automatically appends the suffix `_mpi` to the commands. The workaround is to just substitute all `gmx` calls with `gmx_mpi` as you follow the tutorial. Leave the rest of the commands unmodified, and simulate happily. Secondly, you won’t have a proper graphic interface on the GPU node, that is, you will not have windows opening and the interactions are mainly mediated by the keyboard in the terminal rather than by clicking with the mouse on icons as in most of our daily experience of computers. As such, you will have to navigate between directories and move/copy files via the terminal. The first times it can be a bit overwhelming and may feel confusing, but don’t worry, you will get used to it very fast. Remember also that you have a terminal cheat sheet along with the other documents of this course to help you getting a grasp of the main commands needed, and that you can always ask us. Moreover, resources like [StackOverflow](https://stackoverflow.com/) contain a wealth of information and explanations, and it is more than likely that someone had your same problem beforehand. So, why do not take advantage and learn from those solutions?
 
-This being said, it is worth pointing out a couple of commands that you might need to begin the tutorial. The first is [`wget`](https://ftp.gnu.org/old-gnu/Manuals/wget-1.8.1/html_mono/wget.html), and you will need it to download files from a web address. At the beginning of the tutorial, you will be asked to go to the [RCSB](https://www.rcsb.org/) website and download the protein data bank file `1AKI.pdb`. To do this, just follow the steps locally on your browser, but rather than downloading the file, right-click on the download option and copy the link address to that file, as shown in Figure 1.
+This being said, it is worth pointing out a couple of commands that you might need to begin the tutorial. The first is [`wget`](https://ftp.gnu.org/old-gnu/Manuals/wget-1.8.1/html_mono/wget.html), and you will need it to download files from a web address. At the beginning of the tutorial, you will be asked to go to the [RCSB](https://www.rcsb.org/) website and download the protein data bank file `1AKI.pdb`. To do this, just follow the steps locally on your browser, but rather than downloading the file, right-click on the download option and copy the link address to that file.
+
+![RCSB_download_1AKI_pdb](rcsb-pdb.png)
+
+Then, go back to your terminal and download the pdb file with the following
+```
+wget https://files.rcsb.org/download/1AKI.pdb
+```
+This will download the pdb file directly in the directory from where you are using the wget command. If for any reason you can’t find the link address, just copy it from this document.
+
+Another important command is [`scp`](https://linux.die.net/man/1/scp), which you can use to move files from you computer to the cluster and vice-versa. This may come in hand if, for
+example, you have prepared some input files on your personal machine and you want to move them on the cluster to run the simulations, or if you want to analyze locally on your laptop some of the results that you will obtain in today’s tutorial or in your future simulations.
+
+To outline two simple examples, let’s suppose you are in Baobab and want to download a directory named `Results`. You will need the exact address of the directory to download it. You can get it by entering in the directory (with [`cd`](https://man7.org/linux/man-pages/man1/cd.1p.html)) and by typing `$PWD` or `pwd`, which will return the position you are in at that moment, e.g., something like this
+```
+-bash: /home/users/u/username/Results: Is a directory
+```
+Now, from *outside* Baobab (log off from Baobab or open another terminal session on your machine), you run the following command (after substituting your user’s details)
+```
+scp -r username@login2.baobab.hpc.unige.ch:/home/users/u/username/Results ./
+```
+This will download the directory `Results` in the directory from which you are launching the `scp` command. Vice-versa, let’s say you have your directory `Simulations` locally on your machine, then you can `cd` into the directory containing the directory `Simulations` and run the following
+```
+scp -r ./Simulations/ username@login2.baobab.hpc.unige.ch:/home/users/u/username/
+```
+This will upload `Results` to your home directory in Baobab.
