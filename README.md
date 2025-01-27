@@ -92,3 +92,45 @@ This will download the directory `Results` in the directory from which you are l
 scp -r ./Simulations/ username@login2.baobab.hpc.unige.ch:/home/users/u/username/
 ```
 This will upload `Results` to your home directory in Baobab.
+
+
+## Plotting
+During the tutorial, you will be asked to take a look at some quantities of interest by plotting them. Many plotting software exist, spacing from barebone [fast in-line plotters](https://plasma-gate.weizmann.ac.il/Grace/) to [sophisticated libraries](https://matplotlib.org/) with thousands of options, perfectly suited for high-end publication images. Within this tutorial, we are going to use [`gnuplot`](http://www.gnuplot.info/) since it is already installed and working on Baobab’s nodes. Let’ suppose `data.xvg` is a text file containing two columns of data, such as the position of an atom as a function of it’s time, and you want to take a look at it. Then, you just run the following
+```
+gnuplot
+plot ’data.xvg’ u 1:2 w l
+```
+which means first launch `gnuplot`, then plot the data contained in the file `data.xvg` using the first and the second columns (`u 1:2`) as x and y, and connect the points with lines (`w l`). Now, let’s say you have three columns, with the first being the time and the second and third the position of two atoms, and you want to compare them. Then the plotting command (within `gnuplot`), becomes
+```
+plot ’data.xvg’ u 1:2 w l, '' u 1:3 w l
+```
+where the addition `''` means to take the next data points from the same file referred previosly in the same command. Similarly, if the data for the second molecule was stored in the first two columns of another file, e.g. `otherdata.xvg`, you can plot them together with the following
+```
+plot ’data.xvg’ u 1:2 w l, ’otherdata.xvg’ u 1:2 w l
+```
+There are many other options, which are summarised in the software’s manual, like how to name the axis, change the colour of the data points, or change the legend entries, and that you are free to explore them depending on your plotting necessities. Finally, you can exit gnuplot by typing `q` (for quit) or `exit`.
+
+## Making your life easier – ssh configuration
+If you think that writing and running `ssh username@login2.baobab.hpc.unige.ch` every time you need to connect to Baobab is boring and error prone, then there is a simple work around that can make your life easier. In your home directory you should have a directory name `.ssh`. First of all, `cd` into the directory and list what is inside
+```
+cd .ssh/
+ls
+```
+The directory will be most likely empty. If no file with the name `config` exists, create it
+```
+touch config
+```
+and open `config` with your favorite text editor (`vi`, `vim`, `nano`, `gedit`, etc.). If the file exists already, just open it. Then, add the following lines 
+```
+Host baobab
+    Hostname login2.baobab.hpc.unige.ch
+    User username
+    ForwardAgent yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+```
+Substitute `username` with your username. Here, I am calling this host `baobab`, for obvious reasons. Now, when you use the `ssh` command, you can just call the name of the host, that is you can just run the following 
+```
+ssh baobab
+```
+The `ssh` command will look for a host named *baobab* in your `.ssh/config` file – which is exactly what you just added – and try to connect to the corresponding `Hostname` with the specified username. If you did everything correctly, you should just be prompted for your password. Insert it, and you are now logged in on Baobab.
