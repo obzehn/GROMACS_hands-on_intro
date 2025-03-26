@@ -37,23 +37,12 @@ Unfortunately, both software and hardware have been growing in complexity over t
 
 Fortunately for you, a GROMACS installation for today’s tutorial is already available. Thus, it is sufficient to `source` it, that is, to tell to the terminal where GROMACS files are located. Very roughly speaking, this means that you load on your terminal the command keywords that refer to the software you need (if you are curious, just type `gmx_mpi --version` on your terminal – what answer do you get?). However, as just introduced, we have to firstly load GROMACS dependencies beforehand, which in our case means executing these following commands one after the other
 ```
-module load GCC/12.2.0
-module load OpenMPI
-module load CUDA/12.0.0
-module load Python
-source /srv/beegfs/scratch/shares/flg/programs/plumed2-master_libtorch1.8_0523/libtorch/sourceme.sh
-source /srv/beegfs/scratch/shares/flg/programs/plumed2-master_libtorch1.8_0523/sourceme.sh
-source /srv/beegfs/scratch/shares/flg/programs/gromacs-2023/install_mpi_0523/bin/GMXRC
-```
-In case the directory of Professor Gervasio’s group is not accessible for whatever reason, you can rely on those already installed in Baobab, which you can source with the following commands
-```
 module load GCC/11.3.0
 module load OpenMPI/4.1.4
 module load CUDA/11.7.0
 module load GROMACS/2023.1-CUDA-11.7.0
 ```
-
-The `module load` commands load specific packages that were used for GROMACS installation, and that are needed for running it properly. The first four lines load [GCC](https://gcc.gnu.org/), a C/C++ compiler (among others), [OpenMPI](https://www.open-mpi.org/), a parallelization interface that permits to run parallel jobs on several threads and/or nodes, [CUDA](https://developer.nvidia.com/cuda-toolkit), a library to exploit GPU acceleration, and finally [Python](https://www.python.org/), a widely used programming language. Then, we source [PLUMED](https://www.plumed.org/), an additional suite of tools that add multiple options and functionalities to GROMACS, which in this specific installation requires also [PyTorch](https://pytorch.org/), a python library for machine learning. Finally, we source GROMACS. Notice how the first commands use module load, while the last ones use source. If the first set of commands doesn't work and you have to load `GROMACS/2023.1-CUDA-11.7.0` do not worry, for this course we won't need PLUMED/Pytorch.
+The `module load` commands load specific packages that were used for GROMACS installation, and that are needed for running it properly. The first four lines load [GCC](https://gcc.gnu.org/), a C/C++ compiler (among others), [OpenMPI](https://www.open-mpi.org/), a parallelization interface that permits to run parallel jobs on several threads and/or nodes, [CUDA](https://developer.nvidia.com/cuda-toolkit), a library to exploit GPU acceleration, and finally [Python](https://www.python.org/), a widely used programming language. Finally, we source GROMACS.
 
 You can verify that GROMACS has been correctly sourced by running again the following
 ```
