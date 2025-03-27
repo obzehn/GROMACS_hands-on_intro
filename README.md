@@ -7,11 +7,11 @@ On [high-performance computing (HPC)](https://en.wikipedia.org/wiki/High-perform
 
 First of all, you need to [`ssh`](https://man.openbsd.org/ssh) to Baobab via the following command (substitute `username` with your username)
 ```
-ssh username@login1.baobab.hpc.unige.ch
+ssh -X username@login1.baobab.hpc.unige.ch
 ```
 Insert your password. You should now be logged in on Baobab, which is confirmed by the beginning of your terminal line that will look something like this
 ```
-(baobab)-[username@login1 ~]$}
+(baobab)-[username@login1 ~]$
 ```
 Now you can allocate an interactive job via Slurm by running the following command
 ```
@@ -78,7 +78,7 @@ scp -r username@.baobab.hpc.unige.ch:/home/users/u/username/Results ./
 ```
 This will download the directory `Results` in the directory from which you are launching the `scp` command. Vice-versa, let’s say you have your directory `Simulations` locally on your machine, then you can `cd` into the directory containing the directory `Simulations` and run the following
 ```
-scp -r ./Simulations/ username@.baobab.hpc.unige.ch:/home/users/u/username/
+scp -r ./Simulations/ username@login1.baobab.hpc.unige.ch:/home/users/u/username/
 ```
 This will upload `Results` to your home directory in Baobab.
 
