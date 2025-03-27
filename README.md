@@ -7,11 +7,11 @@ On [high-performance computing (HPC)](https://en.wikipedia.org/wiki/High-perform
 
 First of all, you need to [`ssh`](https://man.openbsd.org/ssh) to Baobab via the following command (substitute `username` with your username)
 ```
-ssh username@login2.baobab.hpc.unige.ch
+ssh username@login1.baobab.hpc.unige.ch
 ```
 Insert your password. You should now be logged in on Baobab, which is confirmed by the beginning of your terminal line that will look something like this
 ```
-(baobab)-[username@login2 ~]$}
+(baobab)-[username@login1 ~]$}
 ```
 Now you can allocate an interactive job via Slurm by running the following command
 ```
@@ -24,7 +24,7 @@ The flags specify what type of resources you need. There are [many flags](https:
 * **--partition=private-gervasio-gpu** sets the partition that has to be used, e.g. the name of the domain where to look for resources
 * **--time=180:00** sets the time allocated for the job (three hours)
 
-Slurm will then queue your request. Depending on the queuing situation and on the requested resources, the job should ideally start within a few seconds. You will notice that Slurm changes your location from the head node (`login2`) of the cluster to the allocated GPU node, switch that you can also notice by the change in the terminal line header that now reads as
+Slurm will then queue your request. Depending on the queuing situation and on the requested resources, the job should ideally start within a few seconds. You will notice that Slurm changes your location from the head node (``) of the cluster to the allocated GPU node, switch that you can also notice by the change in the terminal line header that now reads as
 ```
 (baobab)-[username@gpuxxx ~]$
 ```
@@ -74,11 +74,11 @@ To outline two simple examples, let’s suppose you are in Baobab and want to do
 ```
 Now, from *outside* Baobab (log off from Baobab or open another terminal session on your machine), you run the following command (after substituting your user’s details)
 ```
-scp -r username@login2.baobab.hpc.unige.ch:/home/users/u/username/Results ./
+scp -r username@.baobab.hpc.unige.ch:/home/users/u/username/Results ./
 ```
 This will download the directory `Results` in the directory from which you are launching the `scp` command. Vice-versa, let’s say you have your directory `Simulations` locally on your machine, then you can `cd` into the directory containing the directory `Simulations` and run the following
 ```
-scp -r ./Simulations/ username@login2.baobab.hpc.unige.ch:/home/users/u/username/
+scp -r ./Simulations/ username@.baobab.hpc.unige.ch:/home/users/u/username/
 ```
 This will upload `Results` to your home directory in Baobab.
 
@@ -100,7 +100,7 @@ plot ’data.xvg’ u 1:2 w l, ’otherdata.xvg’ u 1:2 w l
 There are many other options, which are summarised in the software’s manual, like how to name the axis, change the colour of the data points, or change the legend entries, and that you are free to explore them depending on your plotting necessities. Finally, you can exit gnuplot by typing `q` (for quit) or `exit`.
 
 ## Making your life easier – ssh configuration
-If you think that writing and running `ssh username@login2.baobab.hpc.unige.ch` every time you need to connect to Baobab is boring and error prone, then there is a simple work around that can make your life easier. In your home directory you should have a directory name `.ssh`. First of all, `cd` into the directory and list what is inside
+If you think that writing and running `ssh username@.baobab.hpc.unige.ch` every time you need to connect to Baobab is boring and error prone, then there is a simple work around that can make your life easier. In your home directory you should have a directory name `.ssh`. First of all, `cd` into the directory and list what is inside
 ```
 cd .ssh/
 ls
@@ -112,7 +112,7 @@ touch config
 and open `config` with your favorite text editor (`vi`, `vim`, `nano`, `gedit`, etc.). If the file exists already, just open it. Then, add the following lines 
 ```
 Host baobab
-    Hostname login2.baobab.hpc.unige.ch
+    Hostname login1.baobab.hpc.unige.ch
     User username
     ForwardAgent yes
     ForwardX11 yes
