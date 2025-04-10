@@ -60,7 +60,7 @@ First and foremost, you won’t have a proper graphic interface on the GPU node,
 
 This being said, it is worth pointing out a couple of commands that you might need to begin the tutorial. The first is [`wget`](https://ftp.gnu.org/old-gnu/Manuals/wget-1.8.1/html_mono/wget.html), and you will need it to download files from a web address. At the beginning of the tutorial, you will be asked to go to the [RCSB](https://www.rcsb.org/) website and download the protein data bank file `1AKI.pdb`. To do this, just follow the steps locally on your browser, but rather than downloading the file, right-click on the download option and copy the link address to that file.
 
-![RCSB_download_1AKI_pdb](rcsb-pdb.png)
+![RCSB_download_1AKI_pdb](./images/rcsb-pdb.png)
 
 Then, go back to your terminal and download the pdb file with the following
 ```
