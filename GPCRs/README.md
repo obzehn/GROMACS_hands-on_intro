@@ -469,6 +469,7 @@ pcoupltype               = semiisotropic
 tau-p                    = 1.0
 compressibility          = 4.5e-5  4.5e-5
 ref-p                    = 1.0     1.0
+[...]
 ```
 The reason why there are several NVT and NPT sub-phases is that the system should be relaxed gradually, otherwise it might distort the starting configuration, which would be detrimental - if not deadly - for the behaviour of complex proteins such as GPCRs embedded in lipid bilayers. This can be achieved by putting so-called *restraints* on specific atoms of the system to restrain them in space, that is, to not let them move too much. This behaviour is controlled by the parameters defined under the `POSITION RESTRAINTS` section, as in the following example taken from `nvt_1.mdp`
 ```
