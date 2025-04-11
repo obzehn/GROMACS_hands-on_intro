@@ -276,9 +276,68 @@ CL                  7
 Summarising, you now have the starting solvated and neutralised configuration stored in `start.gro` and the corresponding topology in `topol.top`. You can take a look at the final system with VMD. It should look similar to that shown in Figure 3.
 | ![Figure 3](../images/ionisedgpcr.png) |
 |:--:|
-| Figure 3 *Side (left) and top (right) view of the solvated and ionised system. Water is reported as a surface. The ions are shown as spheres based on their van der Waals radii. Remember that all the atoms in the system are actually points without a radius described by a set of coordinates, they are not spheres. However, you can use their van der Waals radii to estimate how 'large' the atoms are, that is, how much space around them is physically precluded to other atoms due to the atomic repulsion of the inter-molecular van der Waals forces.* |
-
+| Figure 3 *Side (left) and top (right) view of the system after solvation and ion addition. Water is reported as a transparent white surface. The chlorine ions are shown as yellow spheres based on their van der Waals radii. Remember that all the atoms in the system are actually points without a radius described by a set of coordinates, they are not spheres. However, you can use their van der Waals radii to estimate how 'large' the atoms are, that is, how much space around them is physically precluded to other atoms due to the atomic repulsion of the inter-molecular van der Waals forces.* |
 
 ### Generate the index file
+The last passage before running the simulation is to generate and **index** file. This type of file is used to name part of the system by grouping the corresponding atom numbers under a given name. In this case, you need an index file because the thermostat is expecting two different groups to couple for temperature regulation, one that contains the protein and the lipids, which you will call `Protein_and_memb`, and one that contains the water and the ions, which you will call `Water_and_ions`. The reasons behind this are technical and go beyond the scope of this tutorial. However, the index file is a powerful tool to access only parts of the simulation box, and as such it is important to know how to generate one.
+
+The command to generate and index file is `gmx make_ndx`. As input you should give the final configuration and call the output simply `index.ndx`, as in the following
+```
+gmx make_ndx -f start.gro -o index.ndx
+```
+GROMACS will answer by showing you what types of molecules it sees inside the box and which name it would give to them.
+```
+  0 System              : 122863 atoms
+  1 Protein             :  4440 atoms
+  2 Protein-H           :  2187 atoms
+  3 C-alpha             :   282 atoms
+  4 Backbone            :   847 atoms
+  5 MainChain           :  1129 atoms
+  6 MainChain+Cb        :  1395 atoms
+  7 MainChain+H         :  1407 atoms
+  8 SideChain           :  3033 atoms
+  9 SideChain-H         :  1058 atoms
+ 10 Prot-Masses         :  4440 atoms
+ 11 non-Protein         : 118423 atoms
+ 12 Other               : 42700 atoms
+ 13 CHL                 :  5180 atoms
+ 14 POPC                : 37520 atoms
+ 15 CL                  :     7 atoms
+ 16 Water               : 75716 atoms
+ 17 SOL                 : 75716 atoms
+ 18 non-Water           : 47147 atoms
+ 19 Ion                 :     7 atoms
+ 20 Water_and_ions      : 75723 atoms
+```
+A few of these groups are very important, e.g., group 1 is the protein, group 13 contains the cholesterol lipids while group 14 the POPC lipids, and so on. You can also see that GROMACS already puts together in a group water and ions (group 20, `Water_and_ions`). Thus, you will only need to generate another group that contains everything excluded water and ions, that is, the protein and the lipids. You can achieve this by typing
+```
+1 | 13 | 14
+```
+and pressing enter. You can read the legend at the end of the list of groups to undertand what you just did. You basically said to take everything that is inside group 1 OR inside group 13 OR inside group 14, which means `Protein`, `CHL`, and `POPC` groups. If you press enter again, GROMACS will show the list of groups inside the index file, and you can see how now there is a new one at the end
+```
+[...]
+ 18 non-Water           : 47147 atoms
+ 19 Ion                 :     7 atoms
+ 20 Water_and_ions      : 75723 atoms
+ 21 Protein_CHL_POPC    : 47140 atoms
+```
+which is the union of the protein with the lipids. You can rename it by typing
+```
+name 21 Protein_and_memb
+```
+that is, take group 21 and rename it `Protein_and_memb`. Press enter again to confirm the command, and you will see now that the group changed name
+```
+[...]
+ 18 non-Water           : 47147 atoms
+ 19 Ion                 :     7 atoms
+ 20 Water_and_ions      : 75723 atoms
+ 21 Protein_and_memb    : 47140 atoms
+```
+You can exit the index generation by typing `q` and pressing enter. In your main directory you should now have the starting configuration `start.gro`, the corresponding topology `topol.top`, and the index file that you just generated, `index.ndx`. This is all what you need to run the following simulations.
+
+## Run the simulation
+### A look at the `sbatch_me.sh` file
+
+### A look at the process of equilibration
 
 [^1]: I. Liebscher, T. Schöneberg, and D. Thor. "Stachel-mediated activation of adhesion G protein-coupled receptors: insights from cryo-EM studies." Signal transduction and targeted therapy 7.1 (2022): 227. [DOI:10.1038/s41392-022-01083-y](https://doi.org/10.1038/s41392-022-01083-y)
