@@ -66,6 +66,8 @@ gmx --version
 ```
 You are now ready to assemble the starting configuration of your system.
 
+One last point before moving on. GROMACS has a lot (> 100) tools that are accessible by typing `gmx` followed by a keyword. In this tutorial you will use `solvate`, `grompp`, `genion`, and `make_ndx`. If you have any doubts remember that you can look only for the explanation of the tool and which flags are needed (`-f`, `-o`, `-s` etc.). For example, [this](https://manual.gromacs.org/current/onlinehelp/gmx-solvate.html) is the manual page of `gmx solvate`. All this information is also awailable on the spot if you type `-h` or `--h` (for *help*) after the tool's name, e.g., `gmx solvate --h`.
+
 ### Solvating and cleaning up residual water
 At the beginning, we can take a look at the starting topology (`reference_topology_GPCR_structure_1.top`) and the starting configuration to solvate (`reference_topology_GPCR_structure_1.gro`). The topology reads like this
 ```
@@ -114,11 +116,23 @@ At the other end of the file, the last lines look like this
  1193POPC  H18T47140   9.985   1.888   4.075  0.0000  0.0000  0.0000
   10.06535  10.06535  10.56089
 ```
-The meaning of the columns is the same as before. The last molecules to appear are the phopsholipids (and in fact, in the topology, they are reported last). The last line of a `.gro` file has, like the first two, a special meaning. It contains the coordinates of the box, that is, the length of the box along x, y, and z. For example, this box is roughly a cube, with x and y lengths of 10.06535 nm and z length of 10.56089 nm. Sometimes, for special types of boxes (like those used for the protein-ligand simulations), there are more that three values reported. The starting configuration, which I am visualising with [VMD](https://www.ks.uiuc.edu/Research/vmd/), is reported in <a href="#startgpcr">Figure 1</a>.
+The meaning of the columns is the same as before. The last molecules to appear are the phopsholipids (and in fact, in the topology, they are reported last). The last line of a `.gro` file has, like the first two, a special meaning. It contains the coordinates of the box, that is, the length of the box along x, y, and z. For example, this box is roughly a cube, with x and y lengths of 10.06535 nm and z length of 10.56089 nm. Sometimes, for special types of boxes (like those used for the protein-ligand simulations), there are more that three values reported. The starting configuration, which I am visualising with [VMD](https://www.ks.uiuc.edu/Research/vmd/), is reported in Figure 1.
 
-| <a name="startgpcr">![Figure 1](https://raw.github.com/dbpedia/DBpedia-Spotlight-Dashboard/main/images/doc/1_tabs.png)</a> |
+| ![Figure 1](../images/startgpcr.png) |
 |:--:|
-| Figure 1 *Side (left) and top (right) view of the system. The GPCR is reported in red as cartoons, while the lipids are shown in sticks colored in red (oxygen), blue (nitrogen), cyan (carbon), white (hydrogen), and yellow (phosphorus). The box is shown as blue lines. Notice the absence of water and ions.* |
+| Figure 1 *Side (left) and top (right) view of the system. The GPCR is reported in red as cartoons, while the lipids are shown in sticks colored in red (oxygen), blue (nitrogen), cyan (carbon), white (hydrogen), and yellow (phosphorus). The box is shown as blue lines.* |
+
+The first step is then to solvate the system. In the Lysozyme tutorial, before solvation, the `gmx editconf` command is used to prepare the box and to make it large enough to fit the protein. Here, we do not use it as the box is already prepared and it depends on the width of the lipid bilayer.
+
+Before running `gmx solvate`, we have to know which water model we want to use. For this force field, as also reported in the `reference_topology_GPCR_structure_1.top` file, the model is [TIP4PD](https://en.wikipedia.org/wiki/Water_model) (we import the parameters with this line `#include "./forcefield/tip4pd.itp"`), a four-point water model. This means that each water molecule in your simulation will be actually represented with four sites: one oxygen atom, two hydrogen atoms, and a dummy site near the oxygen atom that has negative charge. This dummy atom is a numerical trick to better represent the distribution of charge of the lone pair in water's oxygen. To access four-points water models, the flag name for `gmx solvate` is `-cs tip4p.gro`.
+
+Thus, you can solvate the system with the following
+```
+gmx solvate -cp reference_topology_GPCR_structure_1.gro -cs tip4p.gro -o GPCR_structure_1_solvated.gro
+```
+where you are asking to add water to the structure with `-cp reference_topology_GPCR_structure_1.gro`, use as reference a four-points water model with `-cs tip4p.gro`, add call the resulting output structure `-o GPCR_structure_1_solvated.gro`. Some of yoy may notice that in the Lysozyme tutorial you also have to pass the topology of the system with the `-p` flag. This is not mandatory, and I prefer not to do it because the updated topology will have the same name as the input one, which is prone to errors. However, you will have to update by hand the topology to include the presence of the water molecules.
+
+
 
 gmx solvate
 
