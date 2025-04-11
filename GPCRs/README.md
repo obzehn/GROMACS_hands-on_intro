@@ -341,7 +341,97 @@ You can exit the index generation by typing `q` and pressing enter. In your main
 
 ## Run the simulation
 ### A look at the `sbatch_me.sh` file
+Whether you completed the tutorial or you moved the corresponding files from the `solution_files` directory, now the content of the excercise directory should be similar to this
+```
+GPCR_structure_X_excercise
+│   sbatch_me.sh
+│   index.ndx
+│   start.gro
+│   topol.top
+│
+└─── forcefield
+│
+└─── step1_em
+│   │   em.mdp
+│
+└─── step2_nvt
+│   │   [various nvt.mdp files]
+│
+└─── step3_npt
+│   │   [various npt.mdp files]
+│
+└─── step4_prod
+    │   prod.mdp
+```
+plus the `solution_files` directory and some leftover files from the system generation. It is mandatory that `sbatch_me.sh`, `index.ndx`, `start.gro`, and `topol.top` are together in the same directory in which there are the energy minimization, NVT, NPT, and production directories, otherwise the script `sbatch_me.sh` won't be able to run the simulations for you.
+
+During both the Lysozyme tutorial and the preparation of the box for this excercise, you logged in a Baobab node by using the `salloc` command. In this way you can have access to a node and run an interactive job. This is nice because you can have real time answers from the node and you see clearly what is going on and what you are doing, which is pivotal for error-prone procedures like the generation of the starting box. However, when you close the connection, log out from Baobab, or simply turn off the computer, you lose the access to the computer and any running simulation will stop. Does this mean that you should be always connected? And that you should stay constantly in front of your computer, even for a few days at a time, while the simulations run, scared or losing the internat connection and see your runs fail?
+
+Clearly this is not the case. As explained also in the [first part](https://github.com/obzehn/GROMACS_hands-on_intro/tree/main?tab=readme-ov-file#allocating-an-interactive-job) of this tutorial, Baobab has a so-called queueing system, named [slurm](https://slurm.schedmd.com/overview.html). With slurm, you can prepare a *submission script* which contains the main commands that you want to run alongside the resources that you need. This is exactly what the `sbatch_me.sh` script is.
+
+You can look at the content of the `sbatch_me.sh` with a text editor. The first lines look like this
+```
+#!/bin/bash 
+
+#SBATCH --account=gervasio_teach_19h330
+#SBATCH --partition=private-gervasio-gpu
+#SBATCH --time 144:00:00
+#SBATCH --job-name GPCR1
+#SBATCH --error jobname-error.e%j
+#SBATCH --output jobname-out.o%j
+#SBATCH --ntasks 1
+#SBATCH --cpus-per-task 16
+#SBATCH --nodes 1
+#SBATCH --gpus-per-node=nvidia_geforce_rtx_3080:1
+#SBATCH --hint=nomultithread
+
+[...]
+```
+You can recognise some of the flags that you were giving to the `salloc` command, such as `--partition=private-gervasio-gpu` and `--cpus-per-task 16`. Basically these lines are specifying which kind of hardware you need to run the simulations. If you are curious, you can loook up their meaning in the slurm website.
+
+Slurm reads this files and sends you in a queue while it waits to find some computer that is available and that has the requested hardware. When it finds it, it takes control of it for the amount of time specified in `--time 144:00:00`, that is, six days. This amount of time will be sufficient to both conclude the equilibration and the production runs. As in the interactive case, the first thing to do once the node is allocated is to source GROMACS, which is the first thing done by the script with the lines following the `#SBATCH` node requests, i.e., with the following
+```
+[...]
+module load GCC/11.3.0
+module load OpenMPI/4.1.4
+module load CUDA/11.7.0
+module load GROMACS/2023.1-CUDA-11.7.0
+[...]
+```
+Then there are a few technical details about how GROMACS should use the available resources to run the simulations with `gmx mdrun` (e.g. `-ntmpi`, `-ntomp`, etc.).
+
+Lastly, there are a series of commands that enter the `step1_em`, `step2_nvt`, `step3_npt`, and `step4_prod` directories and systematically run the `gmx grompp` commands to prepare the corresponding tpr files and then run them with `gmx mdrun`.
+
+You can send the submission script `sbatch_me.sh` and let slurm handle the simulations by using the [sbatch](https://slurm.schedmd.com/sbatch.html) command. This command should be run from Baobab's headnode, and not from the node that you received by running the `salloc`. Thus, if your command line still looks like this
+```
+(baobab)-[username@cpuxxx some_directory_name] $
+```
+type `exit` to exit the node. Once the terminal looks like this
+```
+(baobab)-[username@login1 some_directory_name]$
+```
+e.g., your `username` is logged in on `login1`, the headnode of Baobab, and not on some `cpuxxx` or `gpuxxx` node, you are good to go. From the `GPCR_structure_X_excercise` directory, that is, where the submission script `sbatch_me.sh` is located, you can submit it to slurm with the following command
+```
+sbatch sbatch_me.sh
+```
+If the command runs successfully, slurm returns the number that is assigned to your job, something like this
+```
+Submitted batch job 16567322
+```
+You can check the status of the job by running the following command (and substituting `username` with yours)
+```
+squeue -u username
+```
+The output will look something like this
+```
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          16567322 private-g    GPCR1 username  R       0:55      1 gpu037
+```
+The `R` under the column `ST` (for *status*) stands for *running*. Usually, the job stays in the queue with some other status, like `PD`, before changing to `R`. Once it's running, you will see that slurm directly writes the output to the excercise directories, e.g., you will see `em.gro`, `em.trr`, and other output files appearing in `step1_em`, `nvt_1.log`, `nvt_1.gro` etc. in `step2_nvt`, and so on. Now that the job is submitted and running, you can For the GPCRs exercises, the time needed to complete the whole equilibration phase (steps 1 to 3) is of about two hours, while to complete the production it will take roughly five days, so a total of five days overall.
+
 
 ### A look at the process of equilibration
+
+### A couple of tips and tricks to clean up trajectories
 
 [^1]: I. Liebscher, T. Schöneberg, and D. Thor. "Stachel-mediated activation of adhesion G protein-coupled receptors: insights from cryo-EM studies." Signal transduction and targeted therapy 7.1 (2022): 227. [DOI:10.1038/s41392-022-01083-y](https://doi.org/10.1038/s41392-022-01083-y)
