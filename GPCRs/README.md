@@ -427,11 +427,51 @@ The output will look something like this
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
           16567322 private-g    GPCR1 username  R       0:55      1 gpu037
 ```
-The `R` under the column `ST` (for *status*) stands for *running*. Usually, the job stays in the queue with some other status, like `PD`, before changing to `R`. Once it's running, you will see that slurm directly writes the output to the excercise directories, e.g., you will see `em.gro`, `em.trr`, and other output files appearing in `step1_em`, `nvt_1.log`, `nvt_1.gro` etc. in `step2_nvt`, and so on. Now that the job is submitted and running, you can For the GPCRs exercises, the time needed to complete the whole equilibration phase (steps 1 to 3) is of about two hours, while to complete the production it will take roughly five days, so a total of five days overall.
-
+The `R` under the column `ST` (for *status*) stands for *running*. Usually, the job stays in the queue with some other status, like `PD`, before changing to `R`. Once it's running, you will see that slurm directly writes the output to the excercise directories, e.g., you will see `em.gro`, `em.trr`, and other output files appearing in `step1_em`, `nvt_1.log`, `nvt_1.gro` etc. in `step2_nvt`, and so on. Now that the job is submitted and running, you can log out from Baobab without risking to lose it. For the GPCRs exercises, the time needed to complete the whole equilibration phase (steps 1 to 3) is of about two hours, while to complete the production it will take roughly five days, so a total of five days overall.
 
 ### A look at the process of equilibration
+Differently from the Lysozyme tutorial, here you can see that the NVT and NPT simulations are not unique, but they consist of several steps each, which are run one after the other. For the sake of completeness, you can take a look at the various `nvt_X.mdp` and `npt_X.mdp` files. As for the other files, the lines starting with `;` are comments, that is, they are ignored by GROMACS and are usuful only for human readers to organize the code.
+
+Let's take a look at a few key entries in the mdp file.
+```
+[...]
+;---------------------------------------------
+; INTEGRATOR AND TIME
+;---------------------------------------------
+integrator               = md
+dt                       = 0.002
+nsteps                   = 125000
+[...]
+```
+Here you are asking GROMACS to use a [leapfrog integrator](https://en.wikipedia.org/wiki/Leapfrog_integration) by setting `integrator = md`. The integration is performed with a time step `dt` of 0.002 ps, that is, 2 fs, which is the standard for this type of simulations. Lastly, the integration is performed for 125000 steps, as set by `nsteps`, that is, `125000 x 0.002 ps = 250ps`. You can see that the number of steps is relatively short with respect to the production run, as reported in the `prod.mdp` parameters file.
+
+The other most important section is the one where you set the thermostat and barostat settings. For the NVT runs, you have the thermostat that controls the temperature and the parameters look something like this
+```
+[...]
+;----------------------------------------------
+; THERMOSTAT AND BAROSTAT
+;----------------------------------------------
+; >> Temperature
+tcoupl                   = v-rescale
+tc-grps                  = Protein_and_memb Water_and_ions
+tau_t                    = 0.5                   0.5
+ref_t                    = 300                   300
+; >>  Pressure
+pcoupl                   = no
+[...]
+```
+The thermostat is connected separately to the two phases of your system, and they are both thermalised at 300K (set by `ref_t`). You can recognise the separate groups that you generated in the index file before (as specified by `tc-grps`). GROMACS uses these names to recognise which part of the system it has to thermalize (in fact you can see that in the `gmx grompp` commands inside the `sbatch_me.sh` script you are also passing the index file with the flag `-n index.ndx`). Notice how there is no pressure coupling (`pcouple = no`). For the NPT runs, instead, the barostat is activated and the box can oscillate and change its volume. You can see the parameters of the barostat in the `THERMOSTAT AND BAROSTAT` sections for any of the `npt_X.mdp` file.
+```
+[...]
+; >>  Pressure
+pcoupl                   = C-rescale
+pcoupltype               = semiisotropic
+tau-p                    = 1.0
+compressibility          = 4.5e-5  4.5e-5
+ref-p                    = 1.0     1.0
+```
 
 ### A couple of tips and tricks to clean up trajectories
 
+## References
 [^1]: I. Liebscher, T. Schöneberg, and D. Thor. "Stachel-mediated activation of adhesion G protein-coupled receptors: insights from cryo-EM studies." Signal transduction and targeted therapy 7.1 (2022): 227. [DOI:10.1038/s41392-022-01083-y](https://doi.org/10.1038/s41392-022-01083-y)
