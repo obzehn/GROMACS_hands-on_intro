@@ -152,12 +152,45 @@ Final number of water molecules: 18936
 The script removed ca. 2000 water molecules. You can see now, in Figure 2, that the system has been cleaned and looks much more biologically sound.
 | ![Figure 2](../images/solvatedgpcr.png) |
 |:--:|
-| Figure 2 *On the left, the solvated system after `gmx solvate`. On the right, the same system after removing ca. 2000 water molecules with the `water_removal.py`. Protein and lipids are reported in grey, while water molecules in red (oxygen) and white (hydrogen). The fourth site of this water model is in a lighter red tone, but it nearly overlaps with the water oxygen atoms, and is thus nearly invisible.* |
+| Figure 2 *On the left, the solvated system after `gmx solvate`. On the right, the same system after removing ca. 2000 water molecules with the `water_removal.py` script. Protein and lipids are reported in grey, while water molecules in red (oxygen) and white (hydrogen). The fourth site of this water model is in a lighter red tone, but it nearly overlaps with the water oxygen atoms, and is thus nearly invisible.* |
 
+If you take a look at the `GPCR_structure_1_solvated_clean.gro` file, you will notice that the last lines will look like the following
+```
+[...]
+22246SOL     OW31349   9.408   9.566   9.374
+22246SOL    HW131350   9.375   9.645   9.418
+22246SOL    HW231351   9.463   9.599   9.303
+22246SOL     MW31352   9.411   9.580   9.371
+  10.06535  10.06535  10.5608
+```
+where `SOL` is the name of the solvent molecules, water), and each `SOL` molecule has four atoms. The box size, as expected, didn't change. You may notice that `gmx solvate` also removed the columns with the velocities. This is not a problem, as during the thermal equilibration (the NVT phase) GROMACS will calculate and reintroduce them. Moreover, when there are many atoms in the box, the space between the second and the third column disappears. For example, `OW31349` is an atom called `OW` and it's the entry number `31349`, but the space between disappeared. This also is not a problem sa long as the length of each field remains constant.
 
-topology update
+The first lines look like before exception made for the number of atoms, which now has been updated to contain also those of water (in fact we had 47140 atoms to which we added 18936 four-point water molecules, that is `47140 + 18936 x 4 = 122884`).
+```
+GPCR structure 1
+122884
+    1NTHR     N    1   5.174   5.111   3.908
+    1NTHR    H1    2   5.156   5.041   3.838
+    1NTHR    H2    3   5.086   5.138   3.950
+    1NTHR    H3    4   5.223   5.065   3.984
+    1NTHR    CA    5   5.256   5.221   3.857
+[...]
+```
 
-image before, after solvation, after cleaning
+Now, you can update the topology. First, copy the reference topology and call it `reference_topology_GPCR_structure_1_solvated.top` with the `cp` (copy) command
+```
+cp reference_topology_GPCR_structure_1.top `reference_topology_GPCR_structure_1_solvated.top`
+```
+Then, add the amount of water molecules to `reference_topology_GPCR_structure_1_solvated.top` by correcting the `[ molecules ]` section in the following way
+```
+[ molecules ]
+; Compound        #mols
+GPCR                1
+CHL    	           70
+POPC  	          280
+SOL             18936
+```
+where I added the name of the water in the box (`SOL`) and the number reported after cleaning up the system with the python script. At this point, the structure of the solvated system is contained in `GPCR_structure_1_solvated_clean.gro`, while its topology in `reference_topology_GPCR_structure_1_solvated.top`.
 
 ### Adding ions
 gmx genion --maxwarn 1
