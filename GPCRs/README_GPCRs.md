@@ -105,7 +105,7 @@ GPCR structure 1
 ```
 The file has a first line which contains the title of the box (`GPCR structure 1`), a second line which contains the number of the atoms in the box (`47140`), and then it contains in order the all the atoms of the system. These are organised usually as nine columns. The first (here `1NTHR`) is the specific number and name of the reidue - which in this case is the N-terminal of the GPCR. The second column contains the specific name of the atom, and usually the first letter indicates the element (here we have a nitrogen followed by three hydrogen and a carbon and so on). The third is simply the number of the entry. It always starts with `1` and goes up to the number of elements in the box. Then, columns four to six contain the x, y, and z coordinates of that atom, while the columns seven to nine contain its velocity, reported by axial component. Notice how all atoms always have a position, but might have zero velocity. This is out case now, as we are building the box from a static experimental image. One of the main roles of the equilibrations phase is this - to relax the starting positions and assign reasonable starting velocities to all the atoms.
 
-At the other side of the file, the last lines look like this
+At the other end of the file, the last lines look like this
 ```
 [...]
  1193POPC  C11847137   9.898   1.890   4.009  0.0000  0.0000  0.0000
@@ -114,10 +114,14 @@ At the other side of the file, the last lines look like this
  1193POPC  H18T47140   9.985   1.888   4.075  0.0000  0.0000  0.0000
   10.06535  10.06535  10.56089
 ```
+The meaning of the columns is the same as before. The last molecules to appear are the phopsholipids (and in fact, in the topology, they are reported last). The last line of a `.gro` file has, like the first two, a special meaning. It contains the coordinates of the box, that is, the length of the box along x, y, and z. For example, this box is roughly a cube, with x and y lengths of 10.06535 nm and z length of 10.56089 nm. Sometimes, for special types of boxes (like those used for the protein-ligand simulations), there are more that three values reported. The starting configuration, which I am visualising with [VMD](https://www.ks.uiuc.edu/Research/vmd/), is reported in <a href="#startgpcr">Figure 1</a>.
+
+| <a name="startgpcr">![Figure 1](https://raw.github.com/dbpedia/DBpedia-Spotlight-Dashboard/main/images/doc/1_tabs.png)</a> |
+|:--:|
+| Figure 1 *Side (left) and top (right) view of the system. The GPCR is reported in red as cartoons, while the lipids are shown in sticks colored in red (oxygen), blue (nitrogen), cyan (carbon), white (hydrogen), and yellow (phosphorus). The box is shown as blue lines. Notice the absence of water and ions.* |
 
 gmx solvate
 
-![RCSB_download_1AKI_pdb](../images/rcsb-pdb.png)
 python script
 
 topology update
