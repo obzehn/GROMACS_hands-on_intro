@@ -49,7 +49,7 @@ From these, and by using as reference the [Lysozyme in water](http://www.mdtutor
 ## Building the starting box
 First of all, send the directory with the exercises to your home in Baobab (with `scp`) and login into Baobab. Then, request a node for a couple of hours with `salloc` in the following way
 ```
-salloc --ntasks=1 --cpus-per-task=4 --partition=private-gervasio-gpu --time=120:00
+salloc --ntasks=1 --cpus-per-task=4 --partition=private-gervasio-cpu --time=120:00
 ```
 Finally, source the GROMACS installation
 ```
@@ -179,7 +179,7 @@ GPCR structure 1
 
 Now, you can update the topology. First, copy the reference topology and call it `reference_topology_GPCR_structure_1_solvated.top` with the `cp` (copy) command
 ```
-cp reference_topology_GPCR_structure_1.top `reference_topology_GPCR_structure_1_solvated.top`
+cp reference_topology_GPCR_structure_1.top reference_topology_GPCR_structure_1_solvated.top
 ```
 Then, add the amount of water molecules to `reference_topology_GPCR_structure_1_solvated.top` by correcting the `[ molecules ]` section in the following way
 ```
@@ -193,9 +193,91 @@ SOL             18936
 where I added the name of the water in the box (`SOL`) and the number reported after cleaning up the system with the python script. At this point, the structure of the solvated system is contained in `GPCR_structure_1_solvated_clean.gro`, while its topology in `reference_topology_GPCR_structure_1_solvated.top`.
 
 ### Adding ions
-gmx genion --maxwarn 1
+You are now ready to add the ions in the system. First, you need to generate a `.tpr` file, which is a binary file that GROMACS can read to understand the charges of the different molecules in the system and select automatically how many ions should be added. You can do this by using `gmx grompp` and pointing to the parameters file `ionize.mdp` with the flag `-f`, to the starting solvated structure `PCR_structure_1_solvated_clean.gro` with the flag `-c`, to the solvated topology `reference_topology_GPCR_structure_1_solvated.top` with the flag `-p`, and finally name the output tpr file `ionize.tpr` with the flag `-o`
+```
+gmx grompp -f ionize.mdp -c GPCR_structure_1_solvated_clean.gro -p reference_topology_GPCR_structure_1_solvated.top -o ionize.tpr
+```
+You will see that this command fails with a fatal error. If you look at the error, you can see a section with the following information
+```
+NOTE 2 [file reference_topology_GPCR_structure_1_solvated.top, line 17]:
+  System has non-zero total charge: 7.000000
+  Total charge should normally be an integer. See
+  http://www.gromacs.org/Documentation/Floating_Point_Arithmetic
+  for discussion on how close it should be to an integer.
 
-topology update
+WARNING 1 [file reference_topology_GPCR_structure_1_solvated.top, line 17]:
+  You are using Ewald electrostatics in a system with net charge. This can
+  lead to severe artifacts, such as ions moving into regions with low
+  dielectric, due to the uniform background charge. We suggest to
+  neutralize your system with counter ions, possibly in combination with a
+  physiological salt concentration.
+```
+Basically, a tpr file is used to run simulations. As such, when GROMACS tries to prepare one through `gmx grompp`, it check if the physics of the system is reasonable or not. In this case, it found that your system has a net charge of +7, and is telling you that this is very bad as the systems should always have zero total net charge. You can bypass this check by adding the flag `--maxwarn 1` to the command, that is, ignore one (and only one) warning
+```
+gmx grompp -f ionize.mdp -c GPCR_structure_1_solvated_clean.gro -p reference_topology_GPCR_structure_1_solvated.top -o ionize.tpr --maxwarn 1
+```
+You will see that now GROMACS still complains, but gets the job done. It is very important, however, to understand that the ionization step is basically the **only** case in which it is okay to use the `--maxwarn` flag, as we **know** that the physics of the system is wrong and we actually need the tpr to fix it with `gmx genion`. In general, you should **never** use this flag. If there is a major warning and a GROMACS command fails, then you have to check why and fix the problem. You may be temped to use `--maxwarn` to get through errors you do not understand, and the flag will let you do it. Nevertheless, the simulatiom will probably fail istantly the moment you try to run it, and, if not, you are likely to produce garbage results due to overlooking fundamental physics mistakes in the box preparation.
+
+Now, you should have a `ionize.tpr` file in your directory, following the `gmx grompp` command. You are ready to insert the ions with the following command
+```
+gmx genion -s ionize.tpr -neutral -pname NA -nname CL -o start.gro
+```
+Here, you are asking GROMACS to make the system neutral (`-neutral`), call the positive ions `NA`, the negative ions `CL`, and call the resulting output `start.gro`. Trivially, within this force field the atoms NA and CL refer to sodium (Na, +1) and chlorine (Cl, -1) ions. Again, differently from the Lysozyme tutorial, you are not giving as inpu the topology and you will update it after the addition of ions. With `gmx genion`, GROMACS tries to substitute some molecules in the system with the necessary number of ions. You will be promted by GROMACS to choose which part of the system you are okay to substitute in favour of water molecules
+```
+Will try to add 0 NA ions and 7 CL ions.
+Select a continuous group of solvent molecules
+Group     0 (         System) has 122884 elements
+Group     1 (        Protein) has  4440 elements
+Group     2 (      Protein-H) has  2187 elements
+Group     3 (        C-alpha) has   282 elements
+Group     4 (       Backbone) has   847 elements
+Group     5 (      MainChain) has  1129 elements
+Group     6 (   MainChain+Cb) has  1395 elements
+Group     7 (    MainChain+H) has  1407 elements
+Group     8 (      SideChain) has  3033 elements
+Group     9 (    SideChain-H) has  1058 elements
+Group    10 (    Prot-Masses) has  4440 elements
+Group    11 (    non-Protein) has 118444 elements
+Group    12 (          Other) has 42700 elements
+Group    13 (            CHL) has  5180 elements
+Group    14 (           POPC) has 37520 elements
+Group    15 (          Water) has 75744 elements
+Group    16 (            SOL) has 75744 elements
+Group    17 (      non-Water) has 47140 elements
+Select a group: 
+```
+From the first line you can see that GROMACS understood that the system has a total of +7 charge and will then need seven negative ions to have a total of zero net charge. Since you do not want to substitute any part of the protein or lipids with ions, choose the `SOL` group, the number 16, and GROMACS will randomly choose seven water molecules, remove them and place there a chlorine ion.
+```
+Selected 16: 'SOL'
+Number of (4-atomic) solvent molecules: 18936
+Using random seed -819201.
+Replacing solvent molecule 1842 (atom 54508) with CL
+Replacing solvent molecule 5002 (atom 67148) with CL
+Replacing solvent molecule 3105 (atom 59560) with CL
+Replacing solvent molecule 1445 (atom 52920) with CL
+Replacing solvent molecule 4490 (atom 65100) with CL
+Replacing solvent molecule 4475 (atom 65040) with CL
+Replacing solvent molecule 6661 (atom 73784) with CL
+```
+As for the solvation, you need now to update the topology as some water molecules have been removed and some chlorine ions have been added. Start by copying the solvated topology into a new topology called `topol.top`
+```
+cp reference_topology_GPCR_structure_1_solvated.top topol.top
+```
+and change the `[ molecules ]` section by removing the seven water molecules from the total and adding the seven chlorine ions (`CL`)
+```
+[ molecules ]
+; Compound        #mols
+GPCR                1
+CHL    	           70
+POPC  	          280
+SOL             18929
+CL                  7
+```
+Summarising, you now have the starting solvated and neutralised configuration stored in `start.gro` and the corresponding topology in `topol.top`. You can take a look at the final system with VMD. It should look similar to that shown in Figure 3.
+| ![Figure 3](../images/ionisedgpcr.png) |
+|:--:|
+| Figure 3 *Side (left) and top (right) view of the solvated and ionised system. Water is reported as a surface. The ions are shown as spheres based on their van der Waals radii. Remember that all the atoms in the system are actually points without a radius described by a set of coordinates, they are not spheres. However, you can use their van der Waals radii to estimate how 'large' the atoms are, that is, how much space around them is physically precluded to other atoms due to the atomic repulsion of the inter-molecular van der Waals forces.* |
+
 
 ### Generate the index file
 
