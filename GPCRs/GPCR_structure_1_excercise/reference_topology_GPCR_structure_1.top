@@ -1,0 +1,16 @@
+#include "./forcefield/forcefield.itp"
+#include "./forcefield/cholesterol.itp"
+#include "./forcefield/GPCR.itp"
+#include "./forcefield/POPC.itp"
+#include "./forcefield/tip4pd.itp"
+#include "./forcefield/ions.itp" 
+
+[ system ]
+; Name
+GPCR structure 1
+
+[ molecules ]
+; Compound        #mols
+GPCR                1
+CHL    	           70
+POPC  	          280
