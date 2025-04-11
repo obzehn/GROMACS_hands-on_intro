@@ -129,11 +129,31 @@ gmx solvate -cp reference_topology_GPCR_structure_1.gro -cs tip4p.gro -o GPCR_st
 ```
 where you are asking to add water to the structure with `-cp reference_topology_GPCR_structure_1.gro`, use as reference a four-points water model with `-cs tip4p.gro`, add call the resulting output structure `-o GPCR_structure_1_solvated.gro`. Some of yoy may notice that in the Lysozyme tutorial you also have to pass the topology of the system with the `-p` flag. This is not mandatory, and I prefer not to do it because the updated topology will have the same name as the input one, which is prone to errors. However, you will have to update by hand the topology to include the presence of the water molecules.
 
+The (last lines of the) output of this command will look something like this
+```
+Volume                 :     1069.94 (nm^3)
+Density                :        1013 (g/l)
+Number of solvent molecules:  21053
+```
+GROMACS tries to fill the box with water to reach the density of ca. 1g/L. The most important part here is the number of water molecules inserted, in my case `21053` (this number can oscillate slightly). In principle, you could add this number at the end of the topopolgy and you would be done with the solvation, as in the Lysozyme tutorial. However, you might think that the system has actually more than one phase (lipids and protein) and that GROMACS tried to insert water molecules in eaxh and every empty volume it could find. How did it behave near the protein? And how near the lipids? You can check with VMD.
 
+The results for my box are shown in Figure 2. Water has been in all places where it was possible, also between the lipids, which we know is not realistic as this is a strong lipophilic (non-hydrophobic) region. Generally, this is not a major problem, and within the first nanoseconds of run the water molecules get expelled naturally because of the chemical nature of the lipid tail region. Nevertheless, for delicate systems like this that involve proteins highly susceptible to not physiological starting configurations, it is better to get rid of them and clean the system before adding the ions.
 
-gmx solvate
+You can remove these water molecules with the `water_removal.py` Python script, which you can run with the following command
+```
+python3 water_removal.py GPCR_structure_1_solvated.gro GPCR_structure_1_solvated_clean.gro
+```
+The script takes as input `GPCR_structure_1_solvated.gro`, check where there are overlapping water molecules with the lipids and the protein, removes them, and returns the cleaned system under the name `GPCR_structure_1_solvated_clean.gro`. For me, the output looks like this
+```
+Initial number of water molecules: 21053
+Number of water molecules to be deleted: 2117
+Final number of water molecules: 18936
+```
+The script removed ca. 2000 water molecules. You can see now, in Figure 2, that the system has been cleaned and looks much more biologically sound.
+| ![Figure 2](../images/solvatedgpcr.png) |
+|:--:|
+| Figure 2 *On the left, the solvated system after `gmx solvate`. On the right, the same system after removing ca. 2000 water molecules with the `water_removal.py`. Protein and lipids are reported in grey, while water molecules in red (oxygen) and white (hydrogen). The fourth site of this water model is in a lighter red tone, but it nearly overlaps with the water oxygen atoms, and is thus nearly invisible.* |
 
-python script
 
 topology update
 
