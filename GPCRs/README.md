@@ -470,6 +470,18 @@ tau-p                    = 1.0
 compressibility          = 4.5e-5  4.5e-5
 ref-p                    = 1.0     1.0
 ```
+The reason why there are several NVT and NPT sub-phases is that the system should be relaxed gradually, otherwise it might distort the starting configuration, which would be detrimental - if not deadly - for the behaviour of complex proteins such as GPCRs embedded in lipid bilayers. This can be achieved by putting so-called *restraints* on specific atoms of the system to restrain them in space, that is, to not let them move too much. This behaviour is controlled by the parameters defined under the `POSITION RESTRAINTS` section, as in the following example taken from `nvt_1.mdp`
+```
+[...]
+;---------------------------------------------
+; POSITION RESTRAINTS
+;---------------------------------------------
+define                    = -DPOSRES_PRO -DPOSRES_FC_SC=1000 -DPOSRES_FC_BB=1000 -DPOSRES_LIP -DRES_LIP_K=1000
+[...]
+```
+The technical implementation and the specific meaning of these parameters is beyond the scope of this tutorial. The take at home message is that, due to the restraints, at the beginning both the lipids and the protein can't really move freely in space, but water can. In this way you can thermalize first the water molecules. Then, gradually, the restraints on the atoms of the system are decreased to let the whole system equilibrate. You can check the values of the parameters in the `POSITION RESTRAINTS` of the `nvt_X.mdp` and `npt_X.mdp` files; you will see that they gradually decrease up to disappearing in the last NPT equilibration.
+
+The production run is usually simulated without restraints at all, and in fact there is no restraint defined in `prod.mdp`, as you would like to simulate the 'natural' behaviour of the system. In this tutorial, the [statistical ensemble](https://en.wikipedia.org/wiki/Ensemble_(mathematical_physics)) of the production run is still the isothermal-isobaric ensemble (NPT), as you can see from the `prod.mdp` file since both the thermostat and the barostat are active. It is informally called *production* because it is the part of the simulation that is used most of the times for the analysis, as it comes after the equilibration and it is supposed to be well relaxed.
 
 ### A couple of tips and tricks to clean up trajectories
 
