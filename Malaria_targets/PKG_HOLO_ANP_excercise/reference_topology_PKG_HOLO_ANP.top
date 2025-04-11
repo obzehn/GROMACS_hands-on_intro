@@ -1,0 +1,15 @@
+#include "./forcefield/forcefield.itp"
+#include "./forcefield/PKG.itp"
+#include "./forcefield/ANP.itp"
+#include "./forcefield/tip3.itp"
+#include "./forcefield/ions.itp"
+
+[ system ]
+PKG HOLO with ANP and MG
+
+[ molecules ]
+; Compound	   #mols
+PKG  	               1
+MG                     1
+ANP                    1
+SOL                    2

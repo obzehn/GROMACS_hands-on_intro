@@ -1,0 +1,14 @@
+#include "./forcefield/forcefield.itp"
+#include "./forcefield/PKG.itp"
+#include "./forcefield/1TR.itp"
+#include "./forcefield/tip3.itp"
+#include "./forcefield/ions.itp"
+
+[ system ]
+PKG HOLO with 1TR
+
+[ molecules ]
+; Compound	   #mols
+PKG  	               1
+1TR                    1
+SOL                45969

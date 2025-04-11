@@ -1,0 +1,28 @@
+[ moleculetype ]
+; name	nrexcl
+MG	     1
+
+[ atoms ]
+; nr	type	resnr	residu	atom	cgnr	charge	mass
+     1       Mg2+    202       MG     MG      1     2.000000    24.3050   ; qtot  2.000
+
+#ifdef POSRES_IONS
+[ position_restraints ]
+1    1    POSRES_MG    POSRES_MG   POSRES_MG
+#endif
+
+[ moleculetype ]
+; name	nrexcl
+NA 	     1
+
+[ atoms ]
+; nr	type	resnr	residu	atom	cgnr	charge	mass
+     1        Na+    162      NA    NA      1     1.000000    22.9900   ; qtot  1.000
+     
+[ moleculetype ]
+; name	nrexcl
+CL	     1
+
+[ atoms ]
+; nr	type	resnr	residu	atom	cgnr	charge	mass
+     1        Cl-    323      CL     CL       1    -1.000000    35.4500   ; qtot -1.000

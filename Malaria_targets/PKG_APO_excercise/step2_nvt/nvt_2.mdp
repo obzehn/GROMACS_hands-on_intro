@@ -1,0 +1,77 @@
+;---------------------------------------------
+;---------------------------------------------
+; RUN CONTROL
+;---------------------------------------------
+;---------------------------------------------
+
+;---------------------------------------------
+; INTEGRATOR AND TIME
+;---------------------------------------------
+integrator               = md
+dt                       = 0.002
+nsteps                   = 50000
+
+;---------------------------------------------
+; POSITION RESTRAINTS
+;---------------------------------------------
+define                    = -DPOSRES_PRO -DPOSRES_FC_SC=250 -DPOSRES_FC_BB=1000
+
+;----------------------------------------------
+; OUTPUT CONTROL OPTIONS
+;----------------------------------------------
+nstlog                   = 10000
+nstenergy                = 2500
+nstxout-compressed       = 10000
+
+;----------------------------------------------
+; NEIGHBOUR SEARCHING 
+;----------------------------------------------
+cutoff-scheme            = verlet
+nstlist                  = 10
+ns-type                  = grid
+rlist                    = 1.0
+
+;----------------------------------------------
+; ELECTROSTATICS
+;----------------------------------------------
+coulombtype              = PME
+rcoulomb-switch          = 0 
+rcoulomb                 = 1.0
+vdwtype                  = Cutoff
+vdw-modifier             = Potential-shift
+rvdw-switch              = 0
+rvdw                     = 1.0
+DispCorr                 = EnerPres
+
+;----------------------------------------------
+; THERMOSTAT AND BAROSTAT
+;----------------------------------------------
+; >> Temperature
+tcoupl                   = v-rescale
+tc-grps                  = Protein non-Protein
+tau_t                    = 0.5     0.5
+ref_t                    = 100     100
+; >>  Pressure
+pcoupl                   = no
+
+;----------------------------------------------
+; VELOCITY GENERATION
+;----------------------------------------------
+gen-vel                  = yes
+gen-temp                 = 100
+continuation             = no
+
+;----------------------------------------------
+; CONSTRAINTS
+;----------------------------------------------
+constraints              = h-bonds
+constraint-algorithm     = LINCS
+
+;---------------------------------------------
+; CENTER OF MASS TREATMENT
+;---------------------------------------------
+comm-mode                = Linear 
+nstcomm                  = 100
+comm-grps                = System
+refcoord_scaling         = all
+

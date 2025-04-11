@@ -1,0 +1,488 @@
+[ moleculetype ]
+1TR 3
+
+[ atoms ]
+;   nr  type  resi  res  atom  cgnr     charge      mass       ; qtot   bond_type
+     1   ca     1   1TR    C4    1     0.540100     12.01000 ; qtot 0.540
+     2   ca     1   1TR    C5    2    -0.394600     12.01000 ; qtot 0.146
+     3   ca     1   1TR    C6    3     0.476200     12.01000 ; qtot 0.622
+     4   nb     1   1TR    N1    4    -0.726000     14.01000 ; qtot -0.104
+     5   nb     1   1TR    N3    5    -0.785000     14.01000 ; qtot -0.889
+     6   ca     1   1TR   CAV    6    -0.071500     12.01000 ; qtot -0.961
+     7   ca     1   1TR   CAW    7    -0.172000     12.01000 ; qtot -1.133
+     8   ca     1   1TR   CAX    8     0.153900     12.01000 ; qtot -0.979
+     9    f     1   1TR   FAY    9    -0.125900     19.00000 ; qtot -1.105
+    10   ca     1   1TR   CAZ   10    -0.172000     12.01000 ; qtot -1.277
+    11   ca     1   1TR   CBA   11    -0.071500     12.01000 ; qtot -1.348
+    12   ca     1   1TR   CAU   12    -0.075800     12.01000 ; qtot -1.424
+    13   cc     1   1TR   CAI   13     0.171400     12.01000 ; qtot -1.253
+    14   nc     1   1TR   NAH   14    -0.241600     14.01000 ; qtot -1.494
+    15   cd     1   1TR   CAG   15    -0.059300     12.01000 ; qtot -1.554
+    16   cd     1   1TR   CAF   16    -0.033000     12.01000 ; qtot -1.587
+    17   cc     1   1TR   CAE   17    -0.179300     12.01000 ; qtot -1.766
+    18   c3     1   1TR   CAD   18     0.179100     12.01000 ; qtot -1.587
+    19   nx     1   1TR   NAB   19    -0.685400     14.01000 ; qtot -2.272
+    20   c3     1   1TR   CAC   20     0.080600     12.01000 ; qtot -2.192
+    21   c3     1   1TR   CAA   21     0.080600     12.01000 ; qtot -2.111
+    22   cc     1   1TR   CAM   22    -0.208000     12.01000 ; qtot -2.319
+    23   cd     1   1TR   CAL   23    -0.007300     12.01000 ; qtot -2.326
+    24   na     1   1TR   NAK   24     0.040700     14.01000 ; qtot -2.286
+    25   cd     1   1TR   CAJ   25    -0.198900     12.01000 ; qtot -2.484
+    26   ca     1   1TR    C2   26     0.878900     12.01000 ; qtot -1.606
+    27   nv     1   1TR   NAQ   27    -0.922498     14.01000 ; qtot -2.528
+    28   ha     1   1TR   HC5   28     0.171000      1.00800 ; qtot -2.357
+    29   h4     1   1TR   HC6   29     0.043100      1.00800 ; qtot -2.314
+    30   ha     1   1TR  HCAV   30     0.148000      1.00800 ; qtot -2.166
+    31   ha     1   1TR  HCAW   31     0.160000      1.00800 ; qtot -2.006
+    32   ha     1   1TR  HCAZ   32     0.160000      1.00800 ; qtot -1.846
+    33   ha     1   1TR  HCBA   33     0.148000      1.00800 ; qtot -1.698
+    34   ha     1   1TR  HCAF   34     0.170000      1.00800 ; qtot -1.528
+    35   hx     1   1TR  HAD1   35     0.107700      1.00800 ; qtot -1.420
+    36   hx     1   1TR  HAD2   36     0.107700      1.00800 ; qtot -1.313
+    37   hx     1   1TR  HAC1   37     0.105033      1.00800 ; qtot -1.208
+    38   hx     1   1TR  HAC2   38     0.105033      1.00800 ; qtot -1.103
+    39   hx     1   1TR  HAC3   39     0.105033      1.00800 ; qtot -0.997
+    40   hx     1   1TR  HAA1   40     0.105033      1.00800 ; qtot -0.892
+    41   hx     1   1TR  HAA2   41     0.105033      1.00800 ; qtot -0.787
+    42   hx     1   1TR  HAA3   42     0.105033      1.00800 ; qtot -0.682
+    43   ha     1   1TR  HCAM   43     0.149000      1.00800 ; qtot -0.533
+    44   h4     1   1TR  HCAL   44     0.208000      1.00800 ; qtot -0.325
+    45   hn     1   1TR  HAQ1   45     0.435800      1.00800 ; qtot 0.110
+    46   hn     1   1TR  HAQ2   46     0.435800      1.00800 ; qtot 0.546
+    47   hn     1   1TR  HNAB   47     0.453800      1.00800 ; qtot 1.000
+
+[ bonds ]
+;   ai     aj funct   r             k
+     1      2   1    1.3986e-01    2.9644e+05 ;     C4 - C5    
+     1      5   1    1.3392e-01    3.2341e+05 ;     C4 - N3    
+     1     25   1    1.4610e-01    2.4166e+05 ;     C4 - CAJ   
+     2      3   1    1.3986e-01    2.9644e+05 ;     C5 - C6    
+     2     28   1    1.0860e-01    3.0183e+05 ;     C5 - HC5   
+     3      4   1    1.3392e-01    3.2341e+05 ;     C6 - N1    
+     3     29   1    1.0885e-01    2.9859e+05 ;     C6 - HC6   
+     4     26   1    1.3392e-01    3.2341e+05 ;     N1 - C2    
+     5     26   1    1.3392e-01    3.2341e+05 ;     N3 - C2    
+     6      7   1    1.3986e-01    2.9644e+05 ;    CAV - CAW   
+     6     12   1    1.3986e-01    2.9644e+05 ;    CAV - CAU   
+     6     30   1    1.0860e-01    3.0183e+05 ;    CAV - HCAV  
+     7      8   1    1.3986e-01    2.9644e+05 ;    CAW - CAX   
+     7     31   1    1.0860e-01    3.0183e+05 ;    CAW - HCAW  
+     8      9   1    1.3502e-01    2.8070e+05 ;    CAX - FAY   
+     8     10   1    1.3986e-01    2.9644e+05 ;    CAX - CAZ   
+    10     11   1    1.3986e-01    2.9644e+05 ;    CAZ - CBA   
+    10     32   1    1.0860e-01    3.0183e+05 ;    CAZ - HCAZ  
+    11     12   1    1.3986e-01    2.9644e+05 ;    CBA - CAU   
+    11     33   1    1.0860e-01    3.0183e+05 ;    CBA - HCBA  
+    12     13   1    1.4528e-01    2.4811e+05 ;    CAU - CAI   
+    13     14   1    1.3629e-01    2.9793e+05 ;    CAI - NAH   
+    13     25   1    1.3730e-01    3.2321e+05 ;    CAI - CAJ   
+    14     15   1    1.3171e-01    3.4961e+05 ;    NAH - CAG   
+    15     16   1    1.4279e-01    2.6902e+05 ;    CAG - CAF   
+    15     24   1    1.3830e-01    2.7819e+05 ;    CAG - NAK   
+    16     17   1    1.3730e-01    3.2321e+05 ;    CAF - CAE   
+    16     34   1    1.0835e-01    3.0510e+05 ;    CAF - HCAF  
+    17     18   1    1.5002e-01    2.1350e+05 ;    CAE - CAD   
+    17     22   1    1.4274e-01    2.6947e+05 ;    CAE - CAM   
+    18     19   1    1.5109e-01    1.8390e+05 ;    CAD - NAB   
+    18     35   1    1.0911e-01    2.9527e+05 ;    CAD - HAD1  
+    18     36   1    1.0911e-01    2.9527e+05 ;    CAD - HAD2  
+    19     20   1    1.5109e-01    1.8390e+05 ;    NAB - CAC   
+    19     21   1    1.5109e-01    1.8390e+05 ;    NAB - CAA   
+    19     47   1    1.0338e-01    3.6067e+05 ;    NAB - HNAB  
+    20     37   1    1.0911e-01    2.9527e+05 ;    CAC - HAC1  
+    20     38   1    1.0911e-01    2.9527e+05 ;    CAC - HAC2  
+    20     39   1    1.0911e-01    2.9527e+05 ;    CAC - HAC3  
+    21     40   1    1.0911e-01    2.9527e+05 ;    CAA - HAA1  
+    21     41   1    1.0911e-01    2.9527e+05 ;    CAA - HAA2  
+    21     42   1    1.0911e-01    2.9527e+05 ;    CAA - HAA3  
+    22     23   1    1.3730e-01    3.2321e+05 ;    CAM - CAL   
+    22     43   1    1.0838e-01    3.0470e+05 ;    CAM - HCAM  
+    23     24   1    1.3830e-01    2.7819e+05 ;    CAL - NAK   
+    23     44   1    1.0818e-01    3.0735e+05 ;    CAL - HCAL  
+    24     25   1    1.3830e-01    2.7819e+05 ;    NAK - CAJ   
+    26     27   1    1.3744e-01    2.8644e+05 ;     C2 - NAQ   
+    27     45   1    1.0114e-01    3.9961e+05 ;    NAQ - HAQ1  
+    27     46   1    1.0114e-01    3.9961e+05 ;    NAQ - HAQ2  
+
+[ pairs ]
+;   ai     aj    funct
+     1      4      1 ;     C4 - N1    
+     1     12      1 ;     C4 - CAU   
+     1     14      1 ;     C4 - NAH   
+     1     15      1 ;     C4 - CAG   
+     1     23      1 ;     C4 - CAL   
+     1     27      1 ;     C4 - NAQ   
+     1     29      1 ;     C4 - HC6   
+     2     13      1 ;     C5 - CAI   
+     2     24      1 ;     C5 - NAK   
+     2     26      1 ;     C5 - C2    
+     3     27      1 ;     C6 - NAQ   
+     4     28      1 ;     N1 - HC5   
+     4     45      1 ;     N1 - HAQ1  
+     4     46      1 ;     N1 - HAQ2  
+     5      3      1 ;     N3 - C6    
+     5     13      1 ;     N3 - CAI   
+     5     24      1 ;     N3 - NAK   
+     5     28      1 ;     N3 - HC5   
+     5     45      1 ;     N3 - HAQ1  
+     5     46      1 ;     N3 - HAQ2  
+     6      9      1 ;    CAV - FAY   
+     6     10      1 ;    CAV - CAZ   
+     6     14      1 ;    CAV - NAH   
+     6     25      1 ;    CAV - CAJ   
+     6     33      1 ;    CAV - HCBA  
+     7     11      1 ;    CAW - CBA   
+     7     13      1 ;    CAW - CAI   
+     7     32      1 ;    CAW - HCAZ  
+     8     12      1 ;    CAX - CAU   
+     8     30      1 ;    CAX - HCAV  
+     8     33      1 ;    CAX - HCBA  
+     9     11      1 ;    FAY - CBA   
+     9     31      1 ;    FAY - HCAW  
+     9     32      1 ;    FAY - HCAZ  
+    10     13      1 ;    CAZ - CAI   
+    10     31      1 ;    CAZ - HCAW  
+    11     14      1 ;    CBA - NAH   
+    11     25      1 ;    CBA - CAJ   
+    11     30      1 ;    CBA - HCAV  
+    12     15      1 ;    CAU - CAG   
+    12     24      1 ;    CAU - NAK   
+    12     31      1 ;    CAU - HCAW  
+    12     32      1 ;    CAU - HCAZ  
+    13     16      1 ;    CAI - CAF   
+    13     23      1 ;    CAI - CAL   
+    13     30      1 ;    CAI - HCAV  
+    13     33      1 ;    CAI - HCBA  
+    14     17      1 ;    NAH - CAE   
+    14     23      1 ;    NAH - CAL   
+    14     34      1 ;    NAH - HCAF  
+    15     18      1 ;    CAG - CAD   
+    15     22      1 ;    CAG - CAM   
+    15     44      1 ;    CAG - HCAL  
+    16     19      1 ;    CAF - NAB   
+    16     23      1 ;    CAF - CAL   
+    16     25      1 ;    CAF - CAJ   
+    16     35      1 ;    CAF - HAD1  
+    16     36      1 ;    CAF - HAD2  
+    16     43      1 ;    CAF - HCAM  
+    17     20      1 ;    CAE - CAC   
+    17     21      1 ;    CAE - CAA   
+    17     24      1 ;    CAE - NAK   
+    17     44      1 ;    CAE - HCAL  
+    17     47      1 ;    CAE - HNAB  
+    18     23      1 ;    CAD - CAL   
+    18     34      1 ;    CAD - HCAF  
+    18     37      1 ;    CAD - HAC1  
+    18     38      1 ;    CAD - HAC2  
+    18     39      1 ;    CAD - HAC3  
+    18     40      1 ;    CAD - HAA1  
+    18     41      1 ;    CAD - HAA2  
+    18     42      1 ;    CAD - HAA3  
+    18     43      1 ;    CAD - HCAM  
+    19     22      1 ;    NAB - CAM   
+    20     35      1 ;    CAC - HAD1  
+    20     36      1 ;    CAC - HAD2  
+    20     40      1 ;    CAC - HAA1  
+    20     41      1 ;    CAC - HAA2  
+    20     42      1 ;    CAC - HAA3  
+    21     35      1 ;    CAA - HAD1  
+    21     36      1 ;    CAA - HAD2  
+    21     37      1 ;    CAA - HAC1  
+    21     38      1 ;    CAA - HAC2  
+    21     39      1 ;    CAA - HAC3  
+    22     25      1 ;    CAM - CAJ   
+    22     34      1 ;    CAM - HCAF  
+    22     35      1 ;    CAM - HAD1  
+    22     36      1 ;    CAM - HAD2  
+    24     34      1 ;    NAK - HCAF  
+    24     43      1 ;    NAK - HCAM  
+    25      3      1 ;    CAJ - C6    
+    25     26      1 ;    CAJ - C2    
+    25     28      1 ;    CAJ - HC5   
+    25     44      1 ;    CAJ - HCAL  
+    26     29      1 ;     C2 - HC6   
+    28     29      1 ;    HC5 - HC6   
+    30     31      1 ;   HCAV - HCAW  
+    32     33      1 ;   HCAZ - HCBA  
+    35     47      1 ;   HAD1 - HNAB  
+    36     47      1 ;   HAD2 - HNAB  
+    37     47      1 ;   HAC1 - HNAB  
+    38     47      1 ;   HAC2 - HNAB  
+    39     47      1 ;   HAC3 - HNAB  
+    40     47      1 ;   HAA1 - HNAB  
+    41     47      1 ;   HAA2 - HNAB  
+    42     47      1 ;   HAA3 - HNAB  
+    43     44      1 ;   HCAM - HCAL  
+
+[ angles ]
+;   ai     aj     ak    funct   theta         cth
+     1      2      3      1    1.2002e+02    5.3279e+02 ;     C4 - C5     - C6    
+     1      2     28      1    1.1988e+02    3.7572e+02 ;     C4 - C5     - HC5   
+     1      5     26      1    1.1724e+02    6.9580e+02 ;     C4 - N3     - C2    
+     1     25     13      1    1.2429e+02    5.1580e+02 ;     C4 - CAJ    - CAI   
+     1     25     24      1    1.2310e+02    5.4844e+02 ;     C4 - CAJ    - NAK   
+     2      1      5      1    1.2294e+02    5.7045e+02 ;     C5 - C4     - N3    
+     2      1     25      1    1.2083e+02    5.1898e+02 ;     C5 - C4     - CAJ   
+     2      3      4      1    1.2294e+02    5.7045e+02 ;     C5 - C6     - N1    
+     2      3     29      1    1.2032e+02    3.7489e+02 ;     C5 - C6     - HC6   
+     3      2     28      1    1.1988e+02    3.7572e+02 ;     C6 - C5     - HC5   
+     3      4     26      1    1.1724e+02    6.9580e+02 ;     C6 - N1     - C2    
+     4      3     29      1    1.1602e+02    4.1924e+02 ;     N1 - C6     - HC6   
+     4     26      5      1    1.2730e+02    6.0886e+02 ;     N1 - C2     - N3    
+     4     26     27      1    1.1677e+02    6.2727e+02 ;     N1 - C2     - NAQ   
+     5      1     25      1    1.1734e+02    5.6928e+02 ;     N3 - C4     - CAJ   
+     5     26     27      1    1.1677e+02    6.2727e+02 ;     N3 - C2     - NAQ   
+     6      7      8      1    1.2002e+02    5.3279e+02 ;    CAV - CAW    - CAX   
+     6      7     31      1    1.1988e+02    3.7572e+02 ;    CAV - CAW    - HCAW  
+     6     12     11      1    1.2002e+02    5.3279e+02 ;    CAV - CAU    - CBA   
+     6     12     13      1    1.2091e+02    5.2041e+02 ;    CAV - CAU    - CAI   
+     7      6     12      1    1.2002e+02    5.3279e+02 ;    CAW - CAV    - CAU   
+     7      6     30      1    1.1988e+02    3.7572e+02 ;    CAW - CAV    - HCAV  
+     7      8      9      1    1.1896e+02    6.7404e+02 ;    CAW - CAX    - FAY   
+     7      8     10      1    1.2002e+02    5.3279e+02 ;    CAW - CAX    - CAZ   
+     8      7     31      1    1.1988e+02    3.7572e+02 ;    CAX - CAW    - HCAW  
+     8     10     11      1    1.2002e+02    5.3279e+02 ;    CAX - CAZ    - CBA   
+     8     10     32      1    1.1988e+02    3.7572e+02 ;    CAX - CAZ    - HCAZ  
+     9      8     10      1    1.1896e+02    6.7404e+02 ;    FAY - CAX    - CAZ   
+    10     11     12      1    1.2002e+02    5.3279e+02 ;    CAZ - CBA    - CAU   
+    10     11     33      1    1.1988e+02    3.7572e+02 ;    CAZ - CBA    - HCBA  
+    11     10     32      1    1.1988e+02    3.7572e+02 ;    CBA - CAZ    - HCAZ  
+    11     12     13      1    1.2091e+02    5.2041e+02 ;    CBA - CAU    - CAI   
+    12      6     30      1    1.1988e+02    3.7572e+02 ;    CAU - CAV    - HCAV  
+    12     11     33      1    1.1988e+02    3.7572e+02 ;    CAU - CBA    - HCBA  
+    12     13     14      1    1.2032e+02    5.6007e+02 ;    CAU - CAI    - NAH   
+    12     13     25      1    1.1603e+02    5.3555e+02 ;    CAU - CAI    - CAJ   
+    13     14     15      1    1.0915e+02    7.2032e+02 ;    CAI - NAH    - CAG   
+    13     25     24      1    1.0899e+02    6.0241e+02 ;    CAI - CAJ    - NAK   
+    14     13     25      1    1.1799e+02    5.8325e+02 ;    NAH - CAI    - CAJ   
+    14     15     16      1    1.2070e+02    5.7287e+02 ;    NAH - CAG    - CAF   
+    14     15     24      1    1.1302e+02    6.4024e+02 ;    NAH - CAG    - NAK   
+    15     16     17      1    1.1621e+02    5.4032e+02 ;    CAG - CAF    - CAE   
+    15     16     34      1    1.2185e+02    3.6652e+02 ;    CAG - CAF    - HCAF  
+    15     24     23      1    1.1090e+02    6.9279e+02 ;    CAG - NAK    - CAL   
+    15     24     25      1    1.1090e+02    6.9279e+02 ;    CAG - NAK    - CAJ   
+    16     15     24      1    1.1802e+02    5.6735e+02 ;    CAF - CAG    - NAK   
+    16     17     18      1    1.2771e+02    5.0091e+02 ;    CAF - CAE    - CAD   
+    16     17     22      1    1.1919e+02    5.3363e+02 ;    CAF - CAE    - CAM   
+    17     16     34      1    1.2170e+02    3.7865e+02 ;    CAE - CAF    - HCAF  
+    17     18     19      1    1.1578e+02    5.3388e+02 ;    CAE - CAD    - NAB   
+    17     18     35      1    1.1090e+02    3.6786e+02 ;    CAE - CAD    - HAD1  
+    17     18     36      1    1.1090e+02    3.6786e+02 ;    CAE - CAD    - HAD2  
+    17     22     23      1    1.1919e+02    5.3363e+02 ;    CAE - CAM    - CAL   
+    17     22     43      1    1.1971e+02    3.6987e+02 ;    CAE - CAM    - HCAM  
+    18     17     22      1    1.2276e+02    5.0275e+02 ;    CAD - CAE    - CAM   
+    18     19     20      1    1.1205e+02    6.3086e+02 ;    CAD - NAB    - CAC   
+    18     19     21      1    1.1205e+02    6.3086e+02 ;    CAD - NAB    - CAA   
+    18     19     47      1    1.0658e+02    4.6267e+02 ;    CAD - NAB    - HNAB  
+    19     18     35      1    1.0849e+02    3.9229e+02 ;    NAB - CAD    - HAD1  
+    19     18     36      1    1.0849e+02    3.9229e+02 ;    NAB - CAD    - HAD2  
+    19     20     37      1    1.0849e+02    3.9229e+02 ;    NAB - CAC    - HAC1  
+    19     20     38      1    1.0849e+02    3.9229e+02 ;    NAB - CAC    - HAC2  
+    19     20     39      1    1.0849e+02    3.9229e+02 ;    NAB - CAC    - HAC3  
+    19     21     40      1    1.0849e+02    3.9229e+02 ;    NAB - CAA    - HAA1  
+    19     21     41      1    1.0849e+02    3.9229e+02 ;    NAB - CAA    - HAA2  
+    19     21     42      1    1.0849e+02    3.9229e+02 ;    NAB - CAA    - HAA3  
+    20     19     21      1    1.1205e+02    6.3086e+02 ;    CAC - NAB    - CAA   
+    20     19     47      1    1.0658e+02    4.6267e+02 ;    CAC - NAB    - HNAB  
+    21     19     47      1    1.0658e+02    4.6267e+02 ;    CAA - NAB    - HNAB  
+    22     23     24      1    1.0899e+02    6.0241e+02 ;    CAM - CAL    - NAK   
+    22     23     44      1    1.2764e+02    3.6987e+02 ;    CAM - CAL    - HCAL  
+    23     22     43      1    1.2140e+02    3.7907e+02 ;    CAL - CAM    - HCAM  
+    23     24     25      1    1.1090e+02    6.9279e+02 ;    CAL - NAK    - CAJ   
+    24     23     44      1    1.2017e+02    4.0233e+02 ;    NAK - CAL    - HCAL  
+    26     27     45      1    1.1673e+02    4.8292e+02 ;     C2 - NAQ    - HAQ1  
+    26     27     46      1    1.1673e+02    4.8292e+02 ;     C2 - NAQ    - HAQ2  
+    35     18     36      1    1.0979e+02    2.9815e+02 ;   HAD1 - CAD    - HAD2  
+    37     20     38      1    1.0979e+02    2.9815e+02 ;   HAC1 - CAC    - HAC2  
+    37     20     39      1    1.0979e+02    2.9815e+02 ;   HAC1 - CAC    - HAC3  
+    38     20     39      1    1.0979e+02    2.9815e+02 ;   HAC2 - CAC    - HAC3  
+    40     21     41      1    1.0979e+02    2.9815e+02 ;   HAA1 - CAA    - HAA2  
+    40     21     42      1    1.0979e+02    2.9815e+02 ;   HAA1 - CAA    - HAA3  
+    41     21     42      1    1.0979e+02    2.9815e+02 ;   HAA2 - CAA    - HAA3  
+    45     27     46      1    1.1528e+02    3.8794e+02 ;   HAQ1 - NAQ    - HAQ2  
+
+[ dihedrals ] ; propers
+; for gromacs 4.5 or higher, using funct 9
+;    i      j      k      l   func   phase     kd      pn
+     1      2      3      4      9   180.00  15.16700   2 ;     C4-    C5-    C6-    N1
+     1      2      3     29      9   180.00  15.16700   2 ;     C4-    C5-    C6-   HC6
+     1      5     26      4      9   180.00  20.08320   2 ;     C4-    N3-    C2-    N1
+     1      5     26     27      9   180.00  20.08320   2 ;     C4-    N3-    C2-   NAQ
+     1     25     13     12      9   180.00  16.73600   2 ;     C4-   CAJ-   CAI-   CAU
+     1     25     13     14      9   180.00  16.73600   2 ;     C4-   CAJ-   CAI-   NAH
+     1     25     24     15      9   180.00   7.11280   2 ;     C4-   CAJ-   NAK-   CAG
+     1     25     24     23      9   180.00   7.11280   2 ;     C4-   CAJ-   NAK-   CAL
+     2      1      5     26      9   180.00  20.08320   2 ;     C5-    C4-    N3-    C2
+     2      1     25     13      9   180.00  15.77368   2 ;     C5-    C4-   CAJ-   CAI
+     2      1     25     24      9   180.00   4.59194   2 ;     C5-    C4-   CAJ-   NAK
+     2      3      4     26      9   180.00  20.08320   2 ;     C5-    C6-    N1-    C2
+     3      4     26      5      9   180.00  20.08320   2 ;     C6-    N1-    C2-    N3
+     3      4     26     27      9   180.00  20.08320   2 ;     C6-    N1-    C2-   NAQ
+     4      3      2     28      9   180.00  15.16700   2 ;     N1-    C6-    C5-   HC5
+     4     26     27     45      9   180.00   4.39320   2 ;     N1-    C2-   NAQ-  HAQ1
+     4     26     27     46      9   180.00   4.39320   2 ;     N1-    C2-   NAQ-  HAQ2
+     5      1      2      3      9   180.00  15.16700   2 ;     N3-    C4-    C5-    C6
+     5      1      2     28      9   180.00  15.16700   2 ;     N3-    C4-    C5-   HC5
+     5      1     25     13      9   180.00   6.15048   1 ;     N3-    C4-   CAJ-   CAI
+     5      1     25     24      9   180.00   2.88696   1 ;     N3-    C4-   CAJ-   NAK
+     5      1     25     24      9   180.00   4.18400   2 ;     N3-    C4-   CAJ-   NAK
+     5      1     25     24      9   180.00   4.47688   3 ;     N3-    C4-   CAJ-   NAK
+     5     26     27     45      9   180.00   4.39320   2 ;     N3-    C2-   NAQ-  HAQ1
+     5     26     27     46      9   180.00   4.39320   2 ;     N3-    C2-   NAQ-  HAQ2
+     6      7      8      9      9   180.00  15.16700   2 ;    CAV-   CAW-   CAX-   FAY
+     6      7      8     10      9   180.00  15.16700   2 ;    CAV-   CAW-   CAX-   CAZ
+     6     12     11     10      9   180.00  15.16700   2 ;    CAV-   CAU-   CBA-   CAZ
+     6     12     11     33      9   180.00  15.16700   2 ;    CAV-   CAU-   CBA-  HCBA
+     6     12     13     14      9   180.00   3.13800   3 ;    CAV-   CAU-   CAI-   NAH
+     6     12     13     14      9   180.00   3.43088   1 ;    CAV-   CAU-   CAI-   NAH
+     6     12     13     14      9   180.00   4.18400   2 ;    CAV-   CAU-   CAI-   NAH
+     6     12     13     25      9   180.00   2.44764   2 ;    CAV-   CAU-   CAI-   CAJ
+     7      6     12     11      9   180.00  15.16700   2 ;    CAW-   CAV-   CAU-   CBA
+     7      6     12     13      9   180.00  15.16700   2 ;    CAW-   CAV-   CAU-   CAI
+     7      8     10     11      9   180.00  15.16700   2 ;    CAW-   CAX-   CAZ-   CBA
+     7      8     10     32      9   180.00  15.16700   2 ;    CAW-   CAX-   CAZ-  HCAZ
+     8      7      6     12      9   180.00  15.16700   2 ;    CAX-   CAW-   CAV-   CAU
+     8      7      6     30      9   180.00  15.16700   2 ;    CAX-   CAW-   CAV-  HCAV
+     8     10     11     12      9   180.00  15.16700   2 ;    CAX-   CAZ-   CBA-   CAU
+     8     10     11     33      9   180.00  15.16700   2 ;    CAX-   CAZ-   CBA-  HCBA
+     9      8      7     31      9   180.00  15.16700   2 ;    FAY-   CAX-   CAW-  HCAW
+     9      8     10     11      9   180.00  15.16700   2 ;    FAY-   CAX-   CAZ-   CBA
+     9      8     10     32      9   180.00  15.16700   2 ;    FAY-   CAX-   CAZ-  HCAZ
+    10      8      7     31      9   180.00  15.16700   2 ;    CAZ-   CAX-   CAW-  HCAW
+    10     11     12     13      9   180.00  15.16700   2 ;    CAZ-   CBA-   CAU-   CAI
+    11     12      6     30      9   180.00  15.16700   2 ;    CBA-   CAU-   CAV-  HCAV
+    11     12     13     14      9   180.00   3.13800   3 ;    CBA-   CAU-   CAI-   NAH
+    11     12     13     14      9   180.00   3.43088   1 ;    CBA-   CAU-   CAI-   NAH
+    11     12     13     14      9   180.00   4.18400   2 ;    CBA-   CAU-   CAI-   NAH
+    11     12     13     25      9   180.00   2.44764   2 ;    CBA-   CAU-   CAI-   CAJ
+    12      6      7     31      9   180.00  15.16700   2 ;    CAU-   CAV-   CAW-  HCAW
+    12     11     10     32      9   180.00  15.16700   2 ;    CAU-   CBA-   CAZ-  HCAZ
+    12     13     14     15      9   180.00  19.87400   2 ;    CAU-   CAI-   NAH-   CAG
+    12     13     25     24      9   180.00  16.73600   2 ;    CAU-   CAI-   CAJ-   NAK
+    13     12      6     30      9   180.00  15.16700   2 ;    CAI-   CAU-   CAV-  HCAV
+    13     12     11     33      9   180.00  15.16700   2 ;    CAI-   CAU-   CBA-  HCBA
+    13     14     15     16      9   180.00  19.87400   2 ;    CAI-   NAH-   CAG-   CAF
+    13     14     15     24      9   180.00  19.87400   2 ;    CAI-   NAH-   CAG-   NAK
+    13     25     24     15      9   180.00   7.11280   2 ;    CAI-   CAJ-   NAK-   CAG
+    13     25     24     23      9   180.00   7.11280   2 ;    CAI-   CAJ-   NAK-   CAL
+    14     13     25     24      9   180.00  16.73600   2 ;    NAH-   CAI-   CAJ-   NAK
+    14     15     16     17      9   180.00  16.73600   2 ;    NAH-   CAG-   CAF-   CAE
+    14     15     16     34      9   180.00  16.73600   2 ;    NAH-   CAG-   CAF-  HCAF
+    14     15     24     23      9   180.00   7.11280   2 ;    NAH-   CAG-   NAK-   CAL
+    14     15     24     25      9   180.00   7.11280   2 ;    NAH-   CAG-   NAK-   CAJ
+    15     14     13     25      9   180.00  19.87400   2 ;    CAG-   NAH-   CAI-   CAJ
+    15     16     17     18      9   180.00  16.73600   2 ;    CAG-   CAF-   CAE-   CAD
+    15     16     17     22      9   180.00  16.73600   2 ;    CAG-   CAF-   CAE-   CAM
+    15     24     23     22      9   180.00   7.11280   2 ;    CAG-   NAK-   CAL-   CAM
+    15     24     23     44      9   180.00   7.11280   2 ;    CAG-   NAK-   CAL-  HCAL
+    16     15     24     23      9   180.00   7.11280   2 ;    CAF-   CAG-   NAK-   CAL
+    16     15     24     25      9   180.00   7.11280   2 ;    CAF-   CAG-   NAK-   CAJ
+    16     17     18     19      9     0.00   0.00000   0 ;    CAF-   CAE-   CAD-   NAB
+    16     17     18     35      9     0.00   0.00000   0 ;    CAF-   CAE-   CAD-  HAD1
+    16     17     18     36      9     0.00   0.00000   0 ;    CAF-   CAE-   CAD-  HAD2
+    16     17     22     23      9   180.00  16.73600   2 ;    CAF-   CAE-   CAM-   CAL
+    16     17     22     43      9   180.00  16.73600   2 ;    CAF-   CAE-   CAM-  HCAM
+    17     16     15     24      9   180.00  16.73600   2 ;    CAE-   CAF-   CAG-   NAK
+    17     18     19     20      9     0.00   0.65084   3 ;    CAE-   CAD-   NAB-   CAC
+    17     18     19     21      9     0.00   0.65084   3 ;    CAE-   CAD-   NAB-   CAA
+    17     18     19     47      9     0.00   0.65084   3 ;    CAE-   CAD-   NAB-  HNAB
+    17     22     23     24      9   180.00  16.73600   2 ;    CAE-   CAM-   CAL-   NAK
+    17     22     23     44      9   180.00  16.73600   2 ;    CAE-   CAM-   CAL-  HCAL
+    18     17     16     34      9   180.00  16.73600   2 ;    CAD-   CAE-   CAF-  HCAF
+    18     17     22     23      9   180.00  16.73600   2 ;    CAD-   CAE-   CAM-   CAL
+    18     17     22     43      9   180.00  16.73600   2 ;    CAD-   CAE-   CAM-  HCAM
+    18     19     20     37      9     0.00   0.65084   3 ;    CAD-   NAB-   CAC-  HAC1
+    18     19     20     38      9     0.00   0.65084   3 ;    CAD-   NAB-   CAC-  HAC2
+    18     19     20     39      9     0.00   0.65084   3 ;    CAD-   NAB-   CAC-  HAC3
+    18     19     21     40      9     0.00   0.65084   3 ;    CAD-   NAB-   CAA-  HAA1
+    18     19     21     41      9     0.00   0.65084   3 ;    CAD-   NAB-   CAA-  HAA2
+    18     19     21     42      9     0.00   0.65084   3 ;    CAD-   NAB-   CAA-  HAA3
+    19     18     17     22      9     0.00   0.00000   0 ;    NAB-   CAD-   CAE-   CAM
+    20     19     18     35      9     0.00   0.65084   3 ;    CAC-   NAB-   CAD-  HAD1
+    20     19     18     36      9     0.00   0.65084   3 ;    CAC-   NAB-   CAD-  HAD2
+    20     19     21     40      9     0.00   0.65084   3 ;    CAC-   NAB-   CAA-  HAA1
+    20     19     21     41      9     0.00   0.65084   3 ;    CAC-   NAB-   CAA-  HAA2
+    20     19     21     42      9     0.00   0.65084   3 ;    CAC-   NAB-   CAA-  HAA3
+    21     19     18     35      9     0.00   0.65084   3 ;    CAA-   NAB-   CAD-  HAD1
+    21     19     18     36      9     0.00   0.65084   3 ;    CAA-   NAB-   CAD-  HAD2
+    21     19     20     37      9     0.00   0.65084   3 ;    CAA-   NAB-   CAC-  HAC1
+    21     19     20     38      9     0.00   0.65084   3 ;    CAA-   NAB-   CAC-  HAC2
+    21     19     20     39      9     0.00   0.65084   3 ;    CAA-   NAB-   CAC-  HAC3
+    22     17     16     34      9   180.00  16.73600   2 ;    CAM-   CAE-   CAF-  HCAF
+    22     17     18     35      9     0.00   0.00000   0 ;    CAM-   CAE-   CAD-  HAD1
+    22     17     18     36      9     0.00   0.00000   0 ;    CAM-   CAE-   CAD-  HAD2
+    22     23     24     25      9   180.00   7.11280   2 ;    CAM-   CAL-   NAK-   CAJ
+    24     15     16     34      9   180.00  16.73600   2 ;    NAK-   CAG-   CAF-  HCAF
+    24     23     22     43      9   180.00  16.73600   2 ;    NAK-   CAL-   CAM-  HCAM
+    25      1      2      3      9   180.00  15.16700   2 ;    CAJ-    C4-    C5-    C6
+    25      1      2     28      9   180.00  15.16700   2 ;    CAJ-    C4-    C5-   HC5
+    25      1      5     26      9   180.00  20.08320   2 ;    CAJ-    C4-    N3-    C2
+    25     24     23     44      9   180.00   7.11280   2 ;    CAJ-   NAK-   CAL-  HCAL
+    26      4      3     29      9   180.00  20.08320   2 ;     C2-    N1-    C6-   HC6
+    28      2      3     29      9   180.00  15.16700   2 ;    HC5-    C5-    C6-   HC6
+    30      6      7     31      9   180.00  15.16700   2 ;   HCAV-   CAV-   CAW-  HCAW
+    32     10     11     33      9   180.00  15.16700   2 ;   HCAZ-   CAZ-   CBA-  HCBA
+    35     18     19     47      9     0.00   0.45606   3 ;   HAD1-   CAD-   NAB-  HNAB
+    36     18     19     47      9     0.00   0.45606   3 ;   HAD2-   CAD-   NAB-  HNAB
+    37     20     19     47      9     0.00   0.45606   3 ;   HAC1-   CAC-   NAB-  HNAB
+    38     20     19     47      9     0.00   0.45606   3 ;   HAC2-   CAC-   NAB-  HNAB
+    39     20     19     47      9     0.00   0.45606   3 ;   HAC3-   CAC-   NAB-  HNAB
+    40     21     19     47      9     0.00   0.45606   3 ;   HAA1-   CAA-   NAB-  HNAB
+    41     21     19     47      9     0.00   0.45606   3 ;   HAA2-   CAA-   NAB-  HNAB
+    42     21     19     47      9     0.00   0.45606   3 ;   HAA3-   CAA-   NAB-  HNAB
+    43     22     23     44      9   180.00  16.73600   2 ;   HCAM-   CAM-   CAL-  HCAL
+
+[ dihedrals ] ; impropers
+; treated as propers in GROMACS to use correct AMBER analytical function
+;    i      j      k      l   func   phase     kd      pn
+     1      3      2     28      4   180.00   4.60240   2 ;     C4-    C6-    C5-   HC5
+     1     13     25     24      4   180.00   4.60240   2 ;     C4-   CAI-   CAJ-   NAK
+     2     29      3      4      4   180.00   4.60240   2 ;     C5-   HC6-    C6-    N1
+     4      5     26     27      4   180.00   4.60240   2 ;     N1-    N3-    C2-   NAQ
+     5      1     25      2      4   180.00   4.60240   2 ;     N3-    C4-   CAJ-    C5
+     6      8      7     31      4   180.00   4.60240   2 ;    CAV-   CAX-   CAW-  HCAW
+     6     11     12     13      4   180.00   4.60240   2 ;    CAV-   CBA-   CAU-   CAI
+     7     10      8      9      4   180.00   4.60240   2 ;    CAW-   CAZ-   CAX-   FAY
+     7     12      6     30      4   180.00   4.60240   2 ;    CAW-   CAU-   CAV-  HCAV
+     8     11     10     32      4   180.00   4.60240   2 ;    CAX-   CBA-   CAZ-  HCAZ
+    10     12     11     33      4   180.00   4.60240   2 ;    CAZ-   CAU-   CBA-  HCBA
+    12     25     13     14      4   180.00   4.60240   2 ;    CAU-   CAJ-   CAI-   NAH
+    15     23     24     25      4   180.00   4.60240   2 ;    CAG-   CAL-   NAK-   CAJ
+    16     24     15     14      4   180.00   4.60240   2 ;    CAF-   NAK-   CAG-   NAH
+    17     15     16     34      4   180.00   4.60240   2 ;    CAE-   CAG-   CAF-  HCAF
+    17     23     22     43      4   180.00   4.60240   2 ;    CAE-   CAL-   CAM-  HCAM
+    18     22     17     16      4   180.00   4.60240   2 ;    CAD-   CAM-   CAE-   CAF
+    22     44     23     24      4   180.00   4.60240   2 ;    CAM-  HCAL-   CAL-   NAK
+    26     45     27     46      4   180.00   4.60240   2 ;     C2-  HAQ1-   NAQ-  HAQ2
+    
+#ifdef POSRES_LIG
+[ position_restraints ]
+; atom  type      fx      fy      fz
+     1     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+     2     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+     3     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+     4     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+     5     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+     6     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+     7     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+     8     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+     9     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    10     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    11     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    12     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    13     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    14     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    15     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    16     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    17     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    18     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    19     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    20     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    21     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    22     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    23     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    24     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    25     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    26     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+    27     1    POSRES_LIG    POSRES_LIG    POSRES_LIG
+#endif
