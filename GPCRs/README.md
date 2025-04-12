@@ -9,8 +9,8 @@ The individual directories of the different structures are organised as in the f
 ```
 GPCR_structure_X_excercise
 │   ionize.mdp
-│   reference_topology_GPCR_structure_1.gro
-│   reference_topology_GPCR_structure_1.top
+│   reference_topology_GPCR_structure_X.gro
+│   reference_topology_GPCR_structure_X.top
 │   sbatch_me.sh
 │   water_removal.py
 │
@@ -33,7 +33,7 @@ GPCR_structure_X_excercise
     │   prod.mdp
 ```
 Going by order, you can see
-- The `ionize.mdp`, `reference_topology_GPCR_structure_1.gro`, `reference_topology_GPCR_structure_1.top`, and `water_removal.py` files. These are the building blocks to set up your starting configuration. We will cover these in depth later in this tutorial.
+- The `ionize.mdp`, `reference_topology_GPCR_structure_X.gro`, `reference_topology_GPCR_structure_X.top`, and `water_removal.py` files. These are the building blocks to set up your starting configuration. We will cover these in depth later in this tutorial.
 - A `sbatch_me.sh` file. This is a text file that contains the set of instructions that will run your starting configuration through energy minimisation, NVT, NPT, and eventually the production phase.
 - A `forcefield` directory. Inside this, you can find several text files that define 'numerically' the key components of your system. You might recognise some of them, like `GPCR.itp`, `cholesterol.itp`, and `POPC.itp`. You can peek inside them and take a look at how a molecule is described numerically in MD simulations. The format of these files - that is, how these numbers are organised and reported - depends on the software you are using. Since in this course we use GROMACS, these files are written in 'GROMACS' format. However, while these numbers and these files might be different for other softwares, the core idea of numerically representating with specific functions the intra- and inter-molecular interactions is paramount in molecular dynamics.
 - A `solutions_files` directory. Here there are the `index.ndx`, `start.gro`, and `topol.top` files that you should obtain at the end of the tutorial. If you want to run the simulations instantly, then move the files from this directory directly to `GPCR_structure_X_excercise` and go at the last section of this tutorial about running the simulation.
@@ -44,11 +44,13 @@ Going by order, you can see
 
 The idea of this tutorial is to give you the main ingredients to build your own solvated simulation box without going through the hassle of finding a good target to simulate, fix the experimental structure files, find a consistent force field to describe the system, and embedding the protein in the membrane. Considering this, inside the main directory you can find a copy of four files which will be the basic blocks to build the system, namely
 - `ionize.mdp`, the mdp file to add the ions in the system.
-- `reference_topology_GPCR_structure_1.gro`, the starting structure that contains the trans-membrane domain of the GPCR already embedded in the membrane.
-- `reference_topology_GPCR_structure_1.top`, the starting topology of the system.
+- `reference_topology_GPCR_structure_X.gro`, the starting structure that contains the trans-membrane domain of the GPCR already embedded in the membrane.
+- `reference_topology_GPCR_structure_X.top`, the starting topology of the system.
 - `water_removal.py`, a python script that removes the water molecules that GROMACS wrongly positions within the lipid bilayer during the solvation phase.
 
 From these, and by using as reference the [Lysozyme in water](http://www.mdtutorials.com/gmx/lysozyme/) tutorial for solvation and ion addition, you should be able to obtain three files, the starting configuration of the solvated membrane, which we will call `start.gro`, the updated topology of the system, which we will call `topol.top`, and the index file of the system, which we will call `index.ndx` and that is useful for controlling complex multi-phase systems like a protein embedded in a membrane bilayer. These files will be then picked up by the `sbatch_me.sh` script and used as starting point to run the equilibration and the production runs of the system. This tutorial uses the first GPCR structure as an example, but the process is identical for all the four configurations.
+
+In the following, the tutorial shows the set-up of the simulation box by using as example the GPCR structure 1. Nevertheless, the logic of the procedure is identical and can be applied directly to all the other structures as well.
 
 ## Building the starting box
 First of all, send the directory with the exercises to your home in Baobab (with `scp`) and login into Baobab. Then, request a node for a couple of hours with `salloc` in the following way
