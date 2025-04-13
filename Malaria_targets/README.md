@@ -99,5 +99,10 @@ Finally, there is the `[ molecules ]` section. This is a very important section 
 |:--:|
 | Figure 1 *Bla bla bla* |
 
+
+| ![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif) |
+|:--:|
+| Figure 2 *gif example* |
+
 ## References
 [^1]: El Bakkouri, M., et al. "Structures of the cGMP-dependent protein kinase in malaria parasites reveal a unique structural relay mechanism for activation." Proceedings of the National Academy of Sciences 116.28 (2019): 14164-14173. [DOI:10.1073/pnas.190555811](https://doi.org/10.1073/pnas.190555811)
