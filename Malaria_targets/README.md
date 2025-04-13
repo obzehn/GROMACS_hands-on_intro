@@ -150,6 +150,41 @@ This means that you will have a roughly ~40% larger box, which means more water 
 |:--:|
 | Figure 2 *Box types* |
 
+Before running `gmx solvate`, you have to know which water model you want to use. For this force field, as also reported in the `reference_topology_PKG_HOLO_ANP.top` file, the model is [TIP3P](https://en.wikipedia.org/wiki/Water_model) (you are importing the parameters with this line `#include "./forcefield/tip3.itp"`), a three-point water model. This means that each water molecule in your simulation will simply be represented with three sites: one oxygen atom and two hydrogen atoms. To access a three-points water model, the flag name for `gmx solvate` is `-cs spc216.gro`, the same as for the Lysozyme tutorial.
+
+Thus, you can solvate the system with the following
+```
+gmx solvate -cp reference_topology_PKG_HOLO_ANP_boxed.gro -cs spc216.gro -o reference_topology_PKG_HOLO_ANP_solvated.gro
+```
+where you are asking to add water to the structure with `-cp reference_topology_PKG_HOLO_ANP_boxed.gro`, use as reference a three-points water model with `-cs spc216.gro`, add call the resulting output structure `-o reference_topology_PKG_HOLO_ANP_solvated.gro`. Some of you may notice that in the Lysozyme tutorial you also have to pass the topology of the system with the `-p` flag. This is not mandatory, and I prefer not to do it because the updated topology will have the same name as the input one, which is prone to errors. However, you will have to update by hand the topology to include the presence of the water molecules.
+
+The (last lines of the) output of this command will look something like this
+```
+[...]
+Volume                 :     1496.67 (nm^3)
+Density                :     999.599 (g/l)
+Number of solvent molecules:  44578 
+```
+GROMACS tries to fill the box with water to reach the density of ca. 1g/L. The most important part here is the number of water molecules inserted, in this case `44578` (this number can oscillate slightly). You now has just to add this number at the end of the topopolgy to tell GROMACS that the content of the box has changed.
+
+First, copy the reference topology and call it `reference_topology_PKG_HOLO_ANP_solvated.top` with the `cp` (copy) command
+```
+cp reference_topology_PKG_HOLO_ANP.top reference_topology_PKG_HOLO_ANP_solvated.top
+```
+Then, add the amount of water molecules to `reference_topology_PKG_HOLO_ANP_solvated.top` by correcting the `[ molecules ]` section in the following way
+```
+[...]
+[ molecules ]
+; Compound         #mols
+PKG                    1
+MG                     1
+ANP                    1
+SOL                44580
+```
+You have to add the name of the water in the box (`SOL`) and the number reported after cleaning up the system with the python script. For the HOLO + ANP structure, `SOL` was already reported as there are already two water molecules coordinating the MG ions, and as such you just have to add two to the total solvation number. For the other structure, just report the plain number obtained from the output of `gmx solvate`.
+
+At this point, the structure of the solvated system is contained in `reference_topology_PKG_HOLO_ANP_solvated.gro`, while its topology in `reference_topology_PKG_HOLO_ANP_solvated.top`.
+
 ## References
 [^1]: El Bakkouri, M., et al. "Structures of the cGMP-dependent protein kinase in malaria parasites reveal a unique structural relay mechanism for activation." Proceedings of the National Academy of Sciences 116.28 (2019): 14164-14173. [DOI:10.1073/pnas.190555811](https://doi.org/10.1073/pnas.190555811)
 
