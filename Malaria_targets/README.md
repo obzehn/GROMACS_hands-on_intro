@@ -144,11 +144,7 @@ Try now to build the same system by specifying a cubic (`-bt cubic`) box, you wi
 ```
 new box volume  :2116.61               (nm^3)
 ```
-This means that you will have a roughly ~40% larger box, which means more water to solvate, a higher number of molecules to simulate, and therefore slower simulations. An example of how different box types look like is reported in Figure 2.
-
-| ![Figure 2](../images/boxtypes.png) |
-|:--:|
-| Figure 2 *Box types* |
+This means that you will have a roughly ~40% larger box, which means more water to solvate, a higher number of molecules to simulate, and therefore slower simulations. You can try to keep a cubic box and follow up with the solvation, so you can see how many more water molecules are added with respect to the dodecahedron case.
 
 Before running `gmx solvate`, you have to know which water model you want to use. For this force field, as also reported in the `reference_topology_PKG_HOLO_ANP.top` file, the model is [TIP3P](https://en.wikipedia.org/wiki/Water_model) (you are importing the parameters with this line `#include "./forcefield/tip3.itp"`), a three-point water model. This means that each water molecule in your simulation will simply be represented with three sites: one oxygen atom and two hydrogen atoms. To access a three-points water model, the flag name for `gmx solvate` is `-cs spc216.gro`, the same as for the Lysozyme tutorial.
 
@@ -273,7 +269,11 @@ No ions to add, will just copy input configuration
 ```
 Basically, you have copied the configuration stored in `ionize.tpr`, which is the one in `reference_topology_PKG_HOLO_ANP_solvated.gro`, and called it `start.gro`. You can now copy the topology and call it `topol.top`, but you do not have to update it as no water molecules have been removed and no ions have been added, and you are good to go.
 
-Summarising, you now have the starting solvated and neutralised configuration stored in `start.gro` and the corresponding topology in `topol.top`. You can take a look at the final system with VMD. It should look similar to that shown in Figure 3.
+Summarising, you now have the starting solvated and neutralised configuration stored in `start.gro` and the corresponding topology in `topol.top`. You can take a look at the final system with VMD. It should look similar to that shown in Figure 2.
+
+| ![Figure 2](../images/holosolvated.png) |
+|:--:|
+| Figure 2 *bla bla bla* |
 
 ## Run the simulation
 ### A look at the `sbatch_me.sh` file
