@@ -265,7 +265,7 @@ NA                     3
 
 If the `gmx grompp` command didn't fail, it is because the system has already total charge equal zero. Thus, when you run the `gmx genion -s ionize.tpr -neutral -pname NA -nname CL -o start.gro`, GROMACS will not prompt you asking which part of the system you want to substitute in favour of ions, as there are no ions to add, and the output will look like this
 ```
-No ions to add, will just copy input configuration
+No ions to add, will just copy input configuration.
 ```
 Basically, you have copied the configuration stored in `ionize.tpr`, which is the one in `reference_topology_PKG_HOLO_ANP_solvated.gro`, and called it `start.gro`. You can now copy the topology and call it `topol.top`, but you do not have to update it as no water molecules have been removed and no ions have been added, and you are good to go.
 
@@ -273,15 +273,14 @@ Summarising, you now have the starting solvated and neutralised configuration st
 
 | ![Figure 2](../images/holosolvated.png) |
 |:--:|
-| Figure 2 *bla bla bla* |
+| Figure 2 *Final solvated dodecahedron box for the PKG+ANP HOLO system. Water is represented as a transparent white surface. PKG is in a red cartoon representation. Ions are represented with their van der Waals radii and are in blue (sodium) and pink (magnesium). ANP is represented as sticks.* |
 
 ## Run the simulation
 ### A look at the `sbatch_me.sh` file
 Whether you completed the tutorial or you moved the corresponding files from the `solution_files` directory, now the content of the excercise directory should be similar to this
 ```
-GPCR_structure_X_excercise
+PKG_APO/HOLO_X_excercise
 │   sbatch_me.sh
-│   index.ndx
 │   start.gro
 │   topol.top
 │
@@ -299,9 +298,9 @@ GPCR_structure_X_excercise
 └─── step4_prod
     │   prod.mdp
 ```
-plus the `solution_files` directory and some leftover files from the system generation. It is mandatory that `sbatch_me.sh`, `index.ndx`, `start.gro`, and `topol.top` are together in the same directory in which there are the energy minimization, NVT, NPT, and production directories, otherwise the script `sbatch_me.sh` won't be able to run the simulations for you.
+plus the `solution_files` directory and some leftover files from the system generation. It is mandatory that `sbatch_me.sh`, `start.gro`, and `topol.top` are together in the same directory in which there are the energy minimization, NVT, NPT, and production directories, otherwise the script `sbatch_me.sh` won't be able to run the simulations for you.
 
-During both the Lysozyme tutorial and the preparation of the box for this excercise, you logged in a Baobab node by using the `salloc` command. In this way you can have access to a node and run an interactive job. This is nice because you can have real time answers from the node and you see clearly what is going on and what you are doing, which is pivotal for error-prone procedures like the generation of the starting box. However, when you close the connection, log out from Baobab, or simply turn off the computer, you lose the access to the computer and any running simulation will stop. Does this mean that you should be always connected? And that you should stay constantly in front of your computer, even for a few days at a time, while the simulations run, scared or losing the internat connection and see your runs fail?
+During both the Lysozyme tutorial and the preparation of the box for this excercise, you logged in a Baobab node by using the `salloc` command. In this way you can have access to a node and run an interactive job. This is nice because you can have real time answers from the node and you see clearly what is going on and what you are doing, which is pivotal for error-prone procedures like the generation of the starting box. However, when you close the connection, log out from Baobab, or simply turn off the computer, you lose the access to the computer and any running simulation will stop. Does this mean that you should be always connected? And that you should stay constantly in front of your computer, even for a few days at a time, while the simulations run, scared or losing the internet connection and see your runs fail?
 
 Clearly this is not the case. As explained also in the [first part](https://github.com/obzehn/GROMACS_hands-on_intro/tree/main?tab=readme-ov-file#allocating-an-interactive-job) of this tutorial, Baobab has a so-called queueing system, named [slurm](https://slurm.schedmd.com/overview.html). With slurm, you can prepare a *submission script* which contains the main commands that you want to run alongside the resources that you need. This is exactly what the `sbatch_me.sh` script is.
 
@@ -312,7 +311,7 @@ You can look at the content of the `sbatch_me.sh` with a text editor. The first 
 #SBATCH --account=gervasio_teach_19h330
 #SBATCH --partition=private-gervasio-gpu
 #SBATCH --time 144:00:00
-#SBATCH --job-name GPCR1
+#SBATCH --job-name PKG_ANP
 #SBATCH --error jobname-error.e%j
 #SBATCH --output jobname-out.o%j
 #SBATCH --ntasks 1
@@ -346,13 +345,13 @@ type `exit` to exit the node. Once the terminal looks like this
 ```
 (baobab)-[username@login1 some_directory_name]$
 ```
-e.g., your `username` is logged in on `login1`, the headnode of Baobab, and not on some `cpuxxx` or `gpuxxx` node, you are good to go. From the `GPCR_structure_X_excercise` directory, that is, where the submission script `sbatch_me.sh` is located, you can submit it to slurm with the following command
+e.g., your `username` is logged in on `login1`, the headnode of Baobab, and not on some `cpuxxx` or `gpuxxx` node, you are good to go. From the `PKG_APO/HOLO_X_excercise` directory, that is, where the submission script `sbatch_me.sh` is located, you can submit it to slurm with the following command
 ```
 sbatch sbatch_me.sh
 ```
 If the command runs successfully, slurm returns the number that is assigned to your job, something like this
 ```
-Submitted batch job 16567322
+Submitted batch job 16568567
 ```
 You can check the status of the job by running the following command (and substituting `username` with yours)
 ```
@@ -361,9 +360,9 @@ squeue -u username
 The output will look something like this
 ```
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-          16567322 private-g    GPCR1 username  R       0:55      1 gpu037
+          16568567 private-g    PKG_ANP username  R       2:11      1 gpu039
 ```
-The `R` under the column `ST` (for *status*) stands for *running*. Usually, the job stays in the queue with some other status, like `PD`, before changing to `R`. Once it's running, you will see that slurm directly writes the output to the excercise directories, e.g., you will see `em.gro`, `em.trr`, and other output files appearing in `step1_em`, `nvt_1.log`, `nvt_1.gro` etc. in `step2_nvt`, and so on. Now that the job is submitted and running, you can log out from Baobab without risking to lose it. For the GPCRs exercises, the time needed to complete the whole equilibration phase (steps 1 to 3) is of about two hours, while to complete the production it will take roughly five days, so a total of five days overall.
+The `R` under the column `ST` (for *status*) stands for *running*. Usually, the job stays in the queue with some other status, like `PD`, before changing to `R`. Once it's running, you will see that slurm directly writes the output to the excercise directories, e.g., you will see `em.gro`, `em.trr`, and other output files appearing in `step1_em`, `nvt_1.log`, `nvt_1.gro` etc. in `step2_nvt`, and so on. Now that the job is submitted and running, you can log out from Baobab without risking to lose it. For the GPCRs exercises, the time needed to complete the whole equilibration phase (steps 1 to 3) is of about two hours, while to complete the production it will take roughly two days, so a total of two days overall.
 
 ### A look at the process of equilibration
 Differently from the Lysozyme tutorial, here you can see that the NVT and NPT simulations are not unique, but they consist of several steps each, which are run one after the other. For the sake of completeness, you can take a look at the various `nvt_X.mdp` and `npt_X.mdp` files. As for the other files, the lines starting with `;` are comments, that is, they are ignored by GROMACS and are usuful only for human readers to organize the code.
@@ -376,12 +375,12 @@ Let's take a look at a few key entries in the mdp file.
 ;---------------------------------------------
 integrator               = md
 dt                       = 0.002
-nsteps                   = 125000
+nsteps                   = 50000
 [...]
 ```
-Here you are asking GROMACS to use a [leapfrog integrator](https://en.wikipedia.org/wiki/Leapfrog_integration) by setting `integrator = md`. The integration is performed with a time step `dt` of 0.002 ps, that is, 2 fs, which is the standard for this type of simulations. Lastly, the integration is performed for 125000 steps, as set by `nsteps`, that is, `125000 x 0.002 ps = 250ps`. You can see that the number of steps is relatively short with respect to the production run, as reported in the `prod.mdp` parameters file.
+Here you are asking GROMACS to use a [leapfrog integrator](https://en.wikipedia.org/wiki/Leapfrog_integration) by setting `integrator = md`. The integration is performed with a time step `dt` of 0.002 ps, that is, 2 fs, which is the standard for this type of simulations. Lastly, the integration is performed for 50000 steps, as set by `nsteps`, that is, `50000 x 0.002 ps = 100ps`. You can see that the number of steps is relatively short with respect to the production run, as reported in the `prod.mdp` parameters file.
 
-The other most important section is the one where you set the thermostat and barostat settings. For the NVT runs, you have the thermostat that controls the temperature and the parameters look something like this
+The other most important section is the one where you set the thermostat and barostat settings. For the NVT runs, you have the thermostat that controls the temperature and the parameters look something like this (for `nvt_6.mdp`)
 ```
 [...]
 ;----------------------------------------------
@@ -389,22 +388,22 @@ The other most important section is the one where you set the thermostat and bar
 ;----------------------------------------------
 ; >> Temperature
 tcoupl                   = v-rescale
-tc-grps                  = Protein_and_memb Water_and_ions
-tau_t                    = 0.5                   0.5
-ref_t                    = 300                   300
+tc-grps                  = Protein non-Protein
+tau_t                    = 0.5     0.5
+ref_t                    = 300     300
 ; >>  Pressure
 pcoupl                   = no
 [...]
 ```
-The thermostat is connected separately to the two phases of your system, and they are both thermalised at 300K (set by `ref_t`). You can recognise the separate groups that you generated in the index file before (as specified by `tc-grps`). GROMACS uses these names to recognise which part of the system it has to thermalize (in fact you can see that in the `gmx grompp` commands inside the `sbatch_me.sh` script you are also passing the index file with the flag `-n index.ndx`). Notice how there is no pressure coupling (`pcouple = no`). For the NPT runs, instead, the barostat is activated and the box can oscillate and change its volume. You can see the parameters of the barostat in the `THERMOSTAT AND BAROSTAT` sections for any of the `npt_X.mdp` file.
+The thermostat is connected separately to the two phases of your system. As for the GPCRs systems, the components in the box are coupled separately to the thermostat to achieve better thermostatting (as specified by `tc-grps`). However, differently from the GPCRs, you didn't have to produce an index file here because the names you are using for the groups are standard ones that are automatically recognised by GROMACS.. Notice how there is no pressure coupling (`pcouple = no`). For the NPT runs, instead, the barostat is activated and the box can oscillate and change its volume. You can see the parameters of the barostat in the `THERMOSTAT AND BAROSTAT` sections for any of the `npt_X.mdp` file.
 ```
 [...]
 ; >>  Pressure
 pcoupl                   = C-rescale
-pcoupltype               = semiisotropic
+pcoupltype               = isotropic
 tau-p                    = 1.0
-compressibility          = 4.5e-5  4.5e-5
-ref-p                    = 1.0     1.0
+compressibility          = 4.5e-5
+ref-p                    = 1.0
 [...]
 ```
 The reason why there are several NVT and NPT sub-phases is that the system should be relaxed gradually, otherwise it might distort the starting configuration, which would be detrimental - if not deadly - for the behaviour of complex proteins such as GPCRs embedded in lipid bilayers. This can be achieved by putting so-called *restraints* on specific atoms of the system to restrain them in space, that is, to not let them move too much. This behaviour is controlled by the parameters defined under the `POSITION RESTRAINTS` section, as in the following example taken from `nvt_1.mdp`
@@ -413,10 +412,10 @@ The reason why there are several NVT and NPT sub-phases is that the system shoul
 ;---------------------------------------------
 ; POSITION RESTRAINTS
 ;---------------------------------------------
-define                    = -DPOSRES_PRO -DPOSRES_FC_SC=1000 -DPOSRES_FC_BB=1000 -DPOSRES_LIP -DRES_LIP_K=1000
+define                    = -DPOSRES_PRO -DPOSRES_FC_SC=500 -DPOSRES_FC_BB=1000 -DPOSRES_IONS -DPOSRES_MG=1000 -DPOSRES_LIG=1000
 [...]
 ```
-The technical implementation and the specific meaning of these parameters is beyond the scope of this tutorial. The take at home message is that, due to the restraints, at the beginning both the lipids and the protein can't really move freely in space, but water can. In this way you can thermalize first the water molecules. Then, gradually, the restraints on the atoms of the system are decreased to let the whole system equilibrate. You can check the values of the parameters in the `POSITION RESTRAINTS` of the `nvt_X.mdp` and `npt_X.mdp` files; you will see that they gradually decrease up to disappearing in the last NPT equilibration.
+The technical implementation and the specific meaning of these parameters is beyond the scope of this tutorial. The take at home message is that, due to the restraints, at the beginning both the ligand and the protein (and the MG ion for the ANP system) can't really move freely in space, but water can. In this way you can thermalize first the water molecules. Then, gradually, the restraints on the atoms of the system are decreased to let the whole system equilibrate. You can check the values of the parameters in the `POSITION RESTRAINTS` of the `nvt_X.mdp` and `npt_X.mdp` files; you will see that they gradually decrease up to disappearing in the last NPT equilibration. You can also see that the `nvt_X.mdp` files actually have an increasing temperature, so that the system is thermalized gradually to avoid distorsions of the experimentally-resolved binding site.
 
 The production run is usually simulated without restraints at all, and in fact there is no restraint defined in `prod.mdp`, as you would like to simulate the 'natural' behaviour of the system. In this tutorial, the [statistical ensemble](https://en.wikipedia.org/wiki/Ensemble_(mathematical_physics)) of the production run is still the isothermal-isobaric ensemble (NPT), as you can see from the `prod.mdp` file since both the thermostat and the barostat are active. It is informally called *production* because it is the part of the simulation that is used most of the times for the analysis, as it comes after the equilibration and it is supposed to be well relaxed.
 
