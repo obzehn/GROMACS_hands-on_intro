@@ -2,7 +2,7 @@
 ## A cheat sheet for running GROMACS on Baobab
 This page is a simple summary of a few key commands to run molecular dynamics (MD) simulations with [GROMACS](https://www.gromacs.org/) on [Baobab](https://doc.eresearch.unige.ch/hpc/start), a high performance computer at the University of Geneva. It has been written as a support for the hands-on session within the *Advanced course modeling*, which focuses on the [*Lysozyme in water*](http://www.mdtutorials.com/gmx/lysozyme/) tutorial. Nevertheless, the general concepts about allocating and running jobs can be directly applied to run other MD simulations on Baobab, such as those presented in the excellent [suite of tutorials](http://www.mdtutorials.com/gmx/index.html) from which the one presented in this lecture is taken. Some of the key words presented here are highlighted hyperlinks to web pages that describe in depth some of the fundamental concepts in GROMACS and, more generally, in the high performance computing field.
 
-This tutorial is supposed to provide you with a basic understanding sufficient to run interactive jobs on Baobab with GROMACS sourced. You are then expected to familiarise with a simple system like the Lysozyme in water suggested in the latter. Finally, we also provide the basic instructions and files to run a few [GPCRs systems](https://github.com/obzehn/GROMACS_hands-on_intro/tree/main/GPCRs) and [malaria-target](https://github.com/obzehn/GROMACS_hands-on_intro/tree/main/Malaria_targets) systems as main topics of the exam to familiarise with protein-membrane and protein-ligand systems, respectively.
+This tutorial is supposed to provide you with a basic understanding sufficient to run interactive jobs on Baobab with GROMACS sourced. You are then expected to familiarize with a simple system like the Lysozyme in water suggested in the latter. Finally, we also provide the basic instructions and files to run a few [GPCRs systems](https://github.com/obzehn/GROMACS_hands-on_intro/tree/main/GPCRs) and [malaria-target](https://github.com/obzehn/GROMACS_hands-on_intro/tree/main/Malaria_targets) systems as main topics of the exam to get your hands dirty with some protein-membrane and protein-ligand systems, respectively.
 
 ## Allocating an interactive job
 On [high-performance computing (HPC)](https://en.wikipedia.org/wiki/High-performance_computing) systems, such as Baobab, the jobs submitted by the users are handled by a so-called queueing system, which ensures that every job has the necessary resources and regulates the users queue. Baobab’s queueing system is [slurm](https://slurm.schedmd.com/overview.html), which permits both interactive and non-interactive sessions. Most of the times MD simulations do not necessitate any interactivity. In these cases jobs are submitted by providing a *submission script* to Slurm via the [`sbatch`](https://slurm.schedmd.com/sbatch.html) command. The queueing system will then queue the job and run it as soon as the requested resources are available. However, given that the meaning of this lecture is to go through the pipeline of setting up and running a MD simulation, in our case the jobs will be interactive. This means that Slurm will find the resources requested by the job, allocate them, and log you in on the corresponding *node*, that is, a computer that has the hardware specs that you requested. As such, if you quit the interactive session, e.g. by logging off the allocated node and going back to the head node or by closing the ssh session, you will have to allocate and queue again to re-open the interactive session.
@@ -11,7 +11,7 @@ First of all, you need to [`ssh`](https://man.openbsd.org/ssh) to Baobab via the
 ```
 ssh -X username@login1.baobab.hpc.unige.ch
 ```
-Insert your password. You should now be logged in on Baobab, which is confirmed by the beginning of your terminal line that will look something like this
+Insert your password. You should now be logged in on the head node of Baobab, calles `login1`, which is confirmed by the beginning of your terminal line that will look something like this
 ```
 (baobab)-[username@login1 ~]$
 ```
@@ -19,11 +19,11 @@ Now you can allocate an interactive job via Slurm by running the following comma
 ```
 salloc --ntasks=1 --cpus-per-task=8 --gpus=1 --partition=private-gervasio-gpu --time=180:00
 ```
-The flags specify what type of resources you need. There are [many flags](https://slurm.schedmd.com/salloc.html) available in Slurm to describe your necessities and allocate the correct amount of resources for your job. In our case these are
+The flags specify what type of resources you need. There are [many flags](https://slurm.schedmd.com/salloc.html) available in Slurm to describe your necessities and allocate the correct amount of resources for your job. In this case the flags are
 * **--ntasks=1** sets the number of [tasks](https://simple.wikipedia.org/wiki/Task_(computers))
 * **--cpus-per-task=8** sets the number of [CPUs](https://en.wikipedia.org/wiki/Central_processing_unit) per task
 * **--gpus=1** sets the number of [GPUs](https://en.wikipedia.org/wiki/Graphics_processing_unit)
-* **--partition=private-gervasio-gpu** sets the partition that has to be used, e.g. the name of the domain where to look for resources
+* **--partition=private-gervasio-gpu** sets the partition that has to be used, that is, the name of the domain where to look for resources
 * **--time=180:00** sets the time allocated for the job (three hours)
 
 Slurm will then queue your request. Depending on the queuing situation and on the requested resources, the job should ideally start within a few seconds. You will notice that Slurm changes your location from the head node (`login1`) of the cluster to the allocated GPU node, switch that you can also notice by the change in the terminal line header that now reads as
@@ -33,32 +33,32 @@ Slurm will then queue your request. Depending on the queuing situation and on th
 where `xxx` is a number indicating in which GPU node you are logged in.
 
 ## Loading GROMACS
-At this point you are logged in and the GPU node is available to you for the time specified in the previous command or up to when you log out of it. However, the nodes are virgin of any software, as having all of them always available and installed on each node would be useless and impossible to maintain properly. This means that you have to request specifically what type of software you need, which will also depend on the type of node you have allocated. For example, if you want to use software based on GPU acceleration, as with GROMACS in our case, you have to request a node that has GPUs available (we did it with the `--gpus=1` flag). Moreover, if the software has some dependencies, i.e., it relies on other software to work properly, then you have to load those dependencies first. Again, this is the case of GROMACS, which depends on other software to exploit the hardware available on HPC clusters.
+At this point you are logged in and the GPU node is available to you for the time specified in the previous command or up to when you log out of it. However, the nodes are virgin of any software, as having all programs always available and installed on each node would be useless and impossible to maintain properly. This means that you have to request specifically what type of software you need, which will also depend on the type of node you have allocated. For example, if you want to use software based on GPU acceleration, as with GROMACS in this case, you have to request a node that has GPUs available (you did it with the `--gpus=1` flag). Moreover, if the software has some dependencies, i.e., it relies on other software to work properly, then you have to load those dependencies first. Again, this is the case of GROMACS, which depends on other software to exploit the hardware available on HPC clusters.
 
-Unfortunately, both software and hardware have been growing in complexity over the years, and the zoo of interactions and dependencies has consequently exploded. For the sake of curiosity, you can simply take a look at the [plethora of options](https://manual.gromacs.org/documentation/current/install-guide/index.html) available for the installation of GROMACS. Things get even more complicated when working on HPC clusters, since some of these options are architecture dependent, i.e., they can work on some nodes but not on others, and seldom cannot be solved by “normal” users like us that lack the permissions to modify core functionalities of the cluster itself. The installation of GROMACS – and of its corollary software – is way beyond the scope of this lecture, but it is worth taking a look at the complexity of these structures to better appreciate *why* the usage of high throughput scientific software is far from trivial.
+Unfortunately, both software and hardware have been growing in complexity over the years, and the zoo of interactions and dependencies has consequently exploded. For the sake of curiosity, you can simply take a look at the [plethora of options](https://manual.gromacs.org/documentation/current/install-guide/index.html) available for the installation of GROMACS. Things get even more complicated when working on HPC clusters, since some of these options are architecture dependent, i.e., they can work on some nodes but not on others, and seldom cannot be solved by “normal” users that lack the permissions to modify core functionalities of the cluster itself. The installation of GROMACS – and of its corollary software – is way beyond the scope of this lecture, but it is worth taking a look at the complexity of these structures to better appreciate *why* the usage of high throughput scientific software is far from trivial.
 
-Fortunately for you, a GROMACS installation for this tutorial is already available. Thus, it is sufficient to `source` it, that is, to tell to the terminal where GROMACS files are located. Very roughly speaking, this means that you load on your terminal the command keywords that refer to the software you need (if you are curious, just type `gmx --version` on your terminal – what answer do you get?). However, as just introduced, we have to first load GROMACS dependencies, which in our case means executing these following commands one after the other
+Fortunately for you, a GROMACS installation for this tutorial is already available. Thus, it is sufficient to `source` it, that is, to tell to the terminal where GROMACS files are located. Very roughly speaking, this means that you load on your terminal the command keywords that refer to the software you need (if you are curious, just type `gmx --version` on your terminal – what answer do you get?). However, as just introduced, you have to first load GROMACS dependencies, which in this cluster means executing the following commands one after the other
 ```
 module load GCC/11.3.0
 module load OpenMPI/4.1.4
 module load CUDA/11.7.0
 ```
-and lastly we load GROMACS with the following
+and lastly load GROMACS with the following
 ```
 module load GROMACS/2023.1-CUDA-11.7.0
 ```
-The `module load` commands load specific packages that were used for GROMACS installation and that are needed for running it properly. The first four lines load [GCC](https://gcc.gnu.org/), a C/C++ compiler (among others), [OpenMPI](https://www.open-mpi.org/), a parallelization interface that permits to run parallel jobs on several threads and/or nodes, [CUDA](https://developer.nvidia.com/cuda-toolkit), a library to exploit GPU acceleration. Finally, we source GROMACS.
+The `module load` commands load specific packages that were used for GROMACS installation and that are needed for running it properly. The first four lines load [GCC](https://gcc.gnu.org/), a C/C++ compiler (among others), [OpenMPI](https://www.open-mpi.org/), a parallelization interface that permits to run parallel jobs on several threads and/or nodes, [CUDA](https://developer.nvidia.com/cuda-toolkit), a library to exploit GPU acceleration. Finally, you source GROMACS, that now can work properly as all the software on which it depends is already loaded and available.
 
 You can verify that GROMACS has been correctly sourced by running again the following
 ```
 gmx --version
 ```
-You should get as an answer an outline of GROMACS installation. Again, this offers a quick glimpse of the number of links and dependencies that needs to be satisfied to make these software run smoothly and optimally.
+You should get as an answer an outline of GROMACS installation. Again, this offers a quick glimpse of the number of links and dependencies that need to be satisfied to make scientific software run smoothly and optimally.
 
 ## Running GROMACS and moving data
 You are now logged in a GPU node and have a clean GROMACS installation sourced. In principle, you can follow the tutorial. There are, however, a couple of points that is worth commenting before starting to run simulations properly.
 
-First and foremost, you won’t have a proper graphic interface on the GPU node, that is, you will not have windows opening and the interactions are mainly mediated by the keyboard in the terminal rather than by clicking with the mouse on icons as in most of our daily experience of computers. As such, you will have to navigate between directories and move/copy files via the terminal. The first times it can be a bit overwhelming and may feel confusing. Resources like [StackOverflow](https://stackoverflow.com/) (and chatbots) contain a wealth of information and explanations, and it is more than likely that someone had your same problem beforehand.
+First and foremost, you won’t have a proper graphic interface on the GPU node, that is, you will not have windows opening and the interactions are mainly mediated by the keyboard in the terminal rather than by clicking with the mouse on icons, as in most of your daily experience of computers. As such, you will have to navigate between directories and move/copy files via the terminal. The first times it can be a bit overwhelming and may feel confusing. Resources like [StackOverflow](https://stackoverflow.com/) (and chatbots) contain a wealth of information and explanations, and it is more than likely that someone had your same problem beforehand.
 
 This being said, it is worth pointing out a couple of commands that you might need to begin the tutorial. The first is [`wget`](https://ftp.gnu.org/old-gnu/Manuals/wget-1.8.1/html_mono/wget.html), and you will need it to download files from a web address. At the beginning of the tutorial, you will be asked to go to the [RCSB](https://www.rcsb.org/) website and download the protein data bank file `1AKI.pdb`. To do this, just follow the steps locally on your browser, but rather than downloading the file, right-click on the download option and copy the link address to that file.
 
@@ -86,12 +86,12 @@ scp -r ./Simulations username@login1.baobab.hpc.unige.ch:/home/users/u/username/
 This will upload `Results` to your home directory in Baobab.
 
 ## Plotting
-During the tutorial, you will be asked to take a look at some quantities of interest by plotting them. Many plotting software exist, spacing from more barebone [fast in-line plotters](https://plasma-gate.weizmann.ac.il/Grace/) to [sophisticated libraries](https://matplotlib.org/) with thousands of options, perfectly suited for high-end publication images. Within this tutorial, we are going to use [`gnuplot`](http://www.gnuplot.info/) since it is already installed and working on Baobab’s nodes. Let’ suppose `data.xvg` is a text file containing two columns of data, such as the position of an atom as a function of it’s time, and you want to take a look at it. Then, you just run the following
+During the tutorial, you will be asked to take a look at some quantities of interest by plotting them. Many plotting programs exist, spacing from more barebone [fast in-line plotters](https://plasma-gate.weizmann.ac.il/Grace/) to [sophisticated libraries](https://matplotlib.org/) with thousands of options, perfectly suited for high-end publication images. Within this tutorial, you can use [`gnuplot`](http://www.gnuplot.info/) since it is already installed and working on Baobab’s nodes. Let’ suppose `data.xvg` is a text file containing two columns of data, such as the position of an atom as a function of time, and you want to take a look at it. Then, you just run the following
 ```
 gnuplot
 plot ’data.xvg’ u 1:2 w l
 ```
-which means first launch `gnuplot`, then plot the data contained in the file `data.xvg` using the first and the second columns (`u 1:2`) as x and y, and connect the points with lines (`w l`). Now, let’s say you have three columns, with the first being the time and the second and third the position of two atoms, and you want to compare them. Then the plotting command (within `gnuplot`), becomes
+which means first launch `gnuplot`, then plot the data contained in the file `data.xvg` using the first and the second columns (`u 1:2`) as x and y, and connecting the points with lines (`w l`). Now, let’s say you have three columns, with the first being the time and the second and third the position of two atoms, and you want to compare them. Then the plotting command (within `gnuplot`) becomes
 ```
 plot ’data.xvg’ u 1:2 w l, '' u 1:3 w l
 ```
@@ -99,7 +99,7 @@ where the addition `''` means to take the next data points from the same file re
 ```
 plot ’data.xvg’ u 1:2 w l, ’otherdata.xvg’ u 1:2 w l
 ```
-There are many other options, which are summarised in the software’s manual, like how to name the axis, change the colour of the data points, or change the legend entries, and that you are free to explore them depending on your plotting necessities. Finally, you can exit gnuplot by typing `q` (for quit) or `exit`.
+There are many other options, which are summarised in the software’s manual, like how to name the axis, change the colour of the data points, or change the legend entries. You are free to explore them depending on your plotting necessities. Finally, you can exit gnuplot by typing `q` (for *quit*) or `exit`.
 
 ## Making your life easier – ssh configuration
 If you think that writing and running `ssh username@login1.baobab.hpc.unige.ch` every time you need to connect to Baobab is boring and error prone, then there is a simple work around that can make your life easier. In your home directory you should have a directory name `.ssh`. First of all, `cd` into the directory and list what is inside
@@ -111,7 +111,7 @@ The directory will be most likely empty. If no file with the name `config` exist
 ```
 touch config
 ```
-and open `config` with your favorite text editor (`vi`, `vim`, `nano`, `gedit`, etc.). If the file exists already, just open it. Then, add the following lines 
+and open `config` with your favorite text editor (`vi`, `vim`, `nano`, `gedit`, etc.). If the file exists already, just open it. Then, at the end of it, add the following lines 
 ```
 Host baobab
     Hostname login1.baobab.hpc.unige.ch
@@ -120,7 +120,7 @@ Host baobab
     ForwardX11 yes
     ForwardX11Trusted yes
 ```
-Substitute `username` with your username. Here, I am calling this host `baobab`, for obvious reasons. Now, when you use the `ssh` command, you can just call the name of the host, that is you can just run the following 
+Substitute `username` with your username. Here, this host is called `baobab`, for obvious reasons. Now, when you use the `ssh` command, you can just call the name of the host, that is you can just run the following 
 ```
 ssh baobab
 ```
