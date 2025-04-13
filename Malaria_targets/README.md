@@ -185,6 +185,241 @@ You have to add the name of the water in the box (`SOL`) and the number reported
 
 At this point, the structure of the solvated system is contained in `reference_topology_PKG_HOLO_ANP_solvated.gro`, while its topology in `reference_topology_PKG_HOLO_ANP_solvated.top`.
 
+### Adding ions
+You are now ready to add the ions in the system. First, you need to generate a `.tpr` file, which is a binary file that GROMACS can read to understand the charges of the different molecules in the system and select automatically how many ions should be added. You can do this by using `gmx grompp` and pointing to the parameters file `ionize.mdp` with the flag `-f`, to the starting solvated structure `reference_topology_PKG_HOLO_ANP_solvated.gro` with the flag `-c`, to the solvated topology `reference_topology_PKG_HOLO_ANP_solvated.top` with the flag `-p`, and finally name the output tpr file `ionize.tpr` with the flag `-o`
+```
+gmx grompp -f ionize.mdp -c reference_topology_PKG_HOLO_ANP_solvated.gro -p reference_topology_PKG_HOLO_ANP_solvated.top -o ionize.tpr
+```
+You will see that for some systems this command will fail with a fatal error. If you look at the error, you can see a section with the following information
+```
+NOTE 2 [file reference_topology_PKG_HOLO_ANP_solvated.top, line 15]:
+  System has non-zero total charge: -3.000000
+  Total charge should normally be an integer. See
+  http://www.gromacs.org/Documentation/Floating_Point_Arithmetic
+  for discussion on how close it should be to an integer.
+
+WARNING 1 [file reference_topology_PKG_HOLO_ANP_solvated.top, line 15]:
+  You are using Ewald electrostatics in a system with net charge. This can
+  lead to severe artifacts, such as ions moving into regions with low
+  dielectric, due to the uniform background charge. We suggest to
+  neutralize your system with counter ions, possibly in combination with a
+  physiological salt concentration.
+```
+Basically, a tpr file is used to run simulations. As such, when GROMACS tries to prepare one through `gmx grompp`, it check if the physics of the system is reasonable or not. In this case, it found that your system has a net charge of -3, and is telling you that this is very bad as the systems should always have zero total net charge. You can bypass this check by adding the flag `--maxwarn 1` to the command, that is, ignore one (and only one) warning
+```
+gmx grompp -f ionize.mdp -c reference_topology_PKG_HOLO_ANP_solvated.gro -p reference_topology_PKG_HOLO_ANP_solvated.top -o ionize.tpr --maxwarn 1
+```
+You will see that now GROMACS still complains, but gets the job done. It is very important, however, to understand that the ionization step is basically the **only** case in which it is okay to use the `--maxwarn` flag, as you **know** that the physics of the system is wrong and you actually need the tpr to fix it with `gmx genion`. In general, you should **never** use this flag. If there is a major warning and a GROMACS command fails, then you have to check why and fix the problem. You may be tempted to use `--maxwarn` to get through errors you do not understand, and the flag will let you do it. Nevertheless, the simulatiom will probably fail istantly the moment you try to run it, and, if not, you are likely to produce garbage results due to overlooking fundamental physics mistakes in the box preparation.
+
+Now, you should have a `ionize.tpr` file in your directory, following the `gmx grompp` command. You are ready to insert the ions with the following command
+```
+gmx genion -s ionize.tpr -neutral -pname NA -nname CL -o start.gro
+```
+Here, you are asking GROMACS to make the system neutral (`-neutral`), call the positive ions `NA`, the negative ions `CL`, and call the resulting output `start.gro`. Trivially, within this force field the atoms NA and CL refer to sodium (Na, +1) and chlorine (Cl, -1) ions. Again, differently from the Lysozyme tutorial, you are not giving as input the topology and you will update it after the addition of ions. With `gmx genion`, GROMACS tries to substitute some molecules in the system with the necessary number of ions. You will be promted by GROMACS to choose which part of the system you are okay to substitute in favour of water molecules
+```
+Will try to add 3 NA ions and 0 CL ions.
+Select a continuous group of solvent molecules
+Group     0 (         System) has 146642 elements
+Group     1 (        Protein) has 12857 elements
+Group     2 (      Protein-H) has  6392 elements
+Group     3 (        C-alpha) has   797 elements
+Group     4 (       Backbone) has  2392 elements
+Group     5 (      MainChain) has  3191 elements
+Group     6 (   MainChain+Cb) has  3933 elements
+Group     7 (    MainChain+H) has  3973 elements
+Group     8 (      SideChain) has  8884 elements
+Group     9 (    SideChain-H) has  3201 elements
+Group    10 (    Prot-Masses) has 12857 elements
+Group    11 (    non-Protein) has 133785 elements
+Group    12 (            Ion) has     1 elements
+Group    13 (          Other) has    44 elements
+Group    14 (             MG) has     1 elements
+Group    15 (            ANP) has    44 elements
+Group    16 (          Water) has 133740 elements
+Group    17 (            SOL) has 133740 elements
+Group    18 (      non-Water) has 12902 elements
+Group    19 ( Water_and_ions) has 133741 elements
+Select a group: 
+```
+From the first line you can see that GROMACS understood that the system has a total of -3 charge and will then need three positive ions to have a total of zero net charge. Since you do not want to substitute any part of the protein or the ligand with ions, choose the `SOL` group, the number 17, and GROMACS will randomly choose seven water molecules, remove them and place there a sodium ion.
+```
+Select a group: 17
+Selected 17: 'SOL'
+Number of (3-atomic) solvent molecules: 44580
+Using random seed -17319946.
+Replacing solvent molecule 3201 (atom 22505) with NA
+Replacing solvent molecule 2493 (atom 20381) with NA
+Replacing solvent molecule 18348 (atom 67946) with NA
+```
+As for the solvation, you need now to update the topology as some water molecules have been removed and some sodium ions have been added. Start by copying the solvated topology into a new topology called `topol.top`
+```
+cp reference_topology_PKG_HOLO_ANP_solvated.top topol.top
+```
+and change the `[ molecules ]` section by removing the three water molecules from the total and adding the three sodium ions (`NA`)
+```
+[...]
+[ molecules ]
+; Compound         #mols
+PKG                    1
+MG                     1
+ANP                    1
+SOL                44577
+NA                     3
+```
+
+If the `gmx grompp` command didn't fail, it is because the system has already total charge equal zero. Thus, when you run the `gmx genion -s ionize.tpr -neutral -pname NA -nname CL -o start.gro`, GROMACS will not prompt you asking which part of the system you want to substitute in favour of ions, as there are no ions to add, and the output will look like this
+```
+No ions to add, will just copy input configuration
+```
+Basically, you have copied the configuration stored in `ionize.tpr`, which is the one in `reference_topology_PKG_HOLO_ANP_solvated.gro`, and called it `start.gro`. You can now copy the topology and call it `topol.top`, but you do not have to update it as no water molecules have been removed and no ions have been added, and you are good to go.
+
+Summarising, you now have the starting solvated and neutralised configuration stored in `start.gro` and the corresponding topology in `topol.top`. You can take a look at the final system with VMD. It should look similar to that shown in Figure 3.
+
+## Run the simulation
+### A look at the `sbatch_me.sh` file
+Whether you completed the tutorial or you moved the corresponding files from the `solution_files` directory, now the content of the excercise directory should be similar to this
+```
+GPCR_structure_X_excercise
+│   sbatch_me.sh
+│   index.ndx
+│   start.gro
+│   topol.top
+│
+└─── forcefield
+│
+└─── step1_em
+│   │   em.mdp
+│
+└─── step2_nvt
+│   │   [various nvt.mdp files]
+│
+└─── step3_npt
+│   │   [various npt.mdp files]
+│
+└─── step4_prod
+    │   prod.mdp
+```
+plus the `solution_files` directory and some leftover files from the system generation. It is mandatory that `sbatch_me.sh`, `index.ndx`, `start.gro`, and `topol.top` are together in the same directory in which there are the energy minimization, NVT, NPT, and production directories, otherwise the script `sbatch_me.sh` won't be able to run the simulations for you.
+
+During both the Lysozyme tutorial and the preparation of the box for this excercise, you logged in a Baobab node by using the `salloc` command. In this way you can have access to a node and run an interactive job. This is nice because you can have real time answers from the node and you see clearly what is going on and what you are doing, which is pivotal for error-prone procedures like the generation of the starting box. However, when you close the connection, log out from Baobab, or simply turn off the computer, you lose the access to the computer and any running simulation will stop. Does this mean that you should be always connected? And that you should stay constantly in front of your computer, even for a few days at a time, while the simulations run, scared or losing the internat connection and see your runs fail?
+
+Clearly this is not the case. As explained also in the [first part](https://github.com/obzehn/GROMACS_hands-on_intro/tree/main?tab=readme-ov-file#allocating-an-interactive-job) of this tutorial, Baobab has a so-called queueing system, named [slurm](https://slurm.schedmd.com/overview.html). With slurm, you can prepare a *submission script* which contains the main commands that you want to run alongside the resources that you need. This is exactly what the `sbatch_me.sh` script is.
+
+You can look at the content of the `sbatch_me.sh` with a text editor. The first lines look like this
+```
+#!/bin/bash 
+
+#SBATCH --account=gervasio_teach_19h330
+#SBATCH --partition=private-gervasio-gpu
+#SBATCH --time 144:00:00
+#SBATCH --job-name GPCR1
+#SBATCH --error jobname-error.e%j
+#SBATCH --output jobname-out.o%j
+#SBATCH --ntasks 1
+#SBATCH --cpus-per-task 16
+#SBATCH --nodes 1
+#SBATCH --gpus-per-node=nvidia_geforce_rtx_3080:1
+#SBATCH --hint=nomultithread
+
+[...]
+```
+You can recognise some of the flags that you were giving to the `salloc` command, such as `--partition=private-gervasio-gpu` and `--cpus-per-task 16`. Basically these lines are specifying which kind of hardware you need to run the simulations. If you are curious, you can loook up their meaning in the slurm website.
+
+Slurm reads this files and sends you in a queue while it waits to find some computer that is available and that has the requested hardware. When it finds it, it takes control of it for the amount of time specified in `--time 144:00:00`, that is, six days. This amount of time will be sufficient to both conclude the equilibration and the production runs. As in the interactive case, the first thing to do once the node is allocated is to source GROMACS, which is the first thing done by the script with the lines following the `#SBATCH` node requests, i.e., with the following
+```
+[...]
+module load GCC/11.3.0
+module load OpenMPI/4.1.4
+module load CUDA/11.7.0
+module load GROMACS/2023.1-CUDA-11.7.0
+[...]
+```
+Then there are a few technical details about how GROMACS should use the available resources to run the simulations with `gmx mdrun` (e.g. `-ntmpi`, `-ntomp`, etc.).
+
+Lastly, there are a series of commands that enter the `step1_em`, `step2_nvt`, `step3_npt`, and `step4_prod` directories and systematically run the `gmx grompp` commands to prepare the corresponding tpr files and then run them with `gmx mdrun`.
+
+You can send the submission script `sbatch_me.sh` and let slurm handle the simulations by using the [sbatch](https://slurm.schedmd.com/sbatch.html) command. This command should be run from Baobab's headnode, and not from the node that you received by running the `salloc`. Thus, if your command line still looks like this
+```
+(baobab)-[username@cpuxxx some_directory_name] $
+```
+type `exit` to exit the node. Once the terminal looks like this
+```
+(baobab)-[username@login1 some_directory_name]$
+```
+e.g., your `username` is logged in on `login1`, the headnode of Baobab, and not on some `cpuxxx` or `gpuxxx` node, you are good to go. From the `GPCR_structure_X_excercise` directory, that is, where the submission script `sbatch_me.sh` is located, you can submit it to slurm with the following command
+```
+sbatch sbatch_me.sh
+```
+If the command runs successfully, slurm returns the number that is assigned to your job, something like this
+```
+Submitted batch job 16567322
+```
+You can check the status of the job by running the following command (and substituting `username` with yours)
+```
+squeue -u username
+```
+The output will look something like this
+```
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          16567322 private-g    GPCR1 username  R       0:55      1 gpu037
+```
+The `R` under the column `ST` (for *status*) stands for *running*. Usually, the job stays in the queue with some other status, like `PD`, before changing to `R`. Once it's running, you will see that slurm directly writes the output to the excercise directories, e.g., you will see `em.gro`, `em.trr`, and other output files appearing in `step1_em`, `nvt_1.log`, `nvt_1.gro` etc. in `step2_nvt`, and so on. Now that the job is submitted and running, you can log out from Baobab without risking to lose it. For the GPCRs exercises, the time needed to complete the whole equilibration phase (steps 1 to 3) is of about two hours, while to complete the production it will take roughly five days, so a total of five days overall.
+
+### A look at the process of equilibration
+Differently from the Lysozyme tutorial, here you can see that the NVT and NPT simulations are not unique, but they consist of several steps each, which are run one after the other. For the sake of completeness, you can take a look at the various `nvt_X.mdp` and `npt_X.mdp` files. As for the other files, the lines starting with `;` are comments, that is, they are ignored by GROMACS and are usuful only for human readers to organize the code.
+
+Let's take a look at a few key entries in the mdp file.
+```
+[...]
+;---------------------------------------------
+; INTEGRATOR AND TIME
+;---------------------------------------------
+integrator               = md
+dt                       = 0.002
+nsteps                   = 125000
+[...]
+```
+Here you are asking GROMACS to use a [leapfrog integrator](https://en.wikipedia.org/wiki/Leapfrog_integration) by setting `integrator = md`. The integration is performed with a time step `dt` of 0.002 ps, that is, 2 fs, which is the standard for this type of simulations. Lastly, the integration is performed for 125000 steps, as set by `nsteps`, that is, `125000 x 0.002 ps = 250ps`. You can see that the number of steps is relatively short with respect to the production run, as reported in the `prod.mdp` parameters file.
+
+The other most important section is the one where you set the thermostat and barostat settings. For the NVT runs, you have the thermostat that controls the temperature and the parameters look something like this
+```
+[...]
+;----------------------------------------------
+; THERMOSTAT AND BAROSTAT
+;----------------------------------------------
+; >> Temperature
+tcoupl                   = v-rescale
+tc-grps                  = Protein_and_memb Water_and_ions
+tau_t                    = 0.5                   0.5
+ref_t                    = 300                   300
+; >>  Pressure
+pcoupl                   = no
+[...]
+```
+The thermostat is connected separately to the two phases of your system, and they are both thermalised at 300K (set by `ref_t`). You can recognise the separate groups that you generated in the index file before (as specified by `tc-grps`). GROMACS uses these names to recognise which part of the system it has to thermalize (in fact you can see that in the `gmx grompp` commands inside the `sbatch_me.sh` script you are also passing the index file with the flag `-n index.ndx`). Notice how there is no pressure coupling (`pcouple = no`). For the NPT runs, instead, the barostat is activated and the box can oscillate and change its volume. You can see the parameters of the barostat in the `THERMOSTAT AND BAROSTAT` sections for any of the `npt_X.mdp` file.
+```
+[...]
+; >>  Pressure
+pcoupl                   = C-rescale
+pcoupltype               = semiisotropic
+tau-p                    = 1.0
+compressibility          = 4.5e-5  4.5e-5
+ref-p                    = 1.0     1.0
+[...]
+```
+The reason why there are several NVT and NPT sub-phases is that the system should be relaxed gradually, otherwise it might distort the starting configuration, which would be detrimental - if not deadly - for the behaviour of complex proteins such as GPCRs embedded in lipid bilayers. This can be achieved by putting so-called *restraints* on specific atoms of the system to restrain them in space, that is, to not let them move too much. This behaviour is controlled by the parameters defined under the `POSITION RESTRAINTS` section, as in the following example taken from `nvt_1.mdp`
+```
+[...]
+;---------------------------------------------
+; POSITION RESTRAINTS
+;---------------------------------------------
+define                    = -DPOSRES_PRO -DPOSRES_FC_SC=1000 -DPOSRES_FC_BB=1000 -DPOSRES_LIP -DRES_LIP_K=1000
+[...]
+```
+The technical implementation and the specific meaning of these parameters is beyond the scope of this tutorial. The take at home message is that, due to the restraints, at the beginning both the lipids and the protein can't really move freely in space, but water can. In this way you can thermalize first the water molecules. Then, gradually, the restraints on the atoms of the system are decreased to let the whole system equilibrate. You can check the values of the parameters in the `POSITION RESTRAINTS` of the `nvt_X.mdp` and `npt_X.mdp` files; you will see that they gradually decrease up to disappearing in the last NPT equilibration.
+
+The production run is usually simulated without restraints at all, and in fact there is no restraint defined in `prod.mdp`, as you would like to simulate the 'natural' behaviour of the system. In this tutorial, the [statistical ensemble](https://en.wikipedia.org/wiki/Ensemble_(mathematical_physics)) of the production run is still the isothermal-isobaric ensemble (NPT), as you can see from the `prod.mdp` file since both the thermostat and the barostat are active. It is informally called *production* because it is the part of the simulation that is used most of the times for the analysis, as it comes after the equilibration and it is supposed to be well relaxed.
+
 ## References
 [^1]: El Bakkouri, M., et al. "Structures of the cGMP-dependent protein kinase in malaria parasites reveal a unique structural relay mechanism for activation." Proceedings of the National Academy of Sciences 116.28 (2019): 14164-14173. [DOI:10.1073/pnas.190555811](https://doi.org/10.1073/pnas.190555811)
 
