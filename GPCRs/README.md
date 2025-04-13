@@ -132,24 +132,24 @@ Thus, you can solvate the system with the following
 ```
 gmx solvate -cp reference_topology_GPCR_structure_1.gro -cs tip4p.gro -o GPCR_structure_1_solvated.gro
 ```
-where you are asking to add water to the structure with `-cp reference_topology_GPCR_structure_1.gro`, use as reference a four-points water model with `-cs tip4p.gro`, add call the resulting output structure `-o GPCR_structure_1_solvated.gro`. Some of you may notice that in the Lysozyme tutorial you also have to pass the topology of the system with the `-p` flag. This is not mandatory, and I prefer not to do it because the updated topology will have the same name as the input one, which is prone to errors. However, you will have to update by hand the topology to include the presence of the water molecules.
+where you are asking to add water to the structure with `-cp reference_topology_GPCR_structure_1.gro`, use as reference a four-points water model with `-cs tip4p.gro`, add call the resulting output structure `-o GPCR_structure_1_solvated.gro`. Some of you may notice that in the Lysozyme tutorial you also have to pass the topology of the system with the `-p` flag. This is not mandatory, but if you pass it then the updated topology will have the same name as the input one, which makes things harder to trace back if something goes wrong. However, if you do not pass the topology, you will have to update it by hand to include the presence of the water molecules.
 
-The (last lines of the) output of this command will look something like this
+The (last lines of the) output of the solvate command will look something like this
 ```
 [...]
 Volume                 :     1069.94 (nm^3)
 Density                :        1013 (g/l)
 Number of solvent molecules:  21053
 ```
-GROMACS tries to fill the box with water to reach the density of ca. 1g/L. The most important part here is the number of water molecules inserted, in this case `21053` (this number can oscillate slightly). In principle, you could add this number at the end of the topopolgy and you would be done with the solvation, as in the Lysozyme tutorial. However, you might think that the system has actually more than one phase (lipids and protein) and that GROMACS tried to insert water molecules in eaxh and every empty volume it could find. How did it behave near the protein? And how near the lipids? You can check with VMD.
+GROMACS tries to fill the box with water to reach the density of ca. 1g/L. The most important part here is the number of water molecules inserted, in this case `21053` (this number can oscillate slightly). In principle, you could add this number at the end of the topopolgy and you would be done with the solvation, as in the Lysozyme tutorial. However, you might think that the system has actually more than one phase (lipids and protein) and that GROMACS tried to insert water molecules in each and every empty volume it could find. How did it behave near the protein and the lipids? You can check with VMD.
 
-The results for my box are shown in Figure 2. Water has been in all places where it was possible, also between the lipids, that is not realistic as this is a strong lipophilic (non-hydrophobic) region. Generally, this is not a major problem, and within the first nanoseconds of run the water molecules get expelled naturally because of the chemical nature of the lipid tail region. Nevertheless, for delicate systems like this that involve proteins highly susceptible to not physiological starting configurations, it is better to get rid of them and clean the system before adding the ions.
+The results after solvation are shown in Figure 2. Water has been inserted in all places where it was possible, also between the lipids, which is not realistic as this is a strong lipophilic (non-hydrophobic) region. Generally, this is not a major problem, and within the first nanoseconds of run the water molecules get expelled naturally because of the chemical nature of the lipid tail region. Nevertheless, for delicate systems like this that involve proteins highly susceptible to not physiological starting configurations, it is better to get rid of them and clean the system before adding the ions.
 
-You can remove these water molecules with the `water_removal.py` Python script, which you can run with the following command
+You can remove these wrognly placed water molecules with the `water_removal.py` Python script, which you can run with the following command
 ```
 python3 water_removal.py GPCR_structure_1_solvated.gro GPCR_structure_1_solvated_clean.gro
 ```
-The script takes as input `GPCR_structure_1_solvated.gro`, check where there are overlapping water molecules with the lipids and the protein, removes them, and returns the cleaned system under the name `GPCR_structure_1_solvated_clean.gro`. For me, the output looks like this
+The script takes as input `GPCR_structure_1_solvated.gro`, check where there are overlapping water molecules with the lipids and the protein, removes them, and returns the cleaned system under the name `GPCR_structure_1_solvated_clean.gro`. The output looks something like this
 ```
 Initial number of water molecules: 21053
 Number of water molecules to be deleted: 2117
@@ -158,7 +158,7 @@ Final number of water molecules: 18936
 The script removed ca. 2000 water molecules. You can see now, in Figure 2, that the system has been cleaned and looks much more biologically sound.
 | ![Figure 2](../images/solvatedgpcr.png) |
 |:--:|
-| Figure 2 *On the left, the solvated system after `gmx solvate`. On the right, the same system after removing ca. 2000 water molecules with the `water_removal.py` script. Protein and lipids are reported in grey, while water molecules in red (oxygen) and white (hydrogen). The fourth site of this water model is in a lighter red tone, but it nearly overlaps with the water oxygen atoms, and is thus nearly invisible.* |
+| Figure 2 *On the left, the solvated system after `gmx solvate`. On the right, the same system after removing ca. 2000 water molecules with the `water_removal.py` script. Protein and lipids are reported in grey, while water molecules in red (oxygen) and white (hydrogen). The fourth site of this water model is in a lighter red tone, but it nearly overlaps with the water oxygen atoms, and is thus practically invisible.* |
 
 If you take a look at the `GPCR_structure_1_solvated_clean.gro` file, you will notice that the last lines will look like the following
 ```
@@ -169,7 +169,7 @@ If you take a look at the `GPCR_structure_1_solvated_clean.gro` file, you will n
 22246SOL     MW31352   9.411   9.580   9.371
   10.06535  10.06535  10.5608
 ```
-where `SOL` is the name of the solvent molecules, water), and each `SOL` molecule has four atoms. The box size, as expected, didn't change. You may notice that `gmx solvate` also removed the columns with the velocities. This is not a problem, as during the thermal equilibration (the NVT phase) GROMACS will calculate and reintroduce them. Moreover, when there are many atoms in the box, the space between the second and the third column disappears. For example, `OW31349` is an atom called `OW` and it's the entry number `31349`, but the space between disappeared. This also is not a problem sa long as the length of each field remains constant.
+where `SOL` is the name of the solvent molecules, water), and each `SOL` molecule has four atoms. The box size, as expected, didn't change. You may notice that `gmx solvate` also removed the columns with the velocities. This is not a problem, as during the thermal equilibration (the NVT phase) GROMACS will calculate and reintroduce them. Moreover, when there are many atoms in the box, the space between the second and the third column might disappear. For example, `OW31349` is an atom called `OW` and it's the entry number `31349`, but the space between is not present anymore. This also is not a problem sa long as the length of each field remains constant.
 
 The first lines look like before exception made for the number of atoms, which now has been updated to contain also those of water (in fact the starting dry box had 47140 atoms to which you added 18936 four-point water molecules, that is `47140 + 18936 x 4 = 122884`).
 ```
@@ -204,7 +204,7 @@ You are now ready to add the ions in the system. First, you need to generate a `
 ```
 gmx grompp -f ionize.mdp -c GPCR_structure_1_solvated_clean.gro -p reference_topology_GPCR_structure_1_solvated.top -o ionize.tpr
 ```
-You will see that this command fails with a fatal error. If you look at the error, you can see a section with the following information
+You will see that the command fails with a fatal error. If you look at the error, you can see a section with the following information
 ```
 NOTE 2 [file reference_topology_GPCR_structure_1_solvated.top, line 17]:
   System has non-zero total charge: 7.000000
@@ -223,13 +223,13 @@ Basically, a tpr file is used to run simulations. As such, when GROMACS tries to
 ```
 gmx grompp -f ionize.mdp -c GPCR_structure_1_solvated_clean.gro -p reference_topology_GPCR_structure_1_solvated.top -o ionize.tpr --maxwarn 1
 ```
-You will see that now GROMACS still complains, but gets the job done. It is very important, however, to understand that the ionization step is basically the **only** case in which it is okay to use the `--maxwarn` flag, as you **know** that the physics of the system is wrong and you actually need the tpr to fix it with `gmx genion`. In general, you should **never** use this flag. If there is a major warning and a GROMACS command fails, then you have to check why and fix the problem. You may be temped to use `--maxwarn` to get through errors you do not understand, and the flag will let you do it. Nevertheless, the simulatiom will probably fail istantly the moment you try to run it, and, if not, you are likely to produce garbage results due to overlooking fundamental physics mistakes in the box preparation.
+You will see that now GROMACS still complains, but gets the job done. It is very important, however, to understand that the ionization step is nearly the **only** case in which it is okay to use the `--maxwarn` flag, as you **know** that the physics of the system is wrong and you actually need the tpr to fix it with `gmx genion`. In general, you should **never** use this flag. If there is a major warning and a GROMACS command fails, then you have to check why and fix the problem. You may be temped to use `--maxwarn` to get through errors you do not understand, and the flag will let you do it. Nevertheless, the simulatiom will probably fail istantly the moment you try to run it, and, if not, you are likely to produce garbage results due to overlooking fundamental physics mistakes in the box preparation.
 
 Now, you should have a `ionize.tpr` file in your directory, following the `gmx grompp` command. You are ready to insert the ions with the following command
 ```
 gmx genion -s ionize.tpr -neutral -pname NA -nname CL -o start.gro
 ```
-Here, you are asking GROMACS to make the system neutral (`-neutral`), call the positive ions `NA`, the negative ions `CL`, and call the resulting output `start.gro`. Trivially, within this force field the atoms NA and CL refer to sodium (Na, +1) and chlorine (Cl, -1) ions. Again, differently from the Lysozyme tutorial, you are not giving as inpu the topology and you will update it after the addition of ions. With `gmx genion`, GROMACS tries to substitute some molecules in the system with the necessary number of ions. You will be promted by GROMACS to choose which part of the system you are okay to substitute in favour of water molecules
+Here, you are asking GROMACS to make the system neutral (`-neutral`), call the positive ions `NA`, the negative ions `CL`, and call the resulting output `start.gro`. Trivially, within this force field the atoms NA and CL refer to sodium (Na, +1) and chlorine (Cl, -1) ions. Again, differently from the Lysozyme tutorial, you are not giving as input the topology and you will update it after the addition of ions. With `gmx genion`, GROMACS tries to substitute some molecules in the system with the necessary number of ions. You will be promted by GROMACS to choose which part of the system you are okay to substitute in favour of water molecules
 ```
 Will try to add 0 NA ions and 7 CL ions.
 Select a continuous group of solvent molecules
