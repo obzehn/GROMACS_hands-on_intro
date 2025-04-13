@@ -108,7 +108,7 @@ GPCR structure 1
     1NTHR    CA    5   5.256   5.221   3.857  0.0000  0.0000  0.0000
 [...]
 ```
-The file has a first line which contains the title of the box (`GPCR structure 1`), a second line which contains the number of the atoms in the box (`47140`), and then it contains in order the all the atoms of the system. These are organised usually as nine columns. The first (here `1NTHR`) is the specific number and name of the reidue - which in this case is the N-terminal of the GPCR. The second column contains the specific name of the atom, and usually the first letter indicates the element (here you have a nitrogen followed by three hydrogen and a carbon and so on). The third is simply the number of the entry. It always starts with `1` and goes up to the number of elements in the box. Then, columns four to six contain the x, y, and z coordinates of that atom, while the columns seven to nine contain its velocity, reported by axial component. Notice how all atoms always have a position, but might have zero velocity. This is out case now, as you are building the box from a static experimental image. One of the main roles of the equilibrations phase is this - to relax the starting positions and assign reasonable starting velocities to all the atoms.
+The file has a first line which contains the title of the box (`GPCR structure 1`), a second line which contains the number of the atoms in the box (`47140`), and then it contains in order all the atoms of the system. These are organised usually as nine columns. The first (here `1NTHR`) is the specific number and name of the reidue - which in this case is the N-terminal of the GPCR. The second column contains the specific name of the atom, and usually the first letter indicates the element (here you have a nitrogen followed by three hydrogen and a carbon and so on). The third is simply the number of the entry. It always starts with `1` and goes up to the number of elements in the box. Then, columns four to six contain the x, y, and z coordinates of that atom, while the columns seven to nine contain its velocity, reported by axial component. Notice how all atoms always have a position, but might have zero velocity. This is the case now, as you are building the box from a static experimental image. One of the main roles of the equilibrations phase is this - to relax the starting positions and assign reasonable starting velocities to all the atoms.
 
 At the other end of the file, the last lines look like this
 ```
@@ -133,15 +133,16 @@ Thus, you can solvate the system with the following
 ```
 gmx solvate -cp reference_topology_GPCR_structure_1.gro -cs tip4p.gro -o GPCR_structure_1_solvated.gro
 ```
-where you are asking to add water to the structure with `-cp reference_topology_GPCR_structure_1.gro`, use as reference a four-points water model with `-cs tip4p.gro`, add call the resulting output structure `-o GPCR_structure_1_solvated.gro`. Some of yoy may notice that in the Lysozyme tutorial you also have to pass the topology of the system with the `-p` flag. This is not mandatory, and I prefer not to do it because the updated topology will have the same name as the input one, which is prone to errors. However, you will have to update by hand the topology to include the presence of the water molecules.
+where you are asking to add water to the structure with `-cp reference_topology_GPCR_structure_1.gro`, use as reference a four-points water model with `-cs tip4p.gro`, add call the resulting output structure `-o GPCR_structure_1_solvated.gro`. Some of you may notice that in the Lysozyme tutorial you also have to pass the topology of the system with the `-p` flag. This is not mandatory, and I prefer not to do it because the updated topology will have the same name as the input one, which is prone to errors. However, you will have to update by hand the topology to include the presence of the water molecules.
 
 The (last lines of the) output of this command will look something like this
 ```
+[...]
 Volume                 :     1069.94 (nm^3)
 Density                :        1013 (g/l)
 Number of solvent molecules:  21053
 ```
-GROMACS tries to fill the box with water to reach the density of ca. 1g/L. The most important part here is the number of water molecules inserted, in my case `21053` (this number can oscillate slightly). In principle, you could add this number at the end of the topopolgy and you would be done with the solvation, as in the Lysozyme tutorial. However, you might think that the system has actually more than one phase (lipids and protein) and that GROMACS tried to insert water molecules in eaxh and every empty volume it could find. How did it behave near the protein? And how near the lipids? You can check with VMD.
+GROMACS tries to fill the box with water to reach the density of ca. 1g/L. The most important part here is the number of water molecules inserted, in this case `21053` (this number can oscillate slightly). In principle, you could add this number at the end of the topopolgy and you would be done with the solvation, as in the Lysozyme tutorial. However, you might think that the system has actually more than one phase (lipids and protein) and that GROMACS tried to insert water molecules in eaxh and every empty volume it could find. How did it behave near the protein? And how near the lipids? You can check with VMD.
 
 The results for my box are shown in Figure 2. Water has been in all places where it was possible, also between the lipids, that is not realistic as this is a strong lipophilic (non-hydrophobic) region. Generally, this is not a major problem, and within the first nanoseconds of run the water molecules get expelled naturally because of the chemical nature of the lipid tail region. Nevertheless, for delicate systems like this that involve proteins highly susceptible to not physiological starting configurations, it is better to get rid of them and clean the system before adding the ions.
 
@@ -189,6 +190,7 @@ cp reference_topology_GPCR_structure_1.top reference_topology_GPCR_structure_1_s
 ```
 Then, add the amount of water molecules to `reference_topology_GPCR_structure_1_solvated.top` by correcting the `[ molecules ]` section in the following way
 ```
+[...]
 [ molecules ]
 ; Compound        #mols
 GPCR                1
@@ -196,7 +198,7 @@ CHL    	           70
 POPC  	          280
 SOL             18936
 ```
-where I added the name of the water in the box (`SOL`) and the number reported after cleaning up the system with the python script. At this point, the structure of the solvated system is contained in `GPCR_structure_1_solvated_clean.gro`, while its topology in `reference_topology_GPCR_structure_1_solvated.top`.
+You have to add the name of the water in the box (`SOL`) and the number reported after cleaning up the system with the python script. At this point, the structure of the solvated system is contained in `GPCR_structure_1_solvated_clean.gro`, while its topology in `reference_topology_GPCR_structure_1_solvated.top`.
 
 ### Adding ions
 You are now ready to add the ions in the system. First, you need to generate a `.tpr` file, which is a binary file that GROMACS can read to understand the charges of the different molecules in the system and select automatically how many ions should be added. You can do this by using `gmx grompp` and pointing to the parameters file `ionize.mdp` with the flag `-f`, to the starting solvated structure `PCR_structure_1_solvated_clean.gro` with the flag `-c`, to the solvated topology `reference_topology_GPCR_structure_1_solvated.top` with the flag `-p`, and finally name the output tpr file `ionize.tpr` with the flag `-o`
