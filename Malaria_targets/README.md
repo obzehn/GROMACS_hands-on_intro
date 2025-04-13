@@ -93,16 +93,66 @@ First of all, notice that sometimes there are lines starting with a semi-column 
 
 Following up, the `#include` statements tell GROMACS where to find the elements of the force field. As can be seen, they are collected inside the `forcefield` directory and must appear with a specific order. First, the set of parameters defining the force field (`forcefield.itp`). Then, the definition of the individual molecules (`PKG.itp`, `ANP.itp`, etc.) that will populate you system. These do not have to appear in a specific order, however <ins>all</ins> the molecules that you intend to use <ins>must</ins> be defined here. Building the topology, that is, filling in this file, is roughly the equivalent of running `gmx pdb2gmx` on the pdb file of the protein, as you did in the Lysozyme tutorial. In this case the system is much more complex and the pdb needs further handling. Thus, it wouldn't be possible to do in one simple line within GROMACS, so the topology is already provided. After the `#include` statements, there is the `[ system ]` section, which is simply the name of the system. It is worth giving the system a meaningful name to help in recognising the systems in the future.
 
-Finally, there is the `[ molecules ]` section. This is a very important section which must contain <ins>all</ins> the molecules of the system <ins>in the order in which they appear</ins>. Notice that, for the time being, the topology contains one protein (`PKG`), one magnesium ion (`MG`), one ligand (`ANP`), and two water molecules (`SOL`). This is unique for the HOLO system with ANP, because the ANP ligand is an adenosine triphosphate analogue which is coordinated to a magnesium ion together with two water molecules. This is important because the whole complex ANP + MG + 2 H<sub>2</sub>O is the correct physiological state of the HOLO state of this protein when bound to ANP. The ligand doesn't bind without the coordinating water molecules and magnesium ion. GROMACS doesn't know if a ligand necessitas a magnesium or other ions and water molecules in some given positions. Thus, they are part of the initial box **before** the solvation as they have been modelled already in the correct state. This is where the biological and chemical knowledge of the user is critical for building a physiologically correct system. Among the systems presented in this tutorial, ANP is the only ligand that necessitates other molecules to be modelled properly in its binding site. The topologies and starting structures of the other systems contain only the host protein PKG and a ligand (for the HOLO states) or the protein alone (for the APO case). The APO structure and the the three ligands are shown in Figure 1.
+Finally, there is the `[ molecules ]` section. This is a very important section which must contain <ins>all</ins> the molecules of the system <ins>in the order in which they appear</ins>. Notice that, for the time being, the topology contains one protein (`PKG`), one magnesium ion (`MG`), one ligand (`ANP`), and two water molecules (`SOL`). This is unique for the HOLO system with ANP, because the ANP ligand is an adenosine triphosphate analogue which is coordinated to a magnesium ion together with two water molecules. This is important because the whole complex ANP + MG + 2 H<sub>2</sub>O is the correct physiological state of the HOLO state of this protein when bound to ANP. The ligand doesn't bind without the coordinating water molecules and magnesium ion. GROMACS doesn't know if a ligand necessitas a magnesium or other ions and water molecules in some given positions. Thus, they are part of the initial box **before** the solvation as they have been modelled already in the correct state. This is where the biological and chemical knowledge of the user is critical for building a physiologically correct system. Among the systems presented in this tutorial, ANP is the only ligand that necessitates other molecules to be modelled properly in its binding site. The topologies and starting structures of the other systems contain only the host protein PKG and a ligand (for the HOLO states) or the protein alone (for the APO case). The APO structure and the three ligands are shown in Figure 1.
 
 | ![Figure 1](../images/apoandligands.png) |
 |:--:|
 | Figure 1 *From left to right: PKG in its APO form; binding site with ANP, the magnesium ion, and the two coordinating water molecules; binding site with 1FB; binding site with 1TR. The residues nearest to the ligands are represented as lines. Color legends: red (oxygen), blue (nitrogen), yellow (phosphorus), pink (magnesium). Carbons are colored in cyan for the protein and iceblue for the ligands. Hydrogen atoms are hidden exception made for the water molecules, where they are white.* |
 
+Now, take a look at the starting configuration `reference_topology_PKG_HOLO_ANP.gro` by opening this file with a text reader. The `.gro` file has a fixed format, and it is better to not modify it by hand if you are not completely sure about what you are doing. The first lines look like this
+```
+PKG HOLO with ANP ligand
+12908
+    1ACE     H1    1  12.255   9.683   1.920
+    1ACE    CH3    2  12.282   9.770   1.861
+    1ACE     H2    3  12.301   9.855   1.927
+    1ACE     H3    4  12.202   9.795   1.792
+    1ACE      C    5  12.405   9.741   1.784
+    1ACE      O    6  12.461   9.632   1.791
+    2GLY      N    7  12.452   9.840   1.705
+    2GLY      H    8  12.403   9.929   1.702
+[...]
+```
+The file has a first line which contains the title of the box (`PKG HOLO with ANP ligand`), a second line which contains the number of the atoms in the box (`12908`), and then it contains in order all the atoms of the system. These are organised usually as nine columns. The first (here `1ACE`) is the specific number and name of the reidue - which in this case is the capped N-terminal of PKG. The second column contains the specific name of the atom, and usually the first letter indicates the element (here you have a hydrogen followed by a carbon, two hydrogen atoms, another carbon, and so on). The third is simply the number of the entry. It always starts with `1` and goes up to the number of elements in the box. Then, columns four to six contain the x, y, and z coordinates of that atom, while the columns seven to nine contain its velocity, reported by axial component. Here you can see how the velocities are not reported, and so you have only six columns. All atoms must always have a position, but might have zero or undefined velocity. This is the case now, as you are building the box from a static experimental image. One of the main roles of the equilibrations phase is this - to relax the starting positions and assign reasonable starting velocities to all the atoms.
+
+At the other end of the file, the last lines look like this
+```
+[...]
+  800ANP    HC812901   9.954  11.756   3.126
+  800ANP   HN3B12902  10.448  11.664   2.794
+  801SOL     OW12903  10.681  11.334   3.167
+  801SOL    HW112904  10.690  11.235   3.182
+  801SOL    HW212905  10.712  11.356   3.073
+  802SOL     OW12906  10.542  11.544   3.341
+  802SOL    HW112907  10.543  11.515   3.439
+  802SOL    HW212908  10.540  11.644   3.339
+   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000
+```
+The meaning of the columns is the same as before. The last molecules to appear are the two water molecules (and in fact, in the topology, they are reported last). The last line of a `.gro` file has, like the first two, a special meaning. It contains the coordinates of the box, that is, the length of the box along x, y, and z. Sometimes it can have more than three numbers for particular box shapes. You can see how this box is actually undefined - GROMACS keeps this line used, as it has a special role, but it is filled with zeros. You will need to define it before solvating the system.
+
+As in the Lysozyme tutorial, you can set up the box by using `gmx editconf`
+```
+gmx editconf -f reference_topology_PKG_HOLO_ANP.gro -o reference_topology_PKG_HOLO_ANP_boxed.gro -bt dodecahedron -c -d 1
+```
+Here you are sending it the reference structure and asking GROMACS to position your protein in the centre (`-c`), built a dodecahedron box (`-bt dodecahedron`), and make sure that the protein is at least 1nm distant (`-d 1`) from the box sides to avoid periodic boundary conditions (PBCs) artifacts. Please not that, exactly because of PBCs, there is not a real centre of the box, and positioning the protein in it with `-c` is mostly for representation purposes rather than real physics. 
+
+Differently from the Lysozyme tutorial, here you are also specifying the shape type of the box. In terms of simulations results, the outcome should not depend on the dimension or shape of the simulation box, as long as the box is large enough to accomodate the contents (the protein in this case) and avoid self-interaction between PBC images. So, why bother changing the shape or dimension? Why don't just make a huge cube? A hint should come from one of the last lines of the ouput of `gmx editconf`, which will look something like this
+```
+new box volume  :1496.67               (nm^3)
+```
+Try now to build the same system by specifying a cubic (`-bt cubic`) box, you will end up with something like this
+```
+new box volume  :2116.61               (nm^3)
+```
+This means that you will have a roughly ~40% larger box, which means more water to solvate, a higher number of molecules to simulate, and therefore slower simulations. An example of how different box types look like is reported in Figure 2.
+
+| ![Figure 2](../images/boxtypes.png) |
+|:--:|
+| Figure 2 *Box types* |
+
+## References
+[^1]: El Bakkouri, M., et al. "Structures of the cGMP-dependent protein kinase in malaria parasites reveal a unique structural relay mechanism for activation." Proceedings of the National Academy of Sciences 116.28 (2019): 14164-14173. [DOI:10.1073/pnas.190555811](https://doi.org/10.1073/pnas.190555811)
 
 | ![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif) |
 |:--:|
 | Figure 2 *gif example* |
-
-## References
-[^1]: El Bakkouri, M., et al. "Structures of the cGMP-dependent protein kinase in malaria parasites reveal a unique structural relay mechanism for activation." Proceedings of the National Academy of Sciences 116.28 (2019): 14164-14173. [DOI:10.1073/pnas.190555811](https://doi.org/10.1073/pnas.190555811)
