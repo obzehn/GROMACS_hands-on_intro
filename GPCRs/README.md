@@ -485,7 +485,7 @@ The technical implementation and the specific meaning of these parameters is bey
 The production run is usually simulated without restraints at all, and in fact there is no restraint defined in `prod.mdp`, as you would like to simulate the 'natural' behaviour of the system. In this tutorial, the [statistical ensemble](https://en.wikipedia.org/wiki/Ensemble_(mathematical_physics)) of the production run is still the isothermal-isobaric ensemble (NPT), as you can see from the `prod.mdp` file since both the thermostat and the barostat are active. It is informally called *production* because it is the part of the simulation that is used most of the times for the analysis, as it comes after the equilibration and it is supposed to be well relaxed.
 
 ## Tips and tricks
-| ![movies gpcrs](../images/gpcr_fit.gif) |
+| <img src="../images/gpcr_fit.gif" width="240"> <img src="../images/gpcr_fit.gif" width="240"> <img src="../images/gpcr_fit.gif" width="240"> <img src="../images/gpcr_fit.gif" width="240"> |
 |:--:|
 | Figure 4 *Wiggle wiggle* |
 
