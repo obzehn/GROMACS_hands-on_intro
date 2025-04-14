@@ -485,9 +485,12 @@ The technical implementation and the specific meaning of these parameters is bey
 The production run is usually simulated without restraints at all, and in fact there is no restraint defined in `prod.mdp`, as you would like to simulate the 'natural' behaviour of the system. In this tutorial, the [statistical ensemble](https://en.wikipedia.org/wiki/Ensemble_(mathematical_physics)) of the production run is still the isothermal-isobaric ensemble (NPT), as you can see from the `prod.mdp` file since both the thermostat and the barostat are active. It is informally called *production* because it is the part of the simulation that is used most of the times for the analysis, as it comes after the equilibration and it is supposed to be well relaxed.
 
 ## Tips and tricks
+
+
+
 | <img src="../images/gpcr_ori.gif" width="240"> <img src="../images/gpcr_pbc.gif" width="240"> <img src="../images/gpcr_cent.gif" width="240"> <img src="../images/gpcr_fit.gif" width="240"> |
 |:--:|
-| Figure 4 *Wiggle wiggle* |
+| Figure 4 *The same GPCR trajectory with four different types of cleaning, as visualized by VMD. The videos are 25 frames long, 1 frame every 10 ns, for a total of 250 ns of production. The water has been removed for the sake of clarity of representation. The first box is the original trajectory, represented as lines. You can see that the molecules 'are broken' across the boundaries, that is, the box sides. This is the standard VMD representation, which gives rise to the typical spaghetti-like bonds. For the following three boxes, the lipids are represented with their van der Waals radii and the protein as a cartoon. The second box shows the trajectory where the molecules have been made whole again across the PBCs. You can see the protein diffuse laterally in the bilayer. The third trajectory has the protein centered in the box. The fourth has a fit of the protein with respect to the first frame. You can see how the protein barely moves and are the lipids rotating aroung the protein. Please keep in mind that all these representations are <sub>equivalent</sub> in terms of information they carry, despite looking different. Nevertheless, some analysis tool might be sensible to the PBC treatment and might require to 'rebuild' the PBC images before actually performing the analysis.* |
 
 ## References
 [^1]: I. Liebscher, T. Schöneberg, and D. Thor. "Stachel-mediated activation of adhesion G protein-coupled receptors: insights from cryo-EM studies." Signal transduction and targeted therapy 7.1 (2022): 227. [DOI:10.1038/s41392-022-01083-y](https://doi.org/10.1038/s41392-022-01083-y)
