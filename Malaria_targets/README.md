@@ -271,7 +271,7 @@ Basically, you have copied the configuration stored in `ionize.tpr`, which is th
 
 Summarising, you now have the starting solvated and neutralised configuration stored in `start.gro` and the corresponding topology in `topol.top`. You can take a look at the final system with VMD. It should look similar to that shown in Figure 2.
 
-| ![Figure 2](../images/holosolvated.png) |
+| <img src="../images/holo_rot.gif" width="400"> |
 |:--:|
 | Figure 2 *Final solvated dodecahedron box for the PKG+ANP HOLO system. Water is represented as a transparent white surface. PKG is in a red cartoon representation. ANP is represented as sticks. Ions are represented with their van der Waals radii and are in blue (sodium) and pink (magnesium). Water is reported as a transparent white surface. The chlorine ions are shown as yellow spheres based on their van der Waals radii. Remember that all the atoms in the system are actually points without a radius described by a set of coordinates, they are not spheres. However, you can use their van der Waals radii to estimate how 'large' the atoms are, that is, how much space around them is physically precluded to other atoms due to the atomic repulsion of the inter-molecular van der Waals forces.* |
 
@@ -426,12 +426,12 @@ This short section covers a couple of key points in handling trajectories and th
 
 The main tool for trajectory handling in GROMACS is [`gmx trjconv`](https://manual.gromacs.org/current/onlinehelp/gmx-trjconv.html). Take a look at the manual for the optional flags and see if anything fits what you want to do (or check with `gmx trjconv --h`). This is a tool that notoriusly necessitates of some experience to achieve an efficient usage, but it is worth pointing out a few key commands. Generally, after running `gmx trjconv` GROMACS asks some further information (depending on the flags you are using) in terms of contents of the system. The most important thing here is to read properly what GROMACS asks and answer accordingly to your own purpose.
 
-Figure 4 shows a few ways in which the trajectory can be post-processed. The videos were rendered with VMD. They are discussed in the following in a left-to-right order
+Figure 3 shows a few ways in which the trajectory can be post-processed. The videos were rendered with VMD. They are discussed in the following in a left-to-right order
 **TO BE ADDED SOON**
 
 | <img src="../images/holo_ori.gif" width="240"> <img src="../images/holo_pbc.gif" width="240"> <img src="../images/holo_cent.gif" width="240"> <img src="../images/holo_fit.gif" width="240"> |
 |:--:|
-| Figure 4 *The same HOLO with 1TR trajectory re-wrapped in four different ways. The videos are 25 frames long, 1 frame every 10 ns, for a total of 250 ns of production. PKG is represented as a red cartoon ribbon, while 1TR is represented in van der Waals spheres. The water has been removed for the sake of clarity of representation. The first panel reports the original trajectory. The second shows the trajectory where the molecules have been made whole again across the PBCs. You can see that the protein diffuses laterally in the box and can jump boundaries. The third trajectory has the protein centered in the box. However, the binding site is still hard to visualise as the protein is rotating. The fourth panels shows the trajectory after fitting of the protein with respect to the last frame of the energy minimization. You can see that the ligand was bound for the whole duration of the production.* |
+| Figure 3 *The same HOLO with 1TR trajectory re-wrapped in four different ways. The videos are 25 frames long, 1 frame every 10 ns, for a total of 250 ns of production. PKG is represented as a red cartoon ribbon, while 1TR is represented in van der Waals spheres. The water has been removed for the sake of clarity of representation. The first panel reports the original trajectory. The second shows the trajectory where the molecules have been made whole again across the PBCs. You can see that the protein diffuses laterally in the box and can jump boundaries. The third trajectory has the protein centered in the box. However, the binding site is still hard to visualise as the protein is rotating. The fourth panels shows the trajectory after fitting of the protein with respect to the last frame of the energy minimization. You can see that the ligand was bound for the whole duration of the production.* |
 
 
 ## References
