@@ -429,5 +429,10 @@ The main tool for trajectory handling in GROMACS is [`gmx trjconv`](https://manu
 Figure 4 shows a few ways in which the trajectory can be post-processed. The videos were rendered with VMD. They are discussed in the following in a left-to-right order
 **TO BE ADDED SOON**
 
+| <img src="../images/holo_ori.gif" width="240"> <img src="../images/holo_pbc.gif" width="240"> <img src="../images/holo_cent.gif" width="240"> <img src="../images/holo_fit.gif" width="240"> |
+|:--:|
+| Figure 4 *The same HOLO with 1TR trajectory re-wrapped in four different ways. The videos are 25 frames long, 1 frame every 10 ns, for a total of 250 ns of production. PKG is represented as a red cartoon ribbon, while 1TR is represented in van der Waals spheres. The water has been removed for the sake of clarity of representation. The first panel reports the original trajectory. The second shows the trajectory where the molecules have been made whole again across the PBCs. You can see that the protein diffuses laterally in the box and can jump boundaries. The third trajectory has the protein centered in the box. However, the binding site is still hard to visualise as the protein is rotating. The fourth panels shows the trajectory after fitting of the protein with respect to the last frame of the energy minimization. You can see that the ligand was bound for the whole duration of the production.* |
+
+
 ## References
 [^1]: El Bakkouri, M., et al. "Structures of the cGMP-dependent protein kinase in malaria parasites reveal a unique structural relay mechanism for activation." Proceedings of the National Academy of Sciences 116.28 (2019): 14164-14173. [DOI:10.1073/pnas.190555811](https://doi.org/10.1073/pnas.190555811)
