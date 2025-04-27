@@ -440,14 +440,14 @@ For the exam, the main post-processing of the trajectory that you might need is 
 ```
 gmx trjconv -f prod.xtc -s nvt_1.tpr -pbc mol -center -o center_traj.xtc
 ```
-and, when prompted by GROMACS, by selecting the group `Protein` for centering and `System` for output. The output will be called `cleaned_traj.xtc` and will contain the whole trajectory where all the molecules are made whole across the PBCs and the protein is centered in the box. You can then fit the protein to its starting position to better visualize the binding site (like panel 4 of Figure 3) as in the following
+and, when prompted by GROMACS, by selecting the group `Protein` for centering and `System` for output. The output will be called `center_traj.xtc` and will contain the whole trajectory where all the molecules are made whole across the PBCs and the protein is centered in the box. You can then fit the protein to its starting position to better visualize the binding site (like panel 4 of Figure 3) as in the following
 ```
-gmx trjconv -f cleaned_traj.xtc -s nvt_1.tpr -fit rot+trans -o center_traj_fit.xtc
+gmx trjconv -f center_traj.xtc -s nvt_1.tpr -fit rot+trans -o center_traj_fit.xtc
 ```
 and selecting the protein C alphas for fit and the `System` for output. Now, `center_traj_fit.xtc` will contain the whole trajectory and after centering and fitting it on the starting configuration of the protein contained in `nvt_1.tpr`. This will probably still be a large file, so you can produce a more manageable file for visualization with VMD with the following two commands
 ```
-gmx trjconv -f cleaned_traj_fitted.xtc -s em.tpr -o nowater.xtc
-gmx trjconv -f cleaned_traj_fitted.xtc -s em.tpr -o nowater.gro -dump 0
+gmx trjconv -f center_traj_fit.xtc -s em.tpr -o nowater.xtc
+gmx trjconv -f center_traj_fit.xtc -s em.tpr -o nowater.gro -dump 0
 ```
 In both cases, select `non-Water` as the output group. These will produce two files, `nowater.gro` and `nowater.xtc`, which are the first frame of the production run and the associated trajectory, respectively, but without the water. The files should be much smaller than the original `prod.xtc`. You can use these two files to visualize the trajectory in VMD. You can get rid of the intermediary files and remove them, that is, `rm center_traj.xtc center_traj_fit.xtc`. Beware that [`rm`](https://ss64.com/bash/rm.html), which stands for *remove*, deletes the files directly. There is no Trash/Recycle bin in the terminal, and if by mistake you delete something that you need you will have to redo it, as it can not be recovered easily.
 
