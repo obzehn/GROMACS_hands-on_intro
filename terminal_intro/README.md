@@ -4,30 +4,16 @@
 
 Let's start with a couple of definitions.
 
-- **Terminal**  
-  A terminal is a program that provides a text-based interface to your computer. Trivially, it is the window where you type commands and see the output, acting as the communication interface between you and the system.  
-  The standard in macOS is [Terminal.app](https://en.wikipedia.org/wiki/MacOS)),  
-  in Linux Ubuntu it is the [GNOME Terminal](https://en.wikipedia.org/wiki/MacOS),  
-  while in Windows it is generally [PowerShell](https://en.wikipedia.org/wiki/PowerShell **Shell**  
-  A shell is the command interpreter that runs inside the terminal. It reads the commands you type, executes them, and displays the results. Common examples include  
-  [bash](https://en.wikipedia.org/wiki/Bash_(Unixd  
-  [zsh](https://en.wikipedia.org/wiki/MacOS).
+- **Terminal** A terminal is a program that provides a text-based interface to your computer. Trivially, it is the window where you type commands and see the output, acting as the communication interface between you and the system. The standard in macOS is [Terminal.app](https://en.wikipedia.org/wiki/MacOS)), in Linux Ubuntu it is the [GNOME Terminal](https://en.wikipedia.org/wiki/GNOME_Terminal), while in Windows it is generally the [PowerShell](https://en.wikipedia.org/wiki/PowerShell).
+- **Shell** A shell is the command interpreter that runs inside the terminal. It reads the commands you type, executes them, and displays the results. Common examples include [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) and [zsh](https://en.wikipedia.org/wiki/Z_shell).
 
-You can see the relationship between a human user, a terminal, a shell, and a computer as two people talking in a room.  
-One person is you, the other is the computer, and the room where you are talking is the terminal—a common space where you can directly interact.  
-The shell is the common set of rules you both understand: your shared language.  
-Depending on the operating system and your preferences, you can “speak” with a computer in different rooms and in different languages.  
-Generally, *terminal* and *shell* are used interchangeably, although they are not the same.
+You can see the relationship between a human user, a terminal, a shell, and a computer as two people talking in a room. One person is you, the other is the computer, and the room where you are talking is the terminal—a common space where you can directly interact. The shell is the common set of rules you both understand: your shared language. Depending on the operating system and your preferences, you can “speak” with a computer in different rooms and in different languages. Generally, *terminal* and *shell* are used interchangeably, although they are not the same.
 
-Before modern graphical interfaces, most interactions with computers happened through a terminal with a keyboard.  
-Today most people use a mouse or trackpad to click on windows and files—this is conceptually equivalent to issuing terminal commands.
+Before the advent of the most common graphical user interfaces, most of the interactions with computers happened thorough a terminal with a keyboard. Nowadays, instead, most people interact with computers using a combination of keyboard and mouse/touch-pad by clicking on windows, files, etc. This is equivalent to using a terminal, simply the commands are interpreted as clicks or specific keystrokes, e.g., double-clicking on a directory to open it or pressing `Del` to delete a file.
 
-In scientific contexts, terminal usage is still very common.  
-Scientific tools are often built for command‑line use, and supercomputers (such as Baobab at the University of Geneva) provide only terminal access.  
-Most importantly, using a terminal—especially in a [Unix](https://en.wikipedia.org/wiki/MacOS)/[Unix‑like](https://en.wikipedia.org/wiki/MacOS) environment like macOS or Ubuntu—provides a universal interface that works the same on laptops, servers, and HPC systems.
+In scientific sectors, the usage of the terminal is still very common. There are several reasons for this. One is that many scientific tools have been developed for being used within terminals. Another is that basically all super computers (like Baobab from the University of Geneva) are usually accessed online and have no graphical interface, only a terminal one. Most importantly, using a terminal (especially in a [Unix](https://en.wikipedia.org/wiki/Unix)/[Unix-like](https://en.wikipedia.org/wiki/Unix-like) environment like macOS or Linux Ubuntu) provides a universal common ground that works the same on laptops, servers, and high‑performance computing systems.
 
-This document is a brief introduction to common terminal vocabulary: we will learn **commands** for a given **shell**.  
-We focus on commands available in both `bash` and `zsh`, two popular shells.
+This tutorial is a brief introduction to common terminal vocabulary, that is, we will learn **commands** for a given **shell**. Here, we focus on commands available in both `bash` and `zsh`, two extremely widespread and popular shells.
 
 ---
 
