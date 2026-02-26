@@ -42,7 +42,7 @@ Without a graphical interface, you cannot see where you are located (Desktop? Do
 a) Run `pwd`  
 
 The command will answer with something of the form like the following
-```
+```bash
 /directory1/directory2/final_directory
 ```
 This means that, in this moment, you are inside `final_directory` (the last entry of the line), which itself is inside `directory2` that is inside `directory1`. Notice how the names of the different directories are separated by the symbol `/`. The core idea is that there is a starting directory, called **root** (indicated by the first symbol `/` on the left) that containts all directories. Then, like a tree from its root, all the following content of the computer is inside directories of directories. This d is the standard organization of all computers (altough in Windows Terminals like Powershell you might see `\` rather than `/` to separate directories).
@@ -112,12 +112,15 @@ h) Try navigating using both absolute and relative path. Remember that you can a
 
 ## **Exercise 3: Create directories**  
 **Goal:** Learn how to create a directory
+
 **Commands:** `mkdir`
 
 To create a new directory, you can run the command `mkdir` (*make directory*). Specifically, running `mkdir name_directory` will generate a directory with name `name_directory` in the directory where you are, equivalently to `mkdir ./name_directory`. You can use asbsolute and relative paths as well, e.g., `mkdir ../name_directory` to create it inside the directory containing the current one or `mkdir /home/bob/Documents/name_directory` to create it specifically at that path.
 
-a) Create a directory called `playground`  
-b) Enter this directory  
+a) Create a directory called `playground`
+
+b) Enter this directory
+
 c) Inside it, create two directories: `animals` and `plants`. You can create multiple directories at once with `mkdir name_dir1 name_dir2 name_dir3 etc...`.
 
 ---
@@ -129,18 +132,58 @@ c) Inside it, create two directories: `animals` and `plants`. You can create mul
 You can create files with the `touch` command. Enter the `animals` directory:
 
 a) Create three files: `dog.txt`, `cat.txt`, `elephant.txt`
+
 b) Check that they exist using `ls`
+
 c) What is their relative path? And their absolute one?
-d) Go back two directories to the one containing `playground` with `cd ../..`. Try to create `bamboo.txt` and `baobab.txt` inside `plants` without entering in `plants` but by using relative or absolute paths, something like `touch [path_to_plants]/bamboo.txt`
+
+d) Go back two directories to the one containing `playground` with `cd ../..` and try to create `bamboo.txt` and `baobab.txt` inside `plants` **without** entering in `plants` but by using relative or absolute paths, something like `touch [path_to_plants]/bamboo.txt`
 
 ---
 
 # Part 3 — Viewing & Editing
 
-## **Exercise 5: Read Your Files**  
-**Goal:** Learn `cat`.
+## **Exercise 5: Read Your Files**
+**Goal:** Learn how to visualize a file
 
-a) Display the contents of `dog.txt` using `cat`  
-b) Add a line using:  
-   ```bash
-   echo "Dogs are friendly animals." > dog.txt
+**Commands:** `cat`, `echo`
+
+You can access the content of a file by using the command `cat`. The simple version `cat file` will print the content of `file` on the screen. `echo`, instead, is used for printing something specific. `echo "Hello World!"` will print `Hello World!` on the screen.
+
+a) Navigate to the directory containing the file `dog.txt`
+
+b) Display the contents of `dog.txt` using `cat` run `cat dog.txt`. It should be empty.
+
+c) Try the command `echo "Hello World!"`
+
+d) Add a line using to the file using `echo "Dogs are friendly animals." > dog.txt`
+
+You will notice that the `echo` command is unchanged, but we added a `> dog.txt` at the end of it. This means *whatever is the output of the command before `>`, put it in the file `dog.txt`.
+
+---
+
+## **Exercise 6: Append Content**  
+**Goal:** Learn output redirection (>>)
+
+a) Append another sentence to `dog.txt` using `>>`, e.g. `echo "your cool sentence" >> dog.txt`
+
+b) Display the updated file with cat.
+
+Notice that `>` **rewrites** the content of the file, that is, whatever is contained in the files gets overwritten with the new input, while `>>` **appends** to the content of the file, i.e., it adds the input at the end of it.
+
+---
+
+# Part 4 — Moving and Renaming Things
+
+## **Exercise 7: Rename a File**
+**Goal:** Learn how to rename a file
+
+**Commands:** `mv`
+
+You can rename or move a file with the command `mv` (*move*).
+
+Rename elephant.txt to big extunderscore elephant.txt.
+Exercise 8: Move Files Across Folders
+Goal: Learn mv with paths.
+a) Go to the playground folder.
+b) Move all animal files into the plants directory.
