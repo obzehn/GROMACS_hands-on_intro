@@ -28,7 +28,11 @@ Since this guide focuses on `bash` and `zsh`:
 
 If we set-up together the WSL app, you should see that you are using some version of Linux Ubuntu as the first message when you launch it. Formally, for you this is equivalent as being on another operative systems (Linux Ubuntu instead of Windows) and you are already inside the terminal, as no graphical interface is shipped with WSL.
 
-As a general note, when you read that you have to `run` a command, it means that you have to type it within the terminal and to press `Enter`.
+As few general notes before starting with the tutorial.
+
+ - When you read that you have to `run` a command, it means that you have to type it within the terminal and to press `Enter`.
+ - Remember that you can always check online how to use a command and, by running `command --help` you can access a brief explanation of the tool (e.g. `cp --help`).
+ - You can use the `Tab` key on your keyboard for fast autocompletion of paths and commands.
 
 ---
 
@@ -176,14 +180,75 @@ Notice that `>` **rewrites** the content of the file, that is, whatever is conta
 # Part 4 — Moving and Renaming Things
 
 ## **Exercise 7: Rename a File**
-**Goal:** Learn how to rename a file
+**Goal:** Learn how to rename and move files and directories
 
 **Commands:** `mv`
 
-You can rename or move a file with the command `mv` (*move*).
+You can rename or move a file with the command `mv` (*move*). Example usages are `mv a.txt b.txt`, which renames file `a.txt` in `b.txt`, and `mv a.txt ./Documents/`, which moves file `a.txt` from the current directory inside the `Documents` directory. You can also combine them like `mv a.txt ./Documents/b.txt` which both moves and renames the file. The same can be applied to directories.
 
-Rename elephant.txt to big extunderscore elephant.txt.
-Exercise 8: Move Files Across Folders
-Goal: Learn mv with paths.
-a) Go to the playground folder.
-b) Move all animal files into the plants directory.
+a) Rename the `elephant.txt` into `toad.txt` in the animal folder
+
+b) Create `otter.dat` in the directory `plants` and move it in the directory `animals`
+
+c) Rename the `plants` directory in `animal_garden` and move it inside the `animals` directory. Try to do it in one command.
+
+---
+
+# Part 5 — Copying and Removing Things
+
+## **Exercise 8: Make a Copy**
+**Goal:** Learn how to make a copy of a file or a directory
+
+**Commands:** `cp`
+
+You can copy files with the command `cp` (*copy*), e.g. `cp a b` will copy fle `a` in `b`. Remember that absolute and relative paths can be used everywhere we specify a file, for example `cp ../a.txt /home/Documents/a_backup.txt` will copy the `a.txt` file from the directory one above us to a file named `a_backup.txt` inside the directory `/home/Documents/`
+
+a) Copy the `dog.txt` file both into `dog.txt` and `dog_backup.txt`. Which one works? Why?
+
+b) Copy the full directory `animals` with `cp animals animals_2`. Does it work?
+
+As you will notice, directories can't be simply copied as they might contain other files, and you have to specify what to do with them. To copy a full directory you have to specify the flag `-r` (for *recursive*) so that the copy command knows that the order has to be repeated for everything contained inside the directory as well.
+
+c) Copy the full directory `animals` with `cp -r animals animals_2`. Does it work? What's inside the directory `animals_2`?
+
+## **Exercise 9: Delete Things **
+**Goal:** Learn how to delete a file or a directory
+
+**Commands:** `rm`, `rmdir`
+
+You can remove files and directories with `rm` (*remove*) and `rmdir` (*remove directory*). **IMPORTANT: There is no Recycling Bin. Everything that is deleted is lost, permanently. Double think before deleting stuff, and double check your commands. Removing files and directories from certain System directories can permanently damage the operative system of your computer, or you can easily delete one month worth of data analysis. As a safety rule, do not touch things that you are not sure what they are.**
+
+a) Create a directory called `poaching` inside `playground`
+
+b) Remove it with `rmdir`, e.g. `rmdir poaching`
+
+c) Create it again, and inside it create two files, `rifle.txt` and `poacher.txt`.
+
+d) Remove the directory with `rmdir`. Does it work? Why?
+
+e) Now remove it with `rm`, e.g. `rm poaching`. Does it work? Why?
+
+f) Remove the `rifle.txt` file with the `rm` command.
+
+g) And now remove the full `poaching` directory with the `rm -r` command. Here the `-r` flag option of `rm` has the same value as in `cp`, i.e., *recursive*, so apply this command to this directory and recursively to everything that is inside it.
+
+# Part 6 — Text editors
+**Goal:** A first approach to text editors in a terminal
+
+**Commands:** `vim`, `nano`
+
+Until now, you saw how to add data to a file by using the `echo` command. This is a neat trick to store on file output from commands, but in general it is not very usefull to open and modify files. There are several text editors available in terminals, and which one to use largely depends on the personal preferences. Two of the most common are [`vim`](https://www.vim.org/) and [`nano`](https://en.wikipedia.org/wiki/GNU_nano). These are complex software packages with a billion options, and sadly the learning curve is a bit steep, but the basics for opening, modifying and saving (a basic usage of a text editor) are very simple.
+
+a) Open the `toad.txt` file in the `animal` folder with `vim` by running `vim toad.txt`
+
+b) Go into insert mode by pressing `a` (you will see the last line of the page change into **--INSERT--**)
+
+c) Type whatever you want. Remember, you have to move with arrows and keyoard as clicking on the terminal is not available
+
+d) Press `Esc`. The **--INSERT--** mode is not active anymore. You can now access the general options by typing `:` (you will see the symbol appear at the bottom of the page, outside the file text)
+
+e) To save the file, write `:w` (*write) and press enter. Now you can quit with `:q` (*quit*).
+
+f) Re-open the file with `vim`. Go again in `INSERT` mode and type something. Now try to close the file *without* saving with `:q`. Does it work? Why?
+
+g) You can force the closure with the `!`symbol, e.g., `:q!` will close without saving any changes.
