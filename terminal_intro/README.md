@@ -28,18 +28,27 @@ Since this guide focuses on `bash` and `zsh`:
 
 If we set-up together the WSL app, you should see that you are using some version of Linux Ubuntu as the first message when you launch it. Formally, for you this is equivalent as being on another operative systems (Linux Ubuntu instead of Windows) and you are already inside the terminal, as no graphical interface is shipped with WSL.
 
+As a general note, when you read that you have to `run` a command, it means that you have to type it within the terminal and to press `Enter`.
+
 ---
 
 ## **Exercise 1: Where Am I?**  
-**Goal:** Learn to check the current directory.  
+**Goal:** Learn to check the current directory and it's content.
 Commands: `pwd`, `ls`
 
-Without a graphical interface, you cannot see where you are located (Desktop? Downloads? etc.).  
-You can check using:
+Without a graphical interface, you cannot see where you are located (Desktop? Downloads? Home? etc.) and what is inside the directory. You can check these by using the `pwd` (*print working directory*) and `ls` (*list*) commands, respectively.
 
 a) Run `pwd`  
-b) Run `ls`  
-c) Write down your working directory and the items inside it
+
+The command will answer with something of the form like the following
+```
+/directory1/directory2/final_directory
+```
+This means that, in this moment, you are inside `final_directory` (the last entry of the line), which itself is inside `directory2` that is inside `directory1`. This is the standard organization of all computers. The core idea is that there is a starting directory, called **root** (indicated by the first symbol `/`) that containts all directories. Then, like a tree from its root, all the following content of the computer is inside directories of directories.
+
+b) Run `ls`
+
+This command will show the content of the directory where you are (that is, the one given by `pwd`) as a list of files. If it shows nothing, then the directory is empty.
 
 ---
 
