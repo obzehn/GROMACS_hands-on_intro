@@ -46,19 +46,33 @@ The command will answer with something of the form like the following
 ```
 This means that, in this moment, you are inside `final_directory` (the last entry of the line), which itself is inside `directory2` that is inside `directory1`. This is the standard organization of all computers. The core idea is that there is a starting directory, called **root** (indicated by the first symbol `/`) that containts all directories. Then, like a tree from its root, all the following content of the computer is inside directories of directories.
 
+Very importantly, the output of `pwd` is the **path** to your directory, that is, a unique combination of the position and name that give the location of the directory in the computer.
+
 b) Run `ls`
 
 This command will show the content of the directory where you are (that is, the one given by `pwd`) as a list of files. If it shows nothing, then the directory is empty.
 
 ---
 
-## **Exercise 2: Navigating Like a Pro**  
-**Goal:** Learn `cd`, absolute & relative paths.
+## **Exercise 2: Navigation**  
+**Goal:** Learn how to change directories, and absolute & relative paths.
+Commands: `cd`
 
-a) Move to your home directory: `cd ~`  
-b) Navigate to the `Documents` folder  
+To change a directory, you run `cd` (*change directory*) and insert the path of the directory you want to move to. Generally, when you open a terminal, you are in your `home` directory. From wherever you are, you can always run
+a) `cd ~`, or
+b) `cd`
+to get back to your home. Try it, you should not be moving from where you are.
+
+Now, let's suppose I have a directory here called `Documents` (it should be visible with `ls`). To access it you run
+c) `cd Documents`
+or, more generally, you can access a directory that is in your directory with the command
+d) `cd name_directory`
+
+
 c) Move one directory up using `cd ..`  
 d) Try navigating using both an absolute and a relative path  
+
+Before trying to change directory, it is important to grasp the concepts of **absolute** and **relative** paths.
 
 ---
 
