@@ -100,14 +100,21 @@ Path can be  **absolute** or **relative**. An **absolute path** *always* starts 
 
 In the four examples above, the first is an absolute path to the `Documents` directory, while all the others are relative paths. This means that, wherever you are, if you type `cd /home/user/Documents` you will *always* be taken to that specific `Documents` directory. Typing `cd Documents` instead will take you inside the directory `Documents` contained in your current working directory, or will fail if the directory is not present. Similarly, `./notes/todo.txt` and `../data/results.csv` are relative paths to files, that is, the first means *I am referring to the `todo.txt` file inside the directory `notes` inside `.` (this) directory* and the second *I am referring to the `results.csv` file inside the `data` directory contained in `..` (one directory above me)*.
 
+To make the difference more clear and state better the importance of this difference, let's suppose you have two different `Documents` directories with absolute paths `/home/bob/Documents` and `/home/alice/Documents`. The command `cd Documents` will work both in `bob` and `alice` directories, but will take you to two directories that have the same name but *different* absolute paths, that is, they are *different directories* that will have different files, sub-directories etc. You can easily imagine that absolute paths are **unique**, as you can't have files or directories with same name within the same folders (as in all computers).
+
+Finally,
+
 h) Try navigating using both absolute and relative path. Remember that you can always go back to your home with `cd` or `cd ~`.
 
 ---
 
 # Part 2 — Creating Things
 
-## **Exercise 3: Create a Playground**  
-**Goal:** Learn `mkdir`, `cd`.
+## **Exercise 3: Create directories**  
+**Goal:** Learn how to create a directory
+**Commands:** `mkdir`
+
+To create a new directory, you can run the command `mkdir` (*make directory*).
 
 a) Create a directory called `playground`  
 b) Enter this directory  
