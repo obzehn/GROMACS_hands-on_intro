@@ -24,11 +24,9 @@ Since this guide focuses on `bash` and `zsh`:
 
 - macOS users → open **Terminal.app**  
 - Linux users → open the terminal distributed with your OS  
-- Windows users → **do not** use PowerShell (different language)  
-  Instead open [Windows Subsystem for Linux (WSL)](https://en.wikipedia.org/wiki/MacOS).
+- Windows users → **do not** use PowerShell (different language). Instead open the Windows Subsystem for Linux ([WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)).
 
-If you set up WSL with us, the first message you see when opening it should indicate you're inside an Ubuntu environment.  
-Formally, this is equivalent to being on a Linux system and using its terminal (WSL has no graphical interface).
+If we set-up together the WSL app, you should see that you are using some version of Linux Ubuntu as the first message when you launch it. Formally, for you this is equivalent as being on another operative systems (Linux Ubuntu instead of Windows) and you are already inside the terminal, as no graphical interface is shipped with WSL.
 
 ---
 
