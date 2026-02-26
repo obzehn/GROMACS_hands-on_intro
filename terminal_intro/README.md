@@ -211,7 +211,7 @@ As you will notice, directories can't be simply copied as they might contain oth
 
 c) Copy the full directory `animals` with `cp -r animals animals_2`. Does it work? What's inside the directory `animals_2`?
 
-## **Exercise 9: Delete Things **
+## **Exercise 9: Delete Things**
 **Goal:** Learn how to delete a file or a directory
 
 **Commands:** `rm`, `rmdir`
@@ -222,15 +222,15 @@ a) Create a directory called `poaching` inside `playground`
 
 b) Remove it with `rmdir`, e.g. `rmdir poaching`
 
-c) Create it again, and inside it create two files, `rifle.txt` and `poacher.txt`.
+c) Create it again, and inside it create two files, `rifle.txt` and `poacher.txt`
 
 d) Remove the directory with `rmdir`. Does it work? Why?
 
 e) Now remove it with `rm`, e.g. `rm poaching`. Does it work? Why?
 
-f) Remove the `rifle.txt` file with the `rm` command.
+f) Remove the `rifle.txt` file with the `rm` command
 
-g) And now remove the full `poaching` directory with the `rm -r` command. Here the `-r` flag option of `rm` has the same value as in `cp`, i.e., *recursive*, so apply this command to this directory and recursively to everything that is inside it.
+g) And now remove the full `poaching` directory with the `rm -r` command. Here the `-r` flag option of `rm` has the same value as in `cp`, i.e., *recursive*, so apply this command to this directory and recursively to everything that is inside it, that is, remove this directory and everything inside.
 
 # Part 6 — Text editors
 **Goal:** A first approach to text editors in a terminal
