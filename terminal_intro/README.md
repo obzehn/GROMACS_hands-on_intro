@@ -34,7 +34,8 @@ As a general note, when you read that you have to `run` a command, it means that
 
 ## **Exercise 1: Where Am I?**  
 **Goal:** Learn to check the current directory and it's content.
-Commands: `pwd`, `ls`
+
+**Commands:** `pwd`, `ls`
 
 Without a graphical interface, you cannot see where you are located (Desktop? Downloads? Home? etc.) and what is inside the directory. You can check these by using the `pwd` (*print working directory*) and `ls` (*list*) commands, respectively.
 
@@ -56,7 +57,8 @@ This command will show the content of the directory where you are (that is, the 
 
 ## **Exercise 2: Navigation**  
 **Goal:** Learn how to change directories, and absolute & relative paths.
-Commands: `cd`
+
+**Commands:** `cd`
 
 To change a directory, you run `cd` (*change directory*) and insert the path of the directory you want to move to. Generally, when you open a terminal, you are in your `home` directory. From wherever you are, you can always run
 
@@ -65,7 +67,7 @@ a) `cd ~`, or
 b) `cd`
 
 to get back to your home. Try it, you should not be moving from where you are.
-Now, let's suppose I have a directory here called `Documents` (it should be visible with `ls`). To access it you run
+Now, let's suppose you have a directory here called `Documents` (it should be visible with `ls`). To access it you run
 
 c) `cd Documents`
 
@@ -77,11 +79,28 @@ To move one directory up, i.e., go into the directory that contains the one wher
 
 e)  `cd ..`  
 
-where the `..` is a general way to say *one up*. You can concatenate the points, i.e., `cd ../..` means go **two** directories up, `cd ../../..` means **three** and so on.
+where the `..` is a general way to say *one up*. You can concatenate the points, i.e., `cd ../..` means go **two** directories up, `cd ../../..` means **three** and so on. The single dot `.`, insted, indicates *this* directory where you are now. For example, running
 
-This is a good moment to grasp the concepts of **absolute** and **relative** paths.
+f) `cd .`
 
-d) Try navigating using both an absolute and a relative path  
+moves you...nowhere, since you are telling the computer to move to where you are to where you are. Similarly,
+
+g) `ls .`
+
+will list the files and directories present in the current working directory, equivalently to `ls`. While the single dot might seem (and it is) useless in the context of these commands, it might be useful for others that you will encounter down the road.
+
+This is a good moment to grasp the concept of paths. As said before, a **path** is a text string that tells the computer where a file or directory is located in the filesystem. Example of paths are
+
+`/home/user/Documents`
+`Documents`
+`./notes/todo.txt`
+`../data/results.csv`
+
+Path can be  **absolute** or **relative**. An **absolute path** *always* starts from the root of the filesystem, represented by `/`. It is the full address of a file or directory and is valid no matter where you currently are. A **relative path**, instead, is defined in relation to your current directory, and it *never* starts with `/`.
+
+In the four examples above, the first is an absolute path to the `Documents` directory, while all the others are relative paths. This means that, wherever you are, if you type `cd /home/user/Documents` you will *always* be taken to that specific `Documents` directory. Typing `cd Documents` instead will take you inside the directory `Documents` contained in your current working directory, or will fail if the directory is not present. Similarly, `./notes/todo.txt` and `../data/results.csv` are relative paths to files, that is, the first means *I am referring to the `todo.txt` file inside the directory `notes` inside `.` (this) directory* and the second *I am referring to the `results.csv` file inside the `data` directory contained in `..` (one directory above me)*.
+
+h) Try navigating using both absolute and relative path. Remember that you can always go back to your home with `cd` or `cd ~`.
 
 ---
 
