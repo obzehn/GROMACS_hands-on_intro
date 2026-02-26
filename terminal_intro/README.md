@@ -114,21 +114,24 @@ h) Try navigating using both absolute and relative path. Remember that you can a
 **Goal:** Learn how to create a directory
 **Commands:** `mkdir`
 
-To create a new directory, you can run the command `mkdir` (*make directory*).
+To create a new directory, you can run the command `mkdir` (*make directory*). Specifically, running `mkdir name_directory` will generate a directory with name `name_directory` in the directory where you are, equivalently to `mkdir ./name_directory`. You can use asbsolute and relative paths as well, e.g., `mkdir ../name_directory` to create it inside the directory containing the current one or `mkdir /home/bob/Documents/name_directory` to create it specifically at that path.
 
 a) Create a directory called `playground`  
 b) Enter this directory  
-c) Inside it, create two directories: `animals` and `plants`
+c) Inside it, create two directories: `animals` and `plants`. You can create multiple directories at once with `mkdir name_dir1 name_dir2 name_dir3 etc...`.
 
 ---
 
 ## **Exercise 4: Make Some Files**  
-**Goal:** Learn `touch`.
+**Goal:** Learn how to generate files 
+**Commands:** `touch`
 
-Inside the `animals` directory:
+You can create files with the `touch` command. Enter the `animals` directory:
 
-a) Create three files: `dog.txt`, `cat.txt`, `elephant.txt`  
-b) Check that they exist using `ls`  
+a) Create three files: `dog.txt`, `cat.txt`, `elephant.txt`
+b) Check that they exist using `ls`
+c) What is their relative path? And their absolute one?
+d) Go back two directories to the one containing `playground` with `cd ../..`. Try to create `bamboo.txt` and `baobab.txt` inside `plants` without entering in `plants` but by using relative or absolute paths, something like `touch [path_to_plants]/bamboo.txt`
 
 ---
 
