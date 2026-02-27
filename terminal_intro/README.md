@@ -247,7 +247,7 @@ c) Type whatever you want. Remember, you have to move with arrows and keyoard as
 
 d) Press `Esc`. The **--INSERT--** mode is not active anymore. You can now access the general options by typing `:` (you will see the symbol appear at the bottom of the page, outside the file text)
 
-e) To save the file, write `:w` (*write) and press enter. Now you can quit with `:q` (*quit*).
+e) To save the file, write `:w` (*write*) and press enter. Now you can quit with `:q` (*quit*).
 
 f) Re-open the file with `vim`. Go again in `INSERT` mode and type something. Now try to close the file *without* saving with `:q`. Does it work? Why?
 
